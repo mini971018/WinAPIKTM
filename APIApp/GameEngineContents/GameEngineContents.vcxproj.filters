@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="MegamanX4GameCore.h" />
+    <ClInclude Include="PlayLevel.h">
+      <Filter>Play</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBackground.h">
+      <Filter>Title</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnums.h" />
+    <ClInclude Include="Player.h">
+      <Filter>Play\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MegamanX4GameCore.cpp" />
+    <ClCompile Include="PlayLevel.cpp">
+      <Filter>Play</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBackground.cpp">
+      <Filter>Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Play\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_State.cpp">
+      <Filter>Play\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Play">
+      <UniqueIdentifier>{5c02c7a2-cfc0-4fc3-98ed-6cec0d524319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Title">
+      <UniqueIdentifier>{b1aa7460-f1f2-4009-b9c2-f874c7a7ce50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Play\Player">
+      <UniqueIdentifier>{6b31dc54-92eb-4657-ba31-2c77a4af0344}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
