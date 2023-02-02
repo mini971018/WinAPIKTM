@@ -3,6 +3,9 @@
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineResources.h>
 
+#include "Map.h"
+#include "ContentsEnums.h"
+
 PlayLevel::PlayLevel() 
 {
 }
@@ -31,13 +34,19 @@ void PlayLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayer.bmp"));
 		Image->Cut(10, 23);
 	}
-
+	{
+		//맵 이미지
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("Prologue.bmp"));
+	}
 
 	//액터 생성
 	{
 		Player* Actor = CreateActor<Player>();
-	}
 
+	}
+	{
+		Map* Actor = CreateActor<Map>();
+	}
 }
 
 void PlayLevel::Update(float _DeltaTime)

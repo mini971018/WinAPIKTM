@@ -107,7 +107,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	}
 
 	//걷기 시작할 때 구분
-	if (FirstMoveFrame < 30)
+	if (FirstMoveFrame < 120)
 	{
 		++FirstMoveFrame;
 		DirCheck("EnterMove");

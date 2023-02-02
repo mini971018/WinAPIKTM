@@ -42,6 +42,8 @@ private:
 
 	void MoveCalculation(float _DeltaTime);
 
+	bool FreeMoveState(float _DeltaTime);
+
 	//FSM 유한 상태 머신 : 적용되는 것들은 한가지 일을 할 때, 동시에 다른 일을 할 수 없다.
 	void ChangeState(PlayerState _State);
 	void UpdateState(float _Time);
@@ -53,5 +55,8 @@ private:
 	void MoveStart();
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
+
+
+
 };
 

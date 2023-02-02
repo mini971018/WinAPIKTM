@@ -36,6 +36,6 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsAnyKey())
 	{
-		GameEngineCore::GetInst()->ChangeLevel("Play");
+		GameEngineCore::GetInst()->ChangeLevel("Prologue");
 	}
 }

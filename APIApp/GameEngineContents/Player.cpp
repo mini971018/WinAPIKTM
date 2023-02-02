@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineRender.h>
+//#include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnums.h"
 
 Player* Player::MainPlayer;
@@ -28,6 +30,10 @@ void Player::Start()
 		GameEngineInput::CreateKey("MoveRight", 'D');
 		GameEngineInput::CreateKey("MoveUp", 'W');
 		GameEngineInput::CreateKey("MoveDown", 'S');
+
+		GameEngineInput::CreateKey("NextLevel", 'P');
+
+		GameEngineInput::CreateKey("FreeMoveSwitch", '1');
 	}
 
 	{
@@ -54,9 +60,55 @@ void Player::MoveCalculation(float _DeltaTime)
 	SetPos(NextPos);
 }
 
+bool FreeMove = false;
+
+bool Player::FreeMoveState(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsPress("FreeMoveSwitch"))
+	{
+		FreeMove = !FreeMove;
+	}
+
+	if (true == FreeMove)
+	{
+		if (GameEngineInput::IsPress("MoveLeft"))
+		{
+			SetMove(float4::Left * 1000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Left * 1000.0f * _DeltaTime);
+		}
+		else if (GameEngineInput::IsPress("MoveRight"))
+		{
+			SetMove(float4::Right * 1000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Right * 1000.0f * _DeltaTime);
+		}
+		else if (GameEngineInput::IsPress("MoveUp"))
+		{
+			SetMove(float4::Up * 1000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Up * 1000.0f * _DeltaTime);
+		}
+		else if (GameEngineInput::IsPress("MoveDown"))
+		{
+			SetMove(float4::Down * 1000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Down * 1000.0f * _DeltaTime);
+		}
+	}
+
+	if (true == FreeMove)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void Player::Update(float _DeltaTime)
 {
 	MoveDir = float4::Zero;
+
+	if (true == FreeMoveState(_DeltaTime))
+	{
+		return;
+	}
 
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
@@ -95,4 +147,8 @@ void Player::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 
+	std::string CameraMouseText = "MousePositionCamera : ";
+	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();
+
+	GameEngineLevel::DebugTextPush(CameraMouseText);
 }

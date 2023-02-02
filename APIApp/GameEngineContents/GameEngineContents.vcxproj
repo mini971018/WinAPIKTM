@@ -20,6 +20,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentsEnums.h" />
+    <ClInclude Include="CyberPeacockAreaLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockAreaMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MagamDragoonMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MagmaDragoonAreaLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MegamanX4GameCore.h">
       <SubType>
       </SubType>
@@ -29,6 +49,22 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PrologueLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PrologueMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SpacePortLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SpacePortMap.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -42,6 +78,26 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CyberPeacockAreaLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockAreaMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MagamDragoonMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MagmaDragoonAreaLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MegamanX4GameCore.cpp">
       <SubType>
       </SubType>
@@ -52,6 +108,22 @@
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
     <ClCompile Include="PlayLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PrologueLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PrologueMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SpacePortLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SpacePortMap.cpp">
       <SubType>
       </SubType>
     </ClCompile>

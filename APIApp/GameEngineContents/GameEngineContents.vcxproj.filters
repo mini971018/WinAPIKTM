@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="MegamanX4GameCore.h" />
-    <ClInclude Include="PlayLevel.h">
-      <Filter>Play</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Title</Filter>
     </ClInclude>
@@ -15,12 +12,39 @@
     <ClInclude Include="Player.h">
       <Filter>Play\Player</Filter>
     </ClInclude>
+    <ClInclude Include="PlayLevel.h">
+      <Filter>Play\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Play</Filter>
+    </ClInclude>
+    <ClInclude Include="PrologueLevel.h">
+      <Filter>Play\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockAreaLevel.h">
+      <Filter>Play\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="PrologueMap.h">
+      <Filter>Play\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockAreaMap.h">
+      <Filter>Play\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MagamDragoonMap.h">
+      <Filter>Play\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MagmaDragoonAreaLevel.h">
+      <Filter>Play\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="SpacePortMap.h">
+      <Filter>Play\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="SpacePortLevel.h">
+      <Filter>Play\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MegamanX4GameCore.cpp" />
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>Play</Filter>
-    </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Title</Filter>
     </ClCompile>
@@ -33,6 +57,36 @@
     <ClCompile Include="Player_State.cpp">
       <Filter>Play\Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayLevel.cpp">
+      <Filter>Play\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Play</Filter>
+    </ClCompile>
+    <ClCompile Include="PrologueLevel.cpp">
+      <Filter>Play\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockAreaLevel.cpp">
+      <Filter>Play\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="PrologueMap.cpp">
+      <Filter>Play\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockAreaMap.cpp">
+      <Filter>Play\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MagamDragoonMap.cpp">
+      <Filter>Play\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MagmaDragoonAreaLevel.cpp">
+      <Filter>Play\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="SpacePortMap.cpp">
+      <Filter>Play\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="SpacePortLevel.cpp">
+      <Filter>Play\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Play">
@@ -43,6 +97,12 @@
     </Filter>
     <Filter Include="Play\Player">
       <UniqueIdentifier>{6b31dc54-92eb-4657-ba31-2c77a4af0344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Play\Level">
+      <UniqueIdentifier>{84d2ebbf-235a-4994-83db-b8769a766518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Play\Map">
+      <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
