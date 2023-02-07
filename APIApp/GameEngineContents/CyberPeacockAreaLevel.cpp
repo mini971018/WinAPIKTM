@@ -32,8 +32,8 @@ void CyberPeacockAreaLevel::Loading()
 
 	//액터 생성
 	{
-		Player* Actor = CreateActor<Player>();
-		Actor->SetPos({ 200,610 });
+		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
+		CyberPeacockAreaLevelPlayer->SetPos({ 200,610 });
 	}
 	{
 		CyberPeacockAreaMap* Actor = CreateActor<CyberPeacockAreaMap>();
@@ -47,4 +47,10 @@ void CyberPeacockAreaLevel::Update(float _DeltaTime)
 		GameEngineCore::GetInst()->ChangeLevel("MagmaDragoonArea");
 	}
 }
+
+void CyberPeacockAreaLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	Player::SetMainPlayer(*CyberPeacockAreaLevelPlayer);
+}
+
 

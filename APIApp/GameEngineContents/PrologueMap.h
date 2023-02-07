@@ -1,12 +1,13 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
-// Ό³Έν :
+class GameEngineImage;
 class PrologueMap : public GameEngineActor
 {
 public:
 
 	static PrologueMap* MainPrologueMap;
+
 
 	// constrcuter destructer
 	PrologueMap();
@@ -24,5 +25,6 @@ protected:
 
 private:
 	GameEngineRender* PrologueMapRender;
+	GameEngineRender* PrologueMapStructureRender;
 };
 

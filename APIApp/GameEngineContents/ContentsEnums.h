@@ -6,6 +6,16 @@ enum class MegamanX4RenderOrder
 	MAP,
 	PLAYER,
 	MONSTER,
-	BOSS
+	BOSS,
+	STRUCTURE
 };
+
+//enum class MegamanX4Stage
+//{
+//	PROLOGUE,
+//	CYBERPEACOCK,
+//	MAGMADRAGOONAREA,
+//	SPACEPORT
+//
+//};
 

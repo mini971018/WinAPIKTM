@@ -1,7 +1,7 @@
 #include "PrologueMap.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRender.h>
-
+#include <GameEngineCore/GameEngineResources.h>
 
 #include "ContentsEnums.h"
 
@@ -26,6 +26,14 @@ void PrologueMap::Start()
 			PrologueMapRender->SetPosition(PrologueMapRender->GetImage()->GetImageScale().half());
 			PrologueMapRender->SetScaleToImage();
 		}
+
+		{
+			PrologueMapStructureRender = CreateRender(MegamanX4RenderOrder::STRUCTURE);
+			PrologueMapStructureRender->SetImage("PrologueStructure.bmp");
+			PrologueMapStructureRender->SetPosition(PrologueMapStructureRender->GetImage()->GetImageScale().half());
+			PrologueMapStructureRender->SetScaleToImage();
+		}
+
 	}
 }
 

@@ -7,10 +7,13 @@ enum class PlayerState
 	MOVE,
 };
 
+class GameEngineImage;
 class Player : public GameEngineActor
 {
 public:
 	static Player* MainPlayer;
+	// 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
+	static void SetMainPlayer(Player& _Player);
 
 	// constrcuter destructer
 	Player();
@@ -22,13 +25,16 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void SetColImage(const std::string_view& _Name);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	float MoveSpeed = 17.0f;
+	float MoveSpeed = 200.0f;
+	float Gravity = 10.0f;
 
 	char FirstMoveFrame = 0;
 
@@ -56,7 +62,7 @@ private:
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
 
-
+	GameEngineImage* ColImage = nullptr;
 
 };
 

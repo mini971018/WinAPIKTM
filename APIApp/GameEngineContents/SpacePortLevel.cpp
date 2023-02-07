@@ -37,8 +37,8 @@ void SpacePortLevel::Loading()
 
 	//액터 생성
 	{
-		Player* Actor = CreateActor<Player>();
-		Actor->SetPos({ -9520,4169 });
+		SpacePortLevelPlayer = CreateActor<Player>();
+		SpacePortLevelPlayer->SetPos({ -9520,4169 });
 		SetCameraPos({ -9680, 3607 });
 	}
 	{
@@ -52,4 +52,9 @@ void SpacePortLevel::Update(float _DeltaTime)
 	{
 
 	}
+}
+
+void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	Player::SetMainPlayer(*SpacePortLevelPlayer);
 }

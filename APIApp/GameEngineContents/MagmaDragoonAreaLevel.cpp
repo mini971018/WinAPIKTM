@@ -32,8 +32,8 @@ void MagmaDragoonAreaLevel::Loading()
 
 	//액터 생성
 	{
-		Player* Actor = CreateActor<Player>();
-		Actor->SetPos({ 285,450 });
+		MagmaDragoonAreaLevelPlayer = CreateActor<Player>();
+		MagmaDragoonAreaLevelPlayer->SetPos({ 285,450 });
 	}
 	{
 		MagamDragoonMap* Actor = CreateActor<MagamDragoonMap>();
@@ -48,3 +48,7 @@ void MagmaDragoonAreaLevel::Update(float _DeltaTime)
 	}
 }
 
+void MagmaDragoonAreaLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	Player::SetMainPlayer(*MagmaDragoonAreaLevelPlayer);
+}

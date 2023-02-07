@@ -7,8 +7,14 @@
 //#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnums.h"
+#include <GameEngineBase/GameEngineMath.h>
 
 Player* Player::MainPlayer;
+
+void Player::SetMainPlayer(Player& _Player)
+{
+	MainPlayer = &_Player;
+}
 
 Player::Player() 
 {
@@ -18,10 +24,10 @@ Player::~Player()
 {
 }
 
+
+
 void Player::Start()
 {
-	MainPlayer = this;
-
 	SetMove(GameEngineWindow::GetScreenSize().half());
 
 	if (GameEngineInput::IsKey("MoveLeft") == false)
@@ -53,11 +59,29 @@ void Player::Start()
 	}
 }
 
+//레벨마다 다른 colimage를 캐릭마다 넣음
+void Player::SetColImage(const std::string_view& _Name)
+{
+	ColImage = GameEngineResources::GetInst().ImageFind(_Name.data());
+}
+
 void Player::MoveCalculation(float _DeltaTime)
 {
-	float4 NextPos = GetPos() + (MoveDir * _DeltaTime * MoveSpeed);
+	if (ColImage == nullptr)
+	{
+		MsgAssert("현재 스테이지의 플레이어 충돌용 맵 이미지가 없습니다.");
+	}
 
-	SetPos(NextPos);
+	MoveDir += float4::Down * Gravity * _DeltaTime;
+
+	bool Check = true;
+	float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+
+	float4 CameraDir = float4(MoveDir.x, 0.0f);
+
+	GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+	
+	SetMove(MoveDir * _DeltaTime);
 }
 
 bool FreeMove = false;
@@ -137,7 +161,7 @@ void Player::DirCheck(const std::string_view& _AnimationName)
 void Player::Render(float _DeltaTime)
 {
 	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos();
+	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();;
 
 	//위치 확인용
 	Rectangle(DoubleDC,
@@ -152,3 +176,4 @@ void Player::Render(float _DeltaTime)
 
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }
+

@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
+class Player;
 class MagmaDragoonAreaLevel : public GameEngineLevel
 {
 public:
@@ -19,9 +20,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
-	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 private:
-	int TestInt = 0;
+	Player* MagmaDragoonAreaLevelPlayer = nullptr;
+
 };
 

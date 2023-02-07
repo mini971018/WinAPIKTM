@@ -99,24 +99,26 @@ void Player::MoveUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsPress("MoveLeft"))
 	{
-		MoveDir = float4::Left * MoveSpeed;
+		MoveDir += float4::Left * MoveSpeed;
 	}
 	else if (GameEngineInput::IsPress("MoveRight"))
 	{
-		MoveDir = float4::Right * MoveSpeed;
+		MoveDir += float4::Right * MoveSpeed;
 	}
 
-	//걷기 시작할 때 구분
-	if (FirstMoveFrame < 120)
-	{
-		++FirstMoveFrame;
-		DirCheck("EnterMove");
-	}
-	else
-	{
-		DirCheck("Move");
+	DirCheck("Move");
 
-	}
+
+	////걷기 시작할 때 구분 추가
+	//if (FirstMoveFrame < 100 )
+	//{
+	//	++FirstMoveFrame;
+	//	DirCheck("EnterMove");
+	//}
+	//else
+	//{
+	//	DirCheck("Move");
+	//}
 
 }
 

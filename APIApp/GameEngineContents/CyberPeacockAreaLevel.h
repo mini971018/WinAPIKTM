@@ -2,6 +2,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 
 // Ό³Έν :
+class Player;
 class CyberPeacockAreaLevel : public GameEngineLevel
 {
 public:
@@ -20,9 +21,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
-	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 private:
-	int TestInt = 0;
+	Player* CyberPeacockAreaLevelPlayer = nullptr;
+
 };
 

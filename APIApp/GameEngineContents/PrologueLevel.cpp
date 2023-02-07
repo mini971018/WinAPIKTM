@@ -40,12 +40,23 @@ void PrologueLevel::Loading()
 	{
 		//맵 이미지
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("Prologue.bmp"));
+
 	}
+	{
+		//ColMap 이미지
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("PrologueColmap.bmp"));
+	}
+	{
+		//화면상 가장 앞에 있는 구조물들의 이미지
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("PrologueStructure.bmp"));
+	}
+
 
 	//액터 생성
 	{
-		Player* Actor = CreateActor<Player>();
-		Actor->SetPos({ 300,570 });
+		PrologueLevelPlayer = CreateActor<Player>();
+		PrologueLevelPlayer->SetPos({ 300,570 });
+		PrologueLevelPlayer->SetColImage("PrologueColmap.bmp");
 	}
 	{
 		PrologueMap* Actor = CreateActor<PrologueMap>();
@@ -58,4 +69,9 @@ void PrologueLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("CyberPeacockArea");
 	}
+}
+
+void PrologueLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	Player::SetMainPlayer(*PrologueLevelPlayer);
 }
