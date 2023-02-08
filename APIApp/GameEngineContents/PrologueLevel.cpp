@@ -55,7 +55,7 @@ void PrologueLevel::Loading()
 	//액터 생성
 	{
 		PrologueLevelPlayer = CreateActor<Player>();
-		PrologueLevelPlayer->SetPos({ 300,570 });
+		PrologueLevelPlayer->SetPos({ 300,500 });
 		PrologueLevelPlayer->SetColImage("PrologueColmap.bmp");
 	}
 	{

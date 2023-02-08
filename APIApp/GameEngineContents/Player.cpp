@@ -32,10 +32,13 @@ void Player::Start()
 
 	if (GameEngineInput::IsKey("MoveLeft") == false)
 	{
+		//캐릭터 이동
 		GameEngineInput::CreateKey("MoveLeft", 'A');
 		GameEngineInput::CreateKey("MoveRight", 'D');
 		GameEngineInput::CreateKey("MoveUp", 'W');
 		GameEngineInput::CreateKey("MoveDown", 'S');
+		GameEngineInput::CreateKey("Jump", 'K');
+		
 
 		GameEngineInput::CreateKey("NextLevel", 'P');
 
@@ -49,11 +52,21 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Idle", .ImageName = "RightPlayer.bmp", .Start = 31, .End = 35, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Move", .ImageName = "RightPlayer.bmp", .Start = 47, .End = 60, .InterTime = 0.05f});
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_EnterMove", .ImageName = "RightPlayer.bmp", .Start = 45, .End = 47, .InterTime = 0.05f });
-
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpStart", .ImageName = "RightPlayer.bmp", .Start = 116, .End = 116, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Jump", .ImageName = "RightPlayer.bmp", .Start = 117, .End = 118, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_FallStart", .ImageName = "RightPlayer.bmp", .Start = 119, .End = 123, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Fall", .ImageName = "RightPlayer.bmp", .Start = 124, .End = 127, .InterTime = 0.05f});
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Landing", .ImageName = "RightPlayer.bmp", .Start = 128, .End = 129, .InterTime = 0.09f, .Loop = false });
 
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle", .ImageName = "LeftPlayer.bmp", .Start = 31, .End = 35, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Move", .ImageName = "LeftPlayer.bmp", .Start = 47, .End = 60, .InterTime = 0.05f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayer.bmp", .Start = 45, .End = 47, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpStart", .ImageName = "LeftPlayer.bmp", .Start = 116, .End = 116, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Jump", .ImageName = "LeftPlayer.bmp", .Start = 117, .End = 118, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_FallStart", .ImageName = "LeftPlayer.bmp", .Start = 119, .End = 123, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Fall", .ImageName = "LeftPlayer.bmp", .Start = 124, .End = 127, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Landing", .ImageName = "LeftPlayer.bmp", .Start = 128, .End = 129, .InterTime = 0.09f, .Loop = false });
+
 
 		ChangeState(PlayerState::IDLE);
 	}
@@ -72,16 +85,24 @@ void Player::MoveCalculation(float _DeltaTime)
 		MsgAssert("현재 스테이지의 플레이어 충돌용 맵 이미지가 없습니다.");
 	}
 
-	MoveDir += float4::Down * Gravity * _DeltaTime;
+	float4 NextPos = GetPos() + (MoveDir * _DeltaTime);
 
-	bool Check = true;
-	float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+	if (RGB(0, 0, 0) == ColImage->GetPixelColor(GetPos() + float4::Down, RGB(0, 0, 0)))
+	{
+		IsGround = true;
+	}
+	else
+	{
+		MoveDir += (float4::Down * Gravity * _DeltaTime);
+		IsGround = false;
+	}
 
+	SetMove(MoveDir * _DeltaTime);
+
+	//카메라
 	float4 CameraDir = float4(MoveDir.x, 0.0f);
 
 	GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
-	
-	SetMove(MoveDir * _DeltaTime);
 }
 
 bool FreeMove = false;
@@ -176,4 +197,3 @@ void Player::Render(float _DeltaTime)
 
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }
-

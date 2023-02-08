@@ -5,6 +5,9 @@ enum class PlayerState
 {
 	IDLE,
 	MOVE,
+	JUMP,
+	FALL,
+	LANDING,
 };
 
 class GameEngineImage;
@@ -27,21 +30,25 @@ public:
 
 	void SetColImage(const std::string_view& _Name);
 
-protected:
+protected: 
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	float MoveSpeed = 200.0f;
-	float Gravity = 10.0f;
+	float MoveSpeed = 300.0f;
+	float Gravity = 220000.0f;
+	float JumpForce = 1000.0f;
 
+	bool StartFallState = false;
+
+	bool IsGround = true;
 	char FirstMoveFrame = 0;
 
 	float4 MoveDir = float4::Zero;
 	std::string DirString = "Right_";
 	void DirCheck(const std::string_view& _AnimationName);
-
+	
 	GameEngineRender* AnimationRender = nullptr;
 
 	PlayerState StateValue = PlayerState::IDLE;
@@ -62,7 +69,18 @@ private:
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
 
-	GameEngineImage* ColImage = nullptr;
+	void JumpStart();
+	void JumpUpdate(float _DeltaTime);
+	void JumpEnd();
 
+	void FallStart();
+	void FallUpdate(float _DeltaTime);
+	void FallEnd();
+
+	void LandingStart();
+	void LandingUpdate(float _DeltaTime);
+	void LandingEnd();
+
+	GameEngineImage* ColImage = nullptr;
 };
 
