@@ -29,13 +29,35 @@ void PrologueLevel::Loading()
 	//이미지 로드
 	{
 		//플레이어 좌측 방향 이미지
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayer.bmp"));
-		Image->Cut(10, 23);
+		//GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayer.bmp"));
+		//Image->Cut(10, 23);
+
+		GameEngineImage* IdleImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerIdle.bmp"));
+		IdleImage->Cut(10, 2);
+		GameEngineImage* MoveImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerMove.bmp"));
+		MoveImage->Cut(10, 2);
+		GameEngineImage* AttackImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerAttack.bmp"));
+		AttackImage->Cut(10, 5);
+		GameEngineImage* JumpImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerJump.bmp"));
+		JumpImage->Cut(10, 2);
+		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerStageChange.bmp"));
+		StageChangeImage->Cut(10, 3);
+
 	}
 	{
 		//플레이어 우측 방향 이미지
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayer.bmp"));
-		Image->Cut(10, 23);
+		//GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayer.bmp"));
+		//Image->Cut(10, 23);
+		GameEngineImage* IdleImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerIdle.bmp"));
+		IdleImage->Cut(10, 2);
+		GameEngineImage* MoveImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerMove.bmp"));
+		MoveImage->Cut(10, 2);
+		GameEngineImage* AttackImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerAttack.bmp"));
+		AttackImage->Cut(10, 5);
+		GameEngineImage* JumpImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerJump.bmp"));
+		JumpImage->Cut(10, 2);
+		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerStageChange.bmp"));
+		StageChangeImage->Cut(10, 3);
 	}
 	{
 		//맵 이미지

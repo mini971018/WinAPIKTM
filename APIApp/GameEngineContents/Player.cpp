@@ -4,7 +4,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineRender.h>
-//#include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnums.h"
 #include <GameEngineBase/GameEngineMath.h>
@@ -18,6 +18,7 @@ void Player::SetMainPlayer(Player& _Player)
 
 Player::Player() 
 {
+
 }
 
 Player::~Player() 
@@ -38,7 +39,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("MoveUp", 'W');
 		GameEngineInput::CreateKey("MoveDown", 'S');
 		GameEngineInput::CreateKey("Jump", 'K');
-		
+		GameEngineInput::CreateKey("Attack", 'J');
 
 		GameEngineInput::CreateKey("NextLevel", 'P');
 
@@ -49,24 +50,31 @@ void Player::Start()
 		AnimationRender = CreateRender(MegamanX4RenderOrder::PLAYER);
 		AnimationRender->SetScale({ 704, 704 });
 
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_Idle", .ImageName = "RightPlayer.bmp", .Start = 31, .End = 35, .InterTime = 0.25f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_Move", .ImageName = "RightPlayer.bmp", .Start = 47, .End = 60, .InterTime = 0.05f});
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_EnterMove", .ImageName = "RightPlayer.bmp", .Start = 45, .End = 47, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpStart", .ImageName = "RightPlayer.bmp", .Start = 116, .End = 116, .InterTime = 0.05f, .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_Jump", .ImageName = "RightPlayer.bmp", .Start = 117, .End = 118, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_FallStart", .ImageName = "RightPlayer.bmp", .Start = 119, .End = 123, .InterTime = 0.05f, .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_Fall", .ImageName = "RightPlayer.bmp", .Start = 124, .End = 127, .InterTime = 0.05f});
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_Landing", .ImageName = "RightPlayer.bmp", .Start = 128, .End = 129, .InterTime = 0.09f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Idle", .ImageName = "RightPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_EnterMove", .ImageName = "RightPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Move", .ImageName = "RightPlayerMove.bmp", .Start = 3, .End = 15, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpStart", .ImageName = "RightPlayerJump.bmp", .Start = 0, .End = 0, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Jump", .ImageName = "RightPlayerJump.bmp", .Start = 1, .End = 2, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_FallStart", .ImageName = "RightPlayerJump.bmp", .Start = 3, .End = 7, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Fall", .ImageName = "RightPlayerJump.bmp", .Start = 8, .End = 11, .InterTime = 0.05f});
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Landing", .ImageName = "RightPlayerJump.bmp", .Start = 12, .End = 13, .InterTime = 0.09f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack1", .ImageName = "RightPlayerAttack.bmp", .Start = 0, .End = 13, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack2", .ImageName = "RightPlayerAttack.bmp", .Start = 19, .End = 30, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_AttackEnd", .ImageName = "RightPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
 
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle", .ImageName = "LeftPlayer.bmp", .Start = 31, .End = 35, .InterTime = 0.25f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_Move", .ImageName = "LeftPlayer.bmp", .Start = 47, .End = 60, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayer.bmp", .Start = 45, .End = 47, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpStart", .ImageName = "LeftPlayer.bmp", .Start = 116, .End = 116, .InterTime = 0.05f, .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_Jump", .ImageName = "LeftPlayer.bmp", .Start = 117, .End = 118, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_FallStart", .ImageName = "LeftPlayer.bmp", .Start = 119, .End = 123, .InterTime = 0.05f, .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_Fall", .ImageName = "LeftPlayer.bmp", .Start = 124, .End = 127, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_Landing", .ImageName = "LeftPlayer.bmp", .Start = 128, .End = 129, .InterTime = 0.09f, .Loop = false });
-
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle",      .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Move",      .ImageName = "LeftPlayerMove.bmp", .Start = 3, .End = 15, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpStart", .ImageName = "LeftPlayerJump.bmp", .Start = 0, .End = 0, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Jump",      .ImageName = "LeftPlayerJump.bmp", .Start = 1, .End = 2, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_FallStart", .ImageName = "LeftPlayerJump.bmp", .Start = 3, .End = 7, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Fall",      .ImageName = "LeftPlayerJump.bmp", .Start = 8, .End = 11, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Landing",   .ImageName = "LeftPlayerJump.bmp", .Start = 12, .End = 13, .InterTime = 0.09f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack1",   .ImageName = "LeftPlayerAttack.bmp", .Start = 0, .End = 13, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack2",   .ImageName = "LeftPlayerAttack.bmp", .Start = 19, .End = 30, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3",   .ImageName = "LeftPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_AttackEnd", .ImageName = "LeftPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
 
 		ChangeState(PlayerState::IDLE);
 	}
@@ -93,7 +101,7 @@ void Player::MoveCalculation(float _DeltaTime)
 	}
 	else
 	{
-		MoveDir += (float4::Down * Gravity * _DeltaTime);
+		MoveDir += (float4::Down * Gravity * _DeltaTime);	
 		IsGround = false;
 	}
 

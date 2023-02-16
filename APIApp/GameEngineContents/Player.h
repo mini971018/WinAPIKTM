@@ -8,6 +8,10 @@ enum class PlayerState
 	JUMP,
 	FALL,
 	LANDING,
+	ATTACK1,
+	ATTACK2,
+	ATTACK3,
+	ATTACKEND,
 };
 
 class GameEngineImage;
@@ -38,7 +42,10 @@ protected:
 private:
 	float MoveSpeed = 300.0f;
 	float Gravity = 220000.0f;
-	float JumpForce = 1000.0f;
+	float JumpForce = 1300.0f;
+
+	float JumpCalTime = 0.0f; //몇초동안 점프했는지 계산을 위한 변수
+	float MaxJumpTime = 0.23f; //최대 점프 가능한 시간
 
 	bool StartFallState = false;
 
@@ -81,6 +88,23 @@ private:
 	void LandingUpdate(float _DeltaTime);
 	void LandingEnd();
 
+	void Attack1Start();
+	void Attack1Update(float _DeltaTime);
+	void Attack1End();
+
+	void Attack2Start();
+	void Attack2Update(float _DeltaTime);
+	void Attack2End();
+
+	void Attack3Start();
+	void Attack3Update(float _DeltaTime);
+	void Attack3End();
+
+	void AttackEndStart();
+	void AttackEndUpdate(float _DeltaTime);
+	void AttackEndEnd();
+
 	GameEngineImage* ColImage = nullptr;
+
 };
 

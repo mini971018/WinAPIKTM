@@ -2,7 +2,7 @@
 #include "ContentsEnums.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineRender.h>
-#include <GameEngineBase/GameEngineTime.h>
+#include <GameEngineCore/GameEngineLevel.h>
 
 void Player::ChangeState(PlayerState _State)
 {
@@ -39,6 +39,27 @@ void Player::ChangeState(PlayerState _State)
 		LandingStart();
 		break;
 	}
+	case PlayerState::ATTACK1:
+	{
+		Attack1Start();
+		break;
+	}
+	case PlayerState::ATTACK2:
+	{
+		Attack2Start();
+		break;
+	}
+	case PlayerState::ATTACK3:
+	{
+		Attack3Start();
+		break;
+	}
+	case PlayerState::ATTACKEND:
+	{
+		AttackEndStart();
+		break;
+	}
+
 	default:
 		break;
 
@@ -69,6 +90,26 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::LANDING:
 	{
 		LandingEnd();
+		break;
+	}
+	case PlayerState::ATTACK1:
+	{
+		Attack1End();
+		break;
+	}
+	case PlayerState::ATTACK2:
+	{
+		Attack2End();
+		break;
+	}
+	case PlayerState::ATTACK3:
+	{
+		Attack3End();
+		break;
+	}
+	case PlayerState::ATTACKEND:
+	{
+		AttackEndEnd();
 		break;
 	}
 	default:
@@ -105,6 +146,27 @@ void Player::UpdateState(float _DeltaTime)
 		LandingUpdate(_DeltaTime);
 		break;
 	}
+	case PlayerState::ATTACK1:
+	{
+		Attack1Update(_DeltaTime);
+		break;
+	}
+	case PlayerState::ATTACK2:
+	{
+		Attack2Update(_DeltaTime);
+		break;
+	}
+	case PlayerState::ATTACK3:
+	{
+		Attack3Update(_DeltaTime);
+		break;
+	}
+	case PlayerState::ATTACKEND:
+	{
+		AttackEndUpdate(_DeltaTime);
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -127,6 +189,12 @@ void Player::IdleUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::JUMP);
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK1);
 		return;
 	}
 }
@@ -156,6 +224,12 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK1);
+		return;
+	}
+
 	if (GameEngineInput::IsPress("MoveLeft"))
 	{
 		MoveDir += float4::Left * MoveSpeed;
@@ -165,20 +239,13 @@ void Player::MoveUpdate(float _DeltaTime)
 		MoveDir += float4::Right * MoveSpeed;
 	}
 
+	if (IsGround == false)
+	{
+		ChangeState(PlayerState::FALL);
+	}
+
+
 	DirCheck("Move");
-
-
-	////걷기 시작할 때 구분 추가
-	//if (FirstMoveFrame < 100 )
-	//{
-	//	++FirstMoveFrame;
-	//	DirCheck("EnterMove");
-	//}
-	//else
-	//{
-	//	DirCheck("Move");
-	//}
-
 }
 
 void Player::MoveEnd()
@@ -190,6 +257,7 @@ void Player::MoveEnd()
 void Player::JumpStart()
 {
 	DirCheck("JumpStart");
+	JumpCalTime = 0.0f;
 	IsGround = false;
 }
 
@@ -200,16 +268,13 @@ void Player::JumpUpdate(float _DeltaTime)
 		DirCheck("Jump");
 	}
 
-	MoveDir += float4::Up * JumpForce;
-
-
-	if (GameEngineInput::IsUp("Jump"))
+	if (JumpCalTime > MaxJumpTime || GameEngineInput::IsUp("Jump"))
 	{
 		ChangeState(PlayerState::FALL);
-
 	}
 	else
 	{
+		MoveDir += float4::Up * JumpForce;
 	}
 
 	if (GameEngineInput::IsPress("MoveLeft"))
@@ -220,6 +285,15 @@ void Player::JumpUpdate(float _DeltaTime)
 	{
 		MoveDir += float4::Right * MoveSpeed;
 	}
+
+	//Debug용
+	JumpCalTime += _DeltaTime;
+
+	std::string PlayerJumpTime = "PlayerJumpTime : ";
+
+	PlayerJumpTime += std::to_string(JumpCalTime);
+
+	GameEngineLevel::DebugTextPush(PlayerJumpTime);
 }
 
 void Player::JumpEnd()
@@ -291,6 +365,88 @@ void Player::LandingUpdate(float _DeltaTime)
 }
 
 void Player::LandingEnd()
+{
+}
+
+void Player::Attack1Start()
+{
+	DirCheck("Attack1");
+}
+void Player::Attack1Update(float _DeltaTime)
+{
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK2);
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::ATTACKEND);
+	}
+}
+void Player::Attack1End()
+{
+
+}
+
+void Player::Attack2Start()
+{
+	DirCheck("Attack2");
+}
+void Player::Attack2Update(float _DeltaTime)
+{
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK3);
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::ATTACKEND);
+	}
+
+
+}
+void Player::Attack2End()
+{
+
+}
+
+void Player::Attack3Start()
+{
+	DirCheck("Attack3");
+}
+void Player::Attack3Update(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::ATTACKEND);
+	}
+}
+void Player::Attack3End()
+{
+
+}
+
+void Player::AttackEndStart()
+{
+	DirCheck("AttackEnd");
+}
+
+void Player::AttackEndUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+	}
+
+	if (GameEngineInput::IsPress("MoveLeft") || GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::MOVE);
+	}
+}
+
+void Player::AttackEndEnd()
 {
 
 }
