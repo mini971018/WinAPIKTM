@@ -42,6 +42,9 @@
     <ClInclude Include="SpacePortLevel.h">
       <Filter>Play\Level</Filter>
     </ClInclude>
+    <ClInclude Include="TitleStartObject.h">
+      <Filter>Title</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MegamanX4GameCore.cpp" />
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="SpacePortLevel.cpp">
       <Filter>Play\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleStartObject.cpp">
+      <Filter>Title</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

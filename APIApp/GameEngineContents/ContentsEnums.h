@@ -3,6 +3,7 @@
 enum class MegamanX4RenderOrder
 {
 	BACKGROUND,
+	GUIDEOBJECT,
 	MAP,
 	PLAYER,
 	MONSTER,

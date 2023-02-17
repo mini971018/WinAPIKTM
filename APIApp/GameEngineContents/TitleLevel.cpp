@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "TitleBackground.h"
+#include "TitleStartObject.h"
 
 TitleLevel::TitleLevel() 
 {
@@ -27,14 +28,18 @@ void TitleLevel::Loading()
 	//이미지를 로드한다.
 	{
 		GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("TitleBackground.bmp"));
+
+		GameEngineImage* ButtonObject = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("TitleButtonObject.bmp"));
+		ButtonObject->Cut(2, 1);
 	}
 
 	CreateActor<TitleBackground>();
+	CreateActor<TitleStartObject>();
 }
 
 void TitleLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsAnyKey())
+	if (true == GameEngineInput::IsDown("NextLevel"))
 	{
 		GameEngineCore::GetInst()->ChangeLevel("Prologue");
 	}
