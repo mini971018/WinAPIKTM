@@ -63,6 +63,9 @@
     <ClInclude Include="CharacterSelectLowerText.h">
       <Filter>CharacterSelect\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterSelectZeroIcon.h">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MegamanX4GameCore.cpp" />
@@ -127,6 +130,9 @@
       <Filter>CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectLowerText.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroIcon.cpp">
       <Filter>CharacterSelect\Actor</Filter>
     </ClCompile>
   </ItemGroup>

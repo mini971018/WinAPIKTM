@@ -8,6 +8,7 @@
 #include "CharacterSelectZeroImage.h"
 #include "CharacterSelectUpperText.h"
 #include "CharacterSelectLowerText.h"
+#include "CharacterSelectZeroIcon.h"
 
 CharacterSelectLevel::CharacterSelectLevel() 
 {
@@ -50,6 +51,7 @@ void CharacterSelectLevel::Loading()
 	CreateActor<CharacterSelectZeroImage>();
 	CreateActor<CharacterSelectUpperText>();
 	CreateActor<CharacterSelectLowerText>();
+	CreateActor<CharacterSelectZeroIcon>();
 }
 
 void CharacterSelectLevel::Update(float _DeltaTime)
