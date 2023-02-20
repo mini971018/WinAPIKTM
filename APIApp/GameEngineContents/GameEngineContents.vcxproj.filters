@@ -2,12 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="MegamanX4GameCore.h" />
-    <ClInclude Include="TitleLevel.h">
-      <Filter>Title</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleBackground.h">
-      <Filter>Title</Filter>
-    </ClInclude>
     <ClInclude Include="ContentsEnums.h" />
     <ClInclude Include="Player.h">
       <Filter>Play\Player</Filter>
@@ -42,18 +36,36 @@
     <ClInclude Include="SpacePortLevel.h">
       <Filter>Play\Level</Filter>
     </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Title\Level</Filter>
+    </ClInclude>
     <ClInclude Include="TitleStartObject.h">
-      <Filter>Title</Filter>
+      <Filter>Title\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBackground.h">
+      <Filter>Title\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectLevel.h">
+      <Filter>CharacterSelect\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectBackground.h">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectMegamanImage.h">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectZeroImage.h">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectUpperText.h">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectLowerText.h">
+      <Filter>CharacterSelect\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MegamanX4GameCore.cpp" />
-    <ClCompile Include="TitleLevel.cpp">
-      <Filter>Title</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleBackground.cpp">
-      <Filter>Title</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Play\Player</Filter>
     </ClCompile>
@@ -90,8 +102,32 @@
     <ClCompile Include="SpacePortLevel.cpp">
       <Filter>Play\Level</Filter>
     </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Title\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBackground.cpp">
+      <Filter>Title\Actor</Filter>
+    </ClCompile>
     <ClCompile Include="TitleStartObject.cpp">
-      <Filter>Title</Filter>
+      <Filter>Title\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectLevel.cpp">
+      <Filter>CharacterSelect\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectBackground.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectMegamanImage.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroImage.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectUpperText.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectLowerText.cpp">
+      <Filter>CharacterSelect\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +145,21 @@
     </Filter>
     <Filter Include="Play\Map">
       <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CharacterSelect">
+      <UniqueIdentifier>{e044ab95-27df-4f38-9c38-394a46d3b41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Title\Level">
+      <UniqueIdentifier>{ae6b5f62-822d-4687-9443-5ca1644e6813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Title\Actor">
+      <UniqueIdentifier>{0eff4bb9-4d2f-4ee2-9227-168245dbf0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CharacterSelect\Level">
+      <UniqueIdentifier>{a87014d2-d1f1-4a93-b825-9c17d2349a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CharacterSelect\Actor">
+      <UniqueIdentifier>{bd9674c7-d674-4281-a8ec-f80b8d894171}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

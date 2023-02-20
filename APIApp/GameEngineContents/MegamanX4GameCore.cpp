@@ -2,7 +2,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 
 #include "TitleLevel.h"
-#include "PlayLevel.h"
+#include "CharacterSelectLevel.h"
 #include "PrologueLevel.h"
 #include "CyberPeacockAreaLevel.h"
 #include "MagmaDragoonAreaLevel.h"
@@ -24,9 +24,10 @@ void MegamanX4GameCore::Start()
 
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<PrologueLevel>("Prologue");
-	CreateLevel< CyberPeacockAreaLevel>("CyberPeacockArea");
-	CreateLevel< MagmaDragoonAreaLevel>("MagmaDragoonArea");
-	CreateLevel< SpacePortLevel>("SpacePort");
+	CreateLevel<CharacterSelectLevel>("CharacterSelect");
+	CreateLevel<CyberPeacockAreaLevel>("CyberPeacockArea");
+	CreateLevel<MagmaDragoonAreaLevel>("MagmaDragoonArea");
+	CreateLevel<SpacePortLevel>("SpacePort");
 
 	ChangeLevel("Title");
 }

@@ -41,6 +41,6 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("NextLevel"))
 	{
-		GameEngineCore::GetInst()->ChangeLevel("Prologue");
+		GameEngineCore::GetInst()->ChangeLevel("CharacterSelect");
 	}
 }

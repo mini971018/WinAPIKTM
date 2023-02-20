@@ -18,7 +18,7 @@ void MagamDragoonMap::Start()
 {
 	{
 		{
-			MagamDragoonMapRender = CreateRender(MegamanX4RenderOrder::MAP);
+			MagamDragoonMapRender = CreateRender(MegamanX4PlayRenderOrder::MAP);
 			MagamDragoonMapRender->SetImage("MagmaDragoonArea.bmp");
 			MagamDragoonMapRender->SetPosition(MagamDragoonMapRender->GetImage()->GetImageScale().half());
 			MagamDragoonMapRender->SetScaleToImage();

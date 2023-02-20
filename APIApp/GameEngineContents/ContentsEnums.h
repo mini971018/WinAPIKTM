@@ -1,6 +1,6 @@
 #pragma once
 
-enum class MegamanX4RenderOrder
+enum class MegamanX4PlayRenderOrder
 {
 	BACKGROUND,
 	GUIDEOBJECT,
@@ -9,6 +9,14 @@ enum class MegamanX4RenderOrder
 	MONSTER,
 	BOSS,
 	STRUCTURE
+};
+
+enum class MegamanX4RenderOrder
+{
+	BACKGROUND,
+	SELECTTEXT,
+	CHARACTERIMAGE,
+	GUIDEOBJECT,
 };
 
 //enum class MegamanX4Stage

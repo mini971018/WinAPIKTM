@@ -47,7 +47,7 @@ void Player::Start()
 	}
 
 	{
-		AnimationRender = CreateRender(MegamanX4RenderOrder::PLAYER);
+		AnimationRender = CreateRender(MegamanX4PlayRenderOrder::PLAYER);
 		AnimationRender->SetScale({ 704, 704 });
 
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Idle", .ImageName = "RightPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });

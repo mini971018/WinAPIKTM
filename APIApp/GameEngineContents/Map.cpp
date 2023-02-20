@@ -18,7 +18,7 @@ void Map::Start()
 {
 	{
 		{
-			PrologueRender = CreateRender(MegamanX4RenderOrder::MAP);
+			PrologueRender = CreateRender(MegamanX4PlayRenderOrder::MAP);
 			PrologueRender->SetImage("Prologue.bmp");
 			PrologueRender->SetPosition(PrologueRender->GetImage()->GetImageScale().half());
 			PrologueRender->SetScaleToImage();

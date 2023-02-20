@@ -13,9 +13,7 @@ TitleBackground::~TitleBackground()
 
 void TitleBackground::Start()
 {
-	float4 Size = GameEngineWindow::GetScreenSize();
-
 	GameEngineRender* Render = CreateRender("TitleBackground.bmp", MegamanX4RenderOrder::BACKGROUND);
 	Render->SetPosition(GameEngineWindow::GetScreenSize().half());
-	Render->SetScale(GameEngineWindow::GetScreenSize());
+	Render->SetScaleToImage();
 }

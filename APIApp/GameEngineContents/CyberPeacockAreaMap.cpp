@@ -19,7 +19,7 @@ void CyberPeacockAreaMap::Start()
 {
 	{
 		{
-			CyberPeacockMapRender = CreateRender(MegamanX4RenderOrder::MAP);
+			CyberPeacockMapRender = CreateRender(MegamanX4PlayRenderOrder::MAP);
 			CyberPeacockMapRender->SetImage("CyberPeacockArea.bmp");
 			CyberPeacockMapRender->SetPosition(CyberPeacockMapRender->GetImage()->GetImageScale().half());
 			CyberPeacockMapRender->SetScaleToImage();

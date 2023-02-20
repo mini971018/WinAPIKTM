@@ -21,14 +21,14 @@ void PrologueMap::Start()
 {
 	{
 		{
-			PrologueMapRender = CreateRender(MegamanX4RenderOrder::MAP);
+			PrologueMapRender = CreateRender(MegamanX4PlayRenderOrder::MAP);
 			PrologueMapRender->SetImage("Prologue.bmp");
 			PrologueMapRender->SetPosition(PrologueMapRender->GetImage()->GetImageScale().half());
 			PrologueMapRender->SetScaleToImage();
 		}
 
 		{
-			PrologueMapStructureRender = CreateRender(MegamanX4RenderOrder::STRUCTURE);
+			PrologueMapStructureRender = CreateRender(MegamanX4PlayRenderOrder::STRUCTURE);
 			PrologueMapStructureRender->SetImage("PrologueStructure.bmp");
 			PrologueMapStructureRender->SetPosition(PrologueMapStructureRender->GetImage()->GetImageScale().half());
 			PrologueMapStructureRender->SetScaleToImage();

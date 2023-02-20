@@ -19,11 +19,11 @@ SpacePortMap::~SpacePortMap()
 void SpacePortMap::Start()
 {
 	{
-		SpacePortMap1Render = CreateRender(MegamanX4RenderOrder::MAP);
+		SpacePortMap1Render = CreateRender(MegamanX4PlayRenderOrder::MAP);
 		SpacePortMap1Render->SetImage("SpacePort1.bmp");
 
 
-		SpacePortMap2Render = CreateRender(MegamanX4RenderOrder::MAP);
+		SpacePortMap2Render = CreateRender(MegamanX4PlayRenderOrder::MAP);
 		SpacePortMap2Render->SetImage("SpacePort2.bmp");
 
 		//SpacePortMap1Render->SetPosition(SpacePortMap1Render->GetImage()->GetImageScale().half());
