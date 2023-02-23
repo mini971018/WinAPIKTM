@@ -6,9 +6,9 @@
 
 enum class TextAlign
 {
-	Left = TA_LEFT,
-	Right = TA_RIGHT,
-	Center = TA_CENTER
+	Left = DT_LEFT,
+	Right = DT_RIGHT,
+	Center = DT_CENTER
 };
 
 class FrameAnimationParameter
@@ -45,14 +45,6 @@ public:
 	GameEngineRender& operator=(const GameEngineRender& _Other) = delete;
 	GameEngineRender& operator=(GameEngineRender&& _Other) noexcept = delete;
 
-	void SetImage(const std::string_view& _ImageName);
-
-	void SetImageToScaleToImage(const std::string_view& _ImageName);
-
-	void SetScaleToImage();
-
-	void SetFrame(int _Frame);
-
 	inline GameEngineImage* GetImage()
 	{
 		return Image;
@@ -63,7 +55,7 @@ public:
 		return Frame;
 	}
 
-	void SetTransColor(int _Color) 
+	inline void SetTransColor(int _Color)
 	{
 		TransColor = _Color;
 	}
@@ -83,18 +75,38 @@ public:
 		SetEffectCamera(true);
 	}
 
+	inline int GetTextHeight()
+	{
+		return TextHeight;
+	}
+
+	inline void SetAlpha(int _Alpha)
+	{
+		Alpha = _Alpha;
+	}
+
+	inline void SetTextBoxScale(float4 _TextBoxScale)
+	{
+		TextBoxScale = _TextBoxScale;
+	}
+
+
+	void SetImage(const std::string_view& _ImageName);
+
+	void SetImageToScaleToImage(const std::string_view& _ImageName);
+
+	void SetScaleToImage();
+
+	void SetFrame(int _Frame);
+
 	bool IsAnimationEnd();
 	void CreateAnimation(const FrameAnimationParameter& _Paramter);
 	void ChangeAnimation(const std::string_view& _AnimationName, bool _ForceChange = false);
 
 	void SetOrder(int _Order) override;
 
-	void SetAlpha(int _Alpha) 
-	{
-		Alpha = _Alpha;
-	}
 
-	void SetText(const std::string_view& _Text, const int _TextHeight = 20, const std::string_view& _TextType = "굴림", const TextAlign _TextAlign = TextAlign::Center, const COLORREF _TextColor = RGB(0, 0, 0));
+	void SetText(const std::string_view& _Text, const int _TextHeight = 20, const std::string_view& _TextType = "굴림", const TextAlign _TextAlign = TextAlign::Center, const COLORREF _TextColor = RGB(0, 0, 0), float4 TextBoxScale = float4::Zero);
 
 protected:
 
@@ -148,6 +160,7 @@ private:
 	std::string TextType = std::string();
 	TextAlign Align = TextAlign::Left;
 	COLORREF TextColor = RGB(0, 0, 0);
+	float4 TextBoxScale;
 	// 그런걸 하면 HBRUSH 만드는데 사용하고 나면 Release
 	// GameEngineImage를 참조해라.
 };

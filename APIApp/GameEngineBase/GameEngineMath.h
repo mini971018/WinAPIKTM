@@ -16,6 +16,8 @@ public:
 	static unsigned int GetLenth(int _Value);
 	static const float PIE;
 	static const float PIE2;
+	static const float DegToRad;
+	static const float RadToDeg;
 
 private:
 	virtual ~GameEngineMath() = 0;
@@ -32,6 +34,16 @@ public:
 	static const float4 Back;
 	static const float4 Zero;
 	static const float4 Null;
+
+	static float4 AngleToDirection2DToDeg(float _Deg)
+	{
+		return AngleToDirection2DToRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	static float4 AngleToDirection2DToRad(float _Rad)
+	{
+		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
+	}
 
 public:
 	float x = 0.0f;
@@ -99,6 +111,30 @@ public:
 	float hw() const
 	{
 		return w * 0.5f;
+	}
+
+	float GetAnagleDeg() 
+	{
+		return GetAnagleRad() * GameEngineMath::RadToDeg;
+	}
+
+	float GetAnagleRad()
+	{
+		float4 AngleCheck = (*this);
+		AngleCheck.Normalize();
+		// functon(1) == 50; 1을 50으로 바꾸는 함수
+		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
+		
+		// cosf(각도);
+
+		float Result = acosf(AngleCheck.x);
+
+		if (AngleCheck.y > 0)
+		{
+			Result = GameEngineMath::PIE2 - Result;
+		}
+		return Result;
+
 	}
 
 	float4 half() const
