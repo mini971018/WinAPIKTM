@@ -2,6 +2,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineResources.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 
 #include "ContentsEnums.h"
 
@@ -34,10 +35,36 @@ void PrologueMap::Start()
 			PrologueMapStructureRender->SetScaleToImage();
 		}
 
+		{
+			PrologueMapColmapRender = CreateRender(MegamanX4PlayRenderOrder::COLMAP);
+			PrologueMapColmapRender->SetImage("PrologueColmap.bmp");
+			PrologueMapColmapRender->SetPosition(PrologueMapColmapRender->GetImage()->GetImageScale().half());
+			PrologueMapColmapRender->SetScaleToImage();
+			PrologueMapColmapRender->Off();
+		}
 	}
 }
 
 void PrologueMap::Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("ColMapMode"))
+	{
+		SwitchRenderMode();
+	}
+}
 
+void PrologueMap::SwitchRenderMode()
+{
+	if (PrologueMapColmapRender->IsUpdate() == false)
+	{
+		PrologueMapRender->Off();
+		PrologueMapStructureRender->Off();
+		PrologueMapColmapRender->On();
+	}
+	else
+	{
+		PrologueMapRender->On();
+		PrologueMapStructureRender->On();
+		PrologueMapColmapRender->Off();
+	}
 }

@@ -33,7 +33,7 @@ void Player::Start()
 
 	if (GameEngineInput::IsKey("MoveLeft") == false)
 	{
-		//캐릭터 이동
+		//캐릭터 이동 및 행동
 		GameEngineInput::CreateKey("MoveLeft", 'A');
 		GameEngineInput::CreateKey("MoveRight", 'D');
 		GameEngineInput::CreateKey("MoveUp", 'W');
@@ -41,9 +41,10 @@ void Player::Start()
 		GameEngineInput::CreateKey("Jump", 'K');
 		GameEngineInput::CreateKey("Attack", 'J');
 
+		//디버그 또는 확인용
 		GameEngineInput::CreateKey("NextLevel", 'P');
-
-		GameEngineInput::CreateKey("FreeMoveSwitch", '1');
+		GameEngineInput::CreateKey("FreeMoveSwitch", '9');
+		GameEngineInput::CreateKey("ColMapMode", '0');
 	}
 
 	{

@@ -17,8 +17,7 @@ void CharacterSelectZeroIcon::Start()
 
 	GameEngineRender* Render = CreateRender("ZeroSelectIcon.bmp", MegamanX4RenderOrder::SELECTICON);
 	Render->SetScale({ 550, 457 });
-	Render->SetPosition({ ScreenSize.x - (517 / 2), ScreenSize.y / 2 });
-
+	Render->SetPosition({ ScreenSize.x - (537 / 2), ScreenSize.y / 2 });
 
 	Render->CreateAnimation({ .AnimationName = "SelectIconIdle", .ImageName = "ZeroSelectIcon.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
 	Render->ChangeAnimation("SelectIconIdle");

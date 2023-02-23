@@ -31,7 +31,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CharacterSelectMegamanIcon.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CharacterSelectMegamanImage.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectMegamanText.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -44,6 +52,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="CharacterSelectZeroImage.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectZeroModel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectZeroText.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -122,7 +138,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="CharacterSelectMegamanIcon.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="CharacterSelectMegamanImage.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectMegamanText.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -135,6 +159,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="CharacterSelectZeroImage.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroModel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroText.cpp">
       <SubType>
       </SubType>
     </ClCompile>

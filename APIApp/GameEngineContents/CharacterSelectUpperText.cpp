@@ -13,13 +13,23 @@ CharacterSelectUpperText::~CharacterSelectUpperText()
 
 void CharacterSelectUpperText::Start()
 {
-	GameEngineRender* Render = CreateRender("PlayerSelectText.bmp", MegamanX4RenderOrder::SELECTTEXT);
-
-	Render->SetPosition({GameEngineWindow::GetScreenSize().hx(), 68});
+	Render = CreateRender("PlayerSelectText.bmp", MegamanX4RenderOrder::SELECTTEXT);
 	Render->SetScaleToImage();
+
+	float4 ImageSize = Render->GetScale();
+	float4 WindowSize = GameEngineWindow::GetScreenSize();
+	Render->SetPosition({ WindowSize.x + (ImageSize.x / 2), 68 });
 }
 
 void CharacterSelectUpperText::Update(float _DeltaTime)
 {
+	Render->SetMove(float4::Left * MoveSpeed * _DeltaTime);
 
+	float4 ImageSize = Render->GetScale();
+	float4 WindowSize = GameEngineWindow::GetScreenSize();
+
+	if (Render->GetPosition().x < -(ImageSize.x / 2))
+	{
+		Render->SetPosition({ WindowSize.x + (ImageSize.x / 2), 68 });
+	}
 }

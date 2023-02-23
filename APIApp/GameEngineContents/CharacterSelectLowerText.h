@@ -19,6 +19,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-
+	GameEngineRender* Render;
+	float MoveSpeed = 200.0f;
 };
 

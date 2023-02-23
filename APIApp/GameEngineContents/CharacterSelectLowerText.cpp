@@ -13,15 +13,25 @@ CharacterSelectLowerText::~CharacterSelectLowerText()
 
 void CharacterSelectLowerText::Start()
 {
-	GameEngineRender* Render = CreateRender("PlayerSelectText.bmp", MegamanX4RenderOrder::SELECTTEXT);
+	Render = CreateRender("PlayerSelectText.bmp", MegamanX4RenderOrder::SELECTTEXT);
 
 	float4 WindowSize = GameEngineWindow::GetScreenSize();
-
-	Render->SetPosition({ WindowSize.x / 2, (WindowSize.y - 68 - Render->GetScale().y) });
 	Render->SetScaleToImage();
+	float4 ImageSize = Render->GetScale();
+
+	Render->SetPosition({ -(ImageSize.x / 2), (WindowSize.y - 68) });
+
 }
 
 void CharacterSelectLowerText::Update(float _DeltaTime)
 {
+	Render->SetMove(float4::Right * MoveSpeed * _DeltaTime);
 
+	float4 WindowSize = GameEngineWindow::GetScreenSize();
+	float4 ImageSize = Render->GetScale();
+
+	if (Render->GetPosition().x > WindowSize.x + (ImageSize.x / 2))
+	{
+		Render->SetPosition({ -(ImageSize.x / 2), (WindowSize.y - 68) });
+	}
 }

@@ -19,6 +19,8 @@ public:
 	PrologueMap& operator=(const PrologueMap& _Other) = delete;
 	PrologueMap& operator=(PrologueMap&& _Other) noexcept = delete;
 
+	void SwitchRenderMode();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -26,5 +28,6 @@ protected:
 private:
 	GameEngineRender* PrologueMapRender;
 	GameEngineRender* PrologueMapStructureRender;
+	GameEngineRender* PrologueMapColmapRender;
 };
 

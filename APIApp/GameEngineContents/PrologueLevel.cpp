@@ -62,7 +62,6 @@ void PrologueLevel::Loading()
 	{
 		//맵 이미지
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("Prologue.bmp"));
-
 	}
 	{
 		//ColMap 이미지

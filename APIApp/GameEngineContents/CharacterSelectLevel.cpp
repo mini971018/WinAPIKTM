@@ -9,6 +9,10 @@
 #include "CharacterSelectUpperText.h"
 #include "CharacterSelectLowerText.h"
 #include "CharacterSelectZeroIcon.h"
+#include "CharacterSelectMegamanIcon.h"
+#include "CharacterSelectZeroText.h"
+#include "CharacterSelectMegamanText.h"
+#include "CharacterSelectZeroModel.h"
 
 CharacterSelectLevel::CharacterSelectLevel() 
 {
@@ -44,6 +48,11 @@ void CharacterSelectLevel::Loading()
 
 		// 화면 상단 움직이는 플레이어 셀렉트 텍스트
 		GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("PlayerSelectText.bmp"));
+
+		// 캐릭터 이미지 하단에 있는 텍스트 이미지
+		GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("MegamanText.bmp"));
+		GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("ZeroText.bmp"));
+
 	}
 
 	CreateActor<CharacterSelectBackground>();
@@ -51,13 +60,52 @@ void CharacterSelectLevel::Loading()
 	CreateActor<CharacterSelectZeroImage>();
 	CreateActor<CharacterSelectUpperText>();
 	CreateActor<CharacterSelectLowerText>();
-	CreateActor<CharacterSelectZeroIcon>();
+	SelectMegamanIcon = CreateActor<CharacterSelectMegamanIcon>();
+	SelectZeroIcon = CreateActor<CharacterSelectZeroIcon>();
+	CreateActor<CharacterSelectZeroText>();
+	CreateActor<CharacterSelectMegamanText>();
+	ZeroModel = CreateActor<CharacterSelectZeroModel>();
 }
 
 void CharacterSelectLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("NextLevel"))
+	if (true == GameEngineInput::IsDown("NextLevel") && SelectZeroIcon->IsUpdate())
+	{
+		ZeroModel->SetModelAnimation(ZeroModelAnimation::CHANGELEVEL);
+		LevelChangeState = true;
+	}
+
+	if (GameEngineInput::IsDown("MoveLeft"))
+	{
+		SwitchIcon("MoveLeft");
+	}
+	else if (GameEngineInput::IsDown("MoveRight"))
+	{
+		SwitchIcon("MoveRight");
+	}
+
+	if (LevelChangeState)
+	{
+		LevelChangeTime += _DeltaTime;
+	}
+
+	if (LevelChangeTime > ChangeLevelElapsedTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("Prologue");
+	}
+}
+
+void CharacterSelectLevel::SwitchIcon(const std::string_view& _Name)
+{
+	if (SelectZeroIcon->IsUpdate() && _Name == "MoveLeft")
+	{
+		SelectMegamanIcon->On();
+		SelectZeroIcon->Off();
+	}
+	else if(SelectMegamanIcon->IsUpdate() && _Name == "MoveRight")
+	{
+		SelectMegamanIcon->Off();
+		SelectZeroIcon->On();
+		ZeroModel->SetModelAnimation(ZeroModelAnimation::ATTACK);
 	}
 }

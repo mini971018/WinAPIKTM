@@ -3,8 +3,8 @@
 enum class MegamanX4PlayRenderOrder
 {
 	BACKGROUND,
-	GUIDEOBJECT,
 	MAP,
+	COLMAP,
 	PLAYER,
 	MONSTER,
 	BOSS,
@@ -18,6 +18,8 @@ enum class MegamanX4RenderOrder
 	SELECTIMAGE,
 	CHARACTERIMAGE,
 	SELECTICON,
+	CHARACTERMODEL,
+	CHARACTERTEXT,
 	GUIDEOBJECT,
 };
 

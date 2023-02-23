@@ -18,7 +18,6 @@ void CharacterSelectZeroImage::Start()
 	Render->SetScaleToImage();
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	float4 ImageSize = Render->GetScale();
-	float TestSize = ScreenSize.half().x + (ImageSize.x / 2);
 
 	Render->SetPosition({ ScreenSize.x - (ImageSize.x / 2), ScreenSize.y / 2});
 }

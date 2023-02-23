@@ -1,171 +1,249 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="MegamanX4GameCore.h" />
-    <ClInclude Include="ContentsEnums.h" />
     <ClInclude Include="Player.h">
-      <Filter>Play\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayLevel.h">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play\Player</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>Play</Filter>
-    </ClInclude>
-    <ClInclude Include="PrologueLevel.h">
-      <Filter>Play\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="CyberPeacockAreaLevel.h">
-      <Filter>Play\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="PrologueMap.h">
-      <Filter>Play\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="CyberPeacockAreaMap.h">
-      <Filter>Play\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="MagamDragoonMap.h">
-      <Filter>Play\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="MagmaDragoonAreaLevel.h">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play</Filter>
     </ClInclude>
     <ClInclude Include="SpacePortMap.h">
-      <Filter>Play\Map</Filter>
+      <Filter>3.Play\Map</Filter>
     </ClInclude>
     <ClInclude Include="SpacePortLevel.h">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play\SpacePortLevel\Level</Filter>
     </ClInclude>
     <ClInclude Include="TitleLevel.h">
-      <Filter>Title\Level</Filter>
+      <Filter>1.Title\Level</Filter>
     </ClInclude>
     <ClInclude Include="TitleStartObject.h">
-      <Filter>Title\Actor</Filter>
+      <Filter>1.Title\Actor</Filter>
     </ClInclude>
     <ClInclude Include="TitleBackground.h">
-      <Filter>Title\Actor</Filter>
+      <Filter>1.Title\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectLevel.h">
-      <Filter>CharacterSelect\Level</Filter>
+      <Filter>2.CharacterSelect\Level</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectBackground.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectMegamanImage.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectZeroImage.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectUpperText.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectLowerText.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectZeroIcon.h">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectMegamanIcon.h">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectZeroText.h">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectMegamanText.h">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectZeroModel.h">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PrologueLevel.h">
+      <Filter>3.Play\Prologue\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="PrologueMap.h">
+      <Filter>3.Play\Prologue\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnums.h">
+      <Filter>0.GameCore</Filter>
+    </ClInclude>
+    <ClInclude Include="MegamanX4GameCore.h">
+      <Filter>0.GameCore</Filter>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockAreaLevel.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockAreaMap.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MagmaDragoonAreaLevel.h">
+      <Filter>3.Play\MagmaDragoonAreaLevel\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="MagamDragoonMap.h">
+      <Filter>3.Play\MagmaDragoonAreaLevel\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayLevel.h">
+      <Filter>3.Play\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MegamanX4GameCore.cpp" />
     <ClCompile Include="Player.cpp">
-      <Filter>Play\Player</Filter>
+      <Filter>3.Play\Player</Filter>
     </ClCompile>
     <ClCompile Include="Player_State.cpp">
-      <Filter>Play\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play\Player</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>Play</Filter>
-    </ClCompile>
-    <ClCompile Include="PrologueLevel.cpp">
-      <Filter>Play\Level</Filter>
-    </ClCompile>
-    <ClCompile Include="CyberPeacockAreaLevel.cpp">
-      <Filter>Play\Level</Filter>
-    </ClCompile>
-    <ClCompile Include="PrologueMap.cpp">
-      <Filter>Play\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="CyberPeacockAreaMap.cpp">
-      <Filter>Play\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="MagamDragoonMap.cpp">
-      <Filter>Play\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="MagmaDragoonAreaLevel.cpp">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortMap.cpp">
-      <Filter>Play\Map</Filter>
+      <Filter>3.Play\Map</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortLevel.cpp">
-      <Filter>Play\Level</Filter>
+      <Filter>3.Play\SpacePortLevel\Level</Filter>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
-      <Filter>Title\Level</Filter>
+      <Filter>1.Title\Level</Filter>
     </ClCompile>
     <ClCompile Include="TitleBackground.cpp">
-      <Filter>Title\Actor</Filter>
+      <Filter>1.Title\Actor</Filter>
     </ClCompile>
     <ClCompile Include="TitleStartObject.cpp">
-      <Filter>Title\Actor</Filter>
+      <Filter>1.Title\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectLevel.cpp">
-      <Filter>CharacterSelect\Level</Filter>
+      <Filter>2.CharacterSelect\Level</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectBackground.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectMegamanImage.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectZeroImage.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectUpperText.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectLowerText.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectZeroIcon.cpp">
-      <Filter>CharacterSelect\Actor</Filter>
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectMegamanIcon.cpp">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroText.cpp">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectMegamanText.cpp">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectZeroModel.cpp">
+      <Filter>2.CharacterSelect\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="PrologueMap.cpp">
+      <Filter>3.Play\Prologue\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MegamanX4GameCore.cpp">
+      <Filter>0.GameCore</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockAreaLevel.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockAreaMap.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MagmaDragoonAreaLevel.cpp">
+      <Filter>3.Play\MagmaDragoonAreaLevel\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="MagamDragoonMap.cpp">
+      <Filter>3.Play\MagmaDragoonAreaLevel\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayLevel.cpp">
+      <Filter>3.Play\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PrologueLevel.cpp">
+      <Filter>3.Play\Prologue\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Play">
+    <Filter Include="3.Play">
       <UniqueIdentifier>{5c02c7a2-cfc0-4fc3-98ed-6cec0d524319}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Title">
-      <UniqueIdentifier>{b1aa7460-f1f2-4009-b9c2-f874c7a7ce50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Play\Player">
+    <Filter Include="3.Play\Player">
       <UniqueIdentifier>{6b31dc54-92eb-4657-ba31-2c77a4af0344}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Play\Level">
-      <UniqueIdentifier>{84d2ebbf-235a-4994-83db-b8769a766518}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Play\Map">
+    <Filter Include="3.Play\Map">
       <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CharacterSelect">
+    <Filter Include="3.Play\Prologue">
+      <UniqueIdentifier>{edd0bc55-dff2-4a35-b7ee-bd2a485f2120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Prologue\Level">
+      <UniqueIdentifier>{01eea964-f0ac-48e1-8b57-eb1093588e27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Prologue\Map">
+      <UniqueIdentifier>{e0c32ff1-44b0-4175-bf8e-b623c58af56a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Prologue\Actor">
+      <UniqueIdentifier>{99279aea-efbc-4254-8b6e-0a757d8e9f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\MagmaDragoonAreaLevel">
+      <UniqueIdentifier>{cb2c0519-745f-4a26-9169-fed64e0aa0a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\MagmaDragoonAreaLevel\Level">
+      <UniqueIdentifier>{116a8b43-4353-483e-9f84-a53cbc427849}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\MagmaDragoonAreaLevel\Map">
+      <UniqueIdentifier>{1fd8a5a7-d36b-4667-878f-895b0762a6cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\MagmaDragoonAreaLevel\Actor">
+      <UniqueIdentifier>{b777acba-b997-4cc0-8319-75ec2e65a4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel">
+      <UniqueIdentifier>{fb185073-d87b-4b8a-88e0-4f3155651586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel\Level">
+      <UniqueIdentifier>{2c9e3fd5-afd6-4855-b45d-9d9c31d7498e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel\Map">
+      <UniqueIdentifier>{fe2ea88f-a1ca-4622-8be3-2e3cc94a8363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel\Actor">
+      <UniqueIdentifier>{a08d19c7-d59f-4536-b7a6-5a5efb3da20d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Test">
+      <UniqueIdentifier>{62c1f33e-b1de-48e4-820a-eda7819f6778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\SpacePortLevel">
+      <UniqueIdentifier>{a9cd5f0c-7f3e-4f03-a243-112d3d202481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\SpacePortLevel\Level">
+      <UniqueIdentifier>{84d2ebbf-235a-4994-83db-b8769a766518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\SpacePortLevel\Actor">
+      <UniqueIdentifier>{5ebfd6ef-094f-46fd-a76c-035357552f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.CharacterSelect">
       <UniqueIdentifier>{e044ab95-27df-4f38-9c38-394a46d3b41e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Title\Level">
-      <UniqueIdentifier>{ae6b5f62-822d-4687-9443-5ca1644e6813}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Title\Actor">
-      <UniqueIdentifier>{0eff4bb9-4d2f-4ee2-9227-168245dbf0d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CharacterSelect\Level">
+    <Filter Include="2.CharacterSelect\Level">
       <UniqueIdentifier>{a87014d2-d1f1-4a93-b825-9c17d2349a4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CharacterSelect\Actor">
+    <Filter Include="2.CharacterSelect\Actor">
       <UniqueIdentifier>{bd9674c7-d674-4281-a8ec-f80b8d894171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Title">
+      <UniqueIdentifier>{b1aa7460-f1f2-4009-b9c2-f874c7a7ce50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Title\Level">
+      <UniqueIdentifier>{ae6b5f62-822d-4687-9443-5ca1644e6813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Title\Actor">
+      <UniqueIdentifier>{0eff4bb9-4d2f-4ee2-9227-168245dbf0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.GameCore">
+      <UniqueIdentifier>{c2b4a8d6-0f99-47b8-9c0d-2ea92717e480}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

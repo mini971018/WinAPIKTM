@@ -1,7 +1,10 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
-// 설명 :
+
+class CharacterSelectMegamanIcon;
+class CharacterSelectZeroIcon;
+class CharacterSelectZeroModel;
 class CharacterSelectLevel : public GameEngineLevel
 {
 public:
@@ -23,6 +26,17 @@ protected:
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 
 private:
+	CharacterSelectZeroIcon* SelectZeroIcon;
+	CharacterSelectMegamanIcon* SelectMegamanIcon;
+	CharacterSelectZeroModel* ZeroModel;
 
+	void SwitchIcon(const std::string_view& _Name);
+
+	//체인지 레벨 시간을 확인하기 위한 변수
+	float LevelChangeTime = 0.0f;
+	//체인지 레벨 까지 소요되는 시간
+	float ChangeLevelElapsedTime = 1.3f; 
+	//체인지 레벨 확인을 위한 불값 변수
+	bool LevelChangeState = false;
 };
 
