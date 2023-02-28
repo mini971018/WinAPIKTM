@@ -8,7 +8,7 @@
       <Filter>3.Play</Filter>
     </ClInclude>
     <ClInclude Include="SpacePortMap.h">
-      <Filter>3.Play\Map</Filter>
+      <Filter>3.Play\SpacePortLevel\Map</Filter>
     </ClInclude>
     <ClInclude Include="SpacePortLevel.h">
       <Filter>3.Play\SpacePortLevel\Level</Filter>
@@ -94,7 +94,7 @@
       <Filter>3.Play</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortMap.cpp">
-      <Filter>3.Play\Map</Filter>
+      <Filter>3.Play\SpacePortLevel\Map</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortLevel.cpp">
       <Filter>3.Play\SpacePortLevel\Level</Filter>
@@ -173,9 +173,6 @@
     <Filter Include="3.Play\Player">
       <UniqueIdentifier>{6b31dc54-92eb-4657-ba31-2c77a4af0344}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3.Play\Map">
-      <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3.Play\Prologue">
       <UniqueIdentifier>{edd0bc55-dff2-4a35-b7ee-bd2a485f2120}</UniqueIdentifier>
     </Filter>
@@ -244,6 +241,9 @@
     </Filter>
     <Filter Include="0.GameCore">
       <UniqueIdentifier>{c2b4a8d6-0f99-47b8-9c0d-2ea92717e480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\SpacePortLevel\Map">
+      <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -40,6 +40,8 @@ void PrologueLevel::Loading()
 		AttackImage->Cut(10, 5);
 		GameEngineImage* JumpImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerJump.bmp"));
 		JumpImage->Cut(10, 2);
+		GameEngineImage* JumpAttackImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerJumpAttack.bmp"));
+		JumpAttackImage->Cut(10, 1);
 		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerStageChange.bmp"));
 		StageChangeImage->Cut(10, 3);
 
@@ -56,6 +58,8 @@ void PrologueLevel::Loading()
 		AttackImage->Cut(10, 5);
 		GameEngineImage* JumpImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerJump.bmp"));
 		JumpImage->Cut(10, 2);
+		GameEngineImage* JumpAttackImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerJumpAttack.bmp"));
+		JumpAttackImage->Cut(10, 1);
 		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerStageChange.bmp"));
 		StageChangeImage->Cut(10, 3);
 	}
@@ -76,7 +80,7 @@ void PrologueLevel::Loading()
 	//액터 생성
 	{
 		PrologueLevelPlayer = CreateActor<Player>();
-		PrologueLevelPlayer->SetPos({ 300,500 });
+		PrologueLevelPlayer->SetPos({ 400, 100 });
 		PrologueLevelPlayer->SetColImage("PrologueColmap.bmp");
 	}
 	{

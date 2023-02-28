@@ -59,6 +59,31 @@ void Player::ChangeState(PlayerState _State)
 		AttackEndStart();
 		break;
 	}
+	case PlayerState::JUMPATTACK:
+	{
+		JumpAttackStart();
+		break;
+	}
+	case PlayerState::STAGESTART:
+	{
+		StageStartStart();
+		break;
+	}
+	case PlayerState::STAGESTARTPOSE:
+	{
+		StageStartPoseStart();
+		break;
+	}
+	case PlayerState::STAGEEND:
+	{
+		StageEndStart();
+		break;
+	}
+	case PlayerState::STAGEENDPOSE:
+	{
+		StageEndPoseStart();
+		break;
+	}
 
 	default:
 		break;
@@ -110,6 +135,31 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::ATTACKEND:
 	{
 		AttackEndEnd();
+		break;
+	}
+	case PlayerState::JUMPATTACK:
+	{
+		JumpAttackEnd();
+		break;
+	}
+	case PlayerState::STAGESTART:
+	{
+		StageStartEnd();
+		break;
+	}
+	case PlayerState::STAGESTARTPOSE:
+	{
+		StageStartPoseEnd();
+		break;
+	}
+	case PlayerState::STAGEEND:
+	{
+		StageEndEnd();
+		break;
+	}
+	case PlayerState::STAGEENDPOSE:
+	{
+		StageEndPoseEnd();
 		break;
 	}
 	default:
@@ -164,6 +214,31 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::ATTACKEND:
 	{
 		AttackEndUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::JUMPATTACK:
+	{
+		JumpAttackUpdate(_DeltaTime);
+		break;
+	}
+		case PlayerState::STAGESTART:
+	{
+		StageStartUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::STAGESTARTPOSE:
+	{
+		StageStartPoseUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::STAGEEND:
+	{
+		StageEndUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::STAGEENDPOSE:
+	{
+		StageEndPoseUpdate(_DeltaTime);
 		break;
 	}
 
@@ -286,14 +361,22 @@ void Player::JumpUpdate(float _DeltaTime)
 		MoveDir += float4::Right * MoveSpeed;
 	}
 
-	//Debug용
-	JumpCalTime += _DeltaTime;
+	//점프 도중 어택 버튼 누르면 일반공격
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::JUMPATTACK);
+	}
 
-	std::string PlayerJumpTime = "PlayerJumpTime : ";
+	//Debug용 (점프시간 확인)
+	{
+		JumpCalTime += _DeltaTime;
 
-	PlayerJumpTime += std::to_string(JumpCalTime);
+		std::string PlayerJumpTime = "PlayerJumpTime : ";
 
-	GameEngineLevel::DebugTextPush(PlayerJumpTime);
+		PlayerJumpTime += std::to_string(JumpCalTime);
+
+		GameEngineLevel::DebugTextPush(PlayerJumpTime);
+	}
 }
 
 void Player::JumpEnd()
@@ -332,6 +415,15 @@ void Player::FallUpdate(float _DeltaTime)
 	{
 		MoveDir += float4::Right * MoveSpeed;
 	}
+
+	//FALL 도중 어택 버튼 누르면 일반공격
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::JUMPATTACK);
+	}
+
+	//Fall 도중에 중력적용
+	MoveDir += (float4::Down * Gravity);
 
 	if (IsGround == true)
 	{
@@ -447,6 +539,101 @@ void Player::AttackEndUpdate(float _DeltaTime)
 }
 
 void Player::AttackEndEnd()
+{
+
+}
+
+
+
+void Player::StageStartStart()
+{
+	DirCheck("StageStartLoopAnim");
+}
+void Player::StageStartUpdate(float _DeltaTime)
+{
+	//스테이지 체인지시 이동
+	MoveDir += (float4::Down * MoveSpeedInStageChange);
+
+	if (IsGround == true)
+	{
+		ChangeState(PlayerState::STAGESTARTPOSE);
+	}
+}
+void Player::StageStartEnd()
+{
+
+}
+
+
+
+void Player::StageStartPoseStart()
+{
+	DirCheck("StageStartAnim");
+}
+void Player::StageStartPoseUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+	}
+}
+void Player::StageStartPoseEnd()
+{
+
+}
+
+
+
+void Player::StageEndStart()
+{
+
+}
+void Player::StageEndUpdate(float _DeltaTime)
+{
+
+}
+void Player::StageEndEnd()
+{
+
+}
+
+
+
+void Player::StageEndPoseStart()
+{
+
+}
+void Player::StageEndPoseUpdate(float _DeltaTime)
+{
+
+}
+void Player::StageEndPoseEnd()
+{
+
+}
+
+void Player::JumpAttackStart()
+{
+	DirCheck("JumpAttack");
+}
+
+void Player::JumpAttackUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::FALL);
+	}
+
+	if (IsGround == true)
+	{
+		ChangeState(PlayerState::LANDING);
+	}
+
+	//JUMPATTACK 도중에 중력적용
+	MoveDir += (float4::Down * Gravity);
+}
+
+void Player::JumpAttackEnd()
 {
 
 }

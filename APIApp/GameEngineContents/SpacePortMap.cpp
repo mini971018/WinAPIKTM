@@ -29,9 +29,6 @@ void SpacePortMap::Start()
 		//SpacePortMap1Render->SetPosition(SpacePortMap1Render->GetImage()->GetImageScale().half());
 		//SpacePortMap1Render->SetScaleToImage();
 
-		int a = -(SpacePortMap1Render->GetImage()->GetImageScale().hx() + GameEngineWindow::GetScreenSize().x);
-		int b = SpacePortMap2Render->GetImage()->GetImageScale().y + SpacePortMap1Render->GetImage()->GetImageScale().hy() + GameEngineWindow::GetScreenSize().y;
-
 		SpacePortMap1Render->SetScaleToImage();
 		SpacePortMap1Render->SetPosition({ -(SpacePortMap1Render->GetImage()->GetImageScale().hx() - GameEngineWindow::GetScreenSize().x), SpacePortMap2Render->GetImage()->GetImageScale().y + SpacePortMap1Render->GetImage()->GetImageScale().hy()});
 		

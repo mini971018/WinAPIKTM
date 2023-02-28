@@ -19,7 +19,8 @@ void CharacterSelectZeroModel::Start()
 
 	AnimationRender->CreateAnimation({ .AnimationName = "Idle", .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 0, .InterTime = 0.25f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Attack",   .ImageName = "LeftPlayerAttack.bmp", .Start = 0, .End = 18, .InterTime = 0.03f,. Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "ChangeLevel",   .ImageName = "LeftPlayerStageChange.bmp", .Start = 15, .End = 29, .InterTime = 0.05f,. Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "ChangeLevel",   .ImageName = "LeftPlayerStageChange.bmp", .Start = 15, .End = 27, .InterTime = 0.05f,. Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "ChangeLevelMove",   .ImageName = "LeftPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f});
 
 	AnimationRender->ChangeAnimation("Idle");
 }
@@ -37,7 +38,8 @@ void CharacterSelectZeroModel::Update(float _DeltaTime)
 	}
 	else if (ChangeLevelState == true && AnimationRender->IsAnimationEnd() == true)
 	{
-		AnimationRender->SetMove(float4::Up * 1000.0f * _DeltaTime);
+		AnimationRender->ChangeAnimation("ChangeLevelMove");
+		AnimationRender->SetMove(float4::Up * 1500.0f * _DeltaTime);
 	}
 
 }

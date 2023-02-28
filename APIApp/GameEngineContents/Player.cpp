@@ -51,6 +51,7 @@ void Player::Start()
 		AnimationRender = CreateRender(MegamanX4PlayRenderOrder::PLAYER);
 		AnimationRender->SetScale({ 704, 704 });
 
+		//우측 애니메이션
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Idle", .ImageName = "RightPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_EnterMove", .ImageName = "RightPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Move", .ImageName = "RightPlayerMove.bmp", .Start = 3, .End = 15, .InterTime = 0.05f });
@@ -63,7 +64,9 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack2", .ImageName = "RightPlayerAttack.bmp", .Start = 19, .End = 30, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_AttackEnd", .ImageName = "RightPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpAttack", .ImageName = "RightPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
 
+		//좌측 애니메이션
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle",      .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Move",      .ImageName = "LeftPlayerMove.bmp", .Start = 3, .End = 15, .InterTime = 0.05f });
@@ -76,8 +79,24 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack2",   .ImageName = "LeftPlayerAttack.bmp", .Start = 19, .End = 30, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3",   .ImageName = "LeftPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_AttackEnd", .ImageName = "LeftPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpAttack", .ImageName = "LeftPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
 
-		ChangeState(PlayerState::IDLE);
+		//스테이지 시작시
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 2, .End = 15, .InterTime = 0.05f });
+		//스테이지 종료시
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
+
+		//스테이지 시작시
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageStartLoopAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageStartAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 2, .End = 15, .InterTime = 0.05f });
+		
+		//스테이지 종료시
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndLoopAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
+
+		ChangeState(PlayerState::STAGESTART);
 	}
 }
 
@@ -102,8 +121,20 @@ void Player::MoveCalculation(float _DeltaTime)
 	}
 	else
 	{
-		MoveDir += (float4::Down * Gravity * _DeltaTime);	
-		IsGround = false;
+		if (StateValue == PlayerState::MOVE && DirString == "Left_" && RGB(0, 0, 0) == ColImage->GetPixelColor(NextPos + (float4::Down * 5), RGB(0, 0, 0)))
+		{
+			MoveDir += (float4::Down * Gravity * _DeltaTime);
+			IsGround = true;
+		}
+		else if (StateValue == PlayerState::MOVE && DirString == "Right_" && RGB(0, 0, 0) == ColImage->GetPixelColor(NextPos + (float4::Down * 5), RGB(0, 0, 0)))
+		{
+			MoveDir += (float4::Down * Gravity * _DeltaTime);
+			IsGround = true;
+		}
+		else
+		{
+			IsGround = false;
+		}
 	}
 
 	SetMove(MoveDir * _DeltaTime);
@@ -190,8 +221,21 @@ void Player::DirCheck(const std::string_view& _AnimationName)
 
 void Player::Render(float _DeltaTime)
 {
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+
+	////위치 확인용
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
+
+	float4 NextPos = GetPos() + (MoveDir * _DeltaTime);
+
 	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();;
+	float4 ActorPos = NextPos - GetLevel()->GetCameraPos();
 
 	//위치 확인용
 	Rectangle(DoubleDC,
@@ -201,8 +245,7 @@ void Player::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 
-	std::string CameraMouseText = "MousePositionCamera : ";
-	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();
-
+	std::string CameraMouseText = "MousePositionCamera :";
+	CameraMouseText = CameraMouseText + (GetLevel()->GetMousePosToCamera().ToString());
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }
