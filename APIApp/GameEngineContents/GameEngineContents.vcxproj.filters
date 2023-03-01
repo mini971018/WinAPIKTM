@@ -4,9 +4,6 @@
     <ClInclude Include="Player.h">
       <Filter>3.Play\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>3.Play</Filter>
-    </ClInclude>
     <ClInclude Include="SpacePortMap.h">
       <Filter>3.Play\SpacePortLevel\Map</Filter>
     </ClInclude>
@@ -79,8 +76,11 @@
     <ClInclude Include="MagamDragoonMap.h">
       <Filter>3.Play\MagmaDragoonAreaLevel\Map</Filter>
     </ClInclude>
-    <ClInclude Include="PlayLevel.h">
-      <Filter>3.Play\Test</Filter>
+    <ClInclude Include="TestLevel.h">
+      <Filter>3.Play\Test\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevelMap.h">
+      <Filter>3.Play\Test\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +89,6 @@
     </ClCompile>
     <ClCompile Include="Player_State.cpp">
       <Filter>3.Play\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>3.Play</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortMap.cpp">
       <Filter>3.Play\SpacePortLevel\Map</Filter>
@@ -159,11 +156,14 @@
     <ClCompile Include="MagamDragoonMap.cpp">
       <Filter>3.Play\MagmaDragoonAreaLevel\Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>3.Play\Test</Filter>
-    </ClCompile>
     <ClCompile Include="PrologueLevel.cpp">
       <Filter>3.Play\Prologue\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>3.Play\Test\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevelMap.cpp">
+      <Filter>3.Play\Test\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +244,15 @@
     </Filter>
     <Filter Include="3.Play\SpacePortLevel\Map">
       <UniqueIdentifier>{05a67e71-1693-4708-8325-75c0784f7d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Test\Actor">
+      <UniqueIdentifier>{59d463a5-6aaf-4d85-9337-048bf77903a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Test\Level">
+      <UniqueIdentifier>{d430a5fa-a2ee-46a9-8fa5-1de0de883e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Test\Map">
+      <UniqueIdentifier>{f14415c7-4c2e-440f-9b7f-d20cded627d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

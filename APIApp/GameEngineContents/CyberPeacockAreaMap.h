@@ -23,5 +23,10 @@ protected:
 
 private:
 	GameEngineRender* CyberPeacockMapRender;
+	GameEngineRender* CyberPeacockMapStructureRender;
+	GameEngineRender* CyberPeacockMapColmapRender;
+
+	void SwitchRenderMode();
+
 };
 

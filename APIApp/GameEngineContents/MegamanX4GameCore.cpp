@@ -7,6 +7,7 @@
 #include "CyberPeacockAreaLevel.h"
 #include "MagmaDragoonAreaLevel.h"
 #include "SpacePortLevel.h"
+#include "TestLevel.h"
 
 MegamanX4GameCore MegamanX4GameCore::Core;
 
@@ -28,6 +29,7 @@ void MegamanX4GameCore::Start()
 	CreateLevel<CyberPeacockAreaLevel>("CyberPeacockArea");
 	CreateLevel<MagmaDragoonAreaLevel>("MagmaDragoonArea");
 	CreateLevel<SpacePortLevel>("SpacePort");
+	CreateLevel<TestLevel>("TestLevel");
 
 	ChangeLevel("Title");
 }

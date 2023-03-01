@@ -91,7 +91,7 @@ void CharacterSelectLevel::Update(float _DeltaTime)
 
 	if (LevelChangeTime > ChangeLevelElapsedTime)
 	{
-		GameEngineCore::GetInst()->ChangeLevel("Prologue");
+		GameEngineCore::GetInst()->ChangeLevel("CyberPeacockArea");
 	}
 }
 

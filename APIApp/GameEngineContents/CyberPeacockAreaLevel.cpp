@@ -29,11 +29,22 @@ void CyberPeacockAreaLevel::Loading()
 		//맵 이미지
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("CyberPeacockArea.bmp"));
 	}
+	{
+		//ColMap 이미지
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("CyberPeacockAreaColmap.bmp"));
+	}
+	{
+		//화면상 가장 앞에 있는 구조물들의 이미지
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("CyberPeacockAreaStructure.bmp"));
+	}
+
+
 
 	//액터 생성
 	{
 		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
-		CyberPeacockAreaLevelPlayer->SetPos({ 200,610 });
+		CyberPeacockAreaLevelPlayer->SetPos({ 200,100 });
+		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
 	}
 	{
 		CyberPeacockAreaMap* Actor = CreateActor<CyberPeacockAreaMap>();

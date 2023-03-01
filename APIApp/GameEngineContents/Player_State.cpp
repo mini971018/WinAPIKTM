@@ -64,6 +64,12 @@ void Player::ChangeState(PlayerState _State)
 		JumpAttackStart();
 		break;
 	}
+	case PlayerState::DASH:
+	{
+		DashStart();
+		break;
+	}
+
 	case PlayerState::STAGESTART:
 	{
 		StageStartStart();
@@ -142,6 +148,12 @@ void Player::ChangeState(PlayerState _State)
 		JumpAttackEnd();
 		break;
 	}
+	case PlayerState::DASH:
+	{
+		DashEnd();
+		break;
+	}
+
 	case PlayerState::STAGESTART:
 	{
 		StageStartEnd();
@@ -221,7 +233,12 @@ void Player::UpdateState(float _DeltaTime)
 		JumpAttackUpdate(_DeltaTime);
 		break;
 	}
-		case PlayerState::STAGESTART:
+	case PlayerState::DASH:
+	{
+		DashUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::STAGESTART:
 	{
 		StageStartUpdate(_DeltaTime);
 		break;
@@ -636,4 +653,16 @@ void Player::JumpAttackUpdate(float _DeltaTime)
 void Player::JumpAttackEnd()
 {
 
+}
+
+void Player::DashStart()
+{
+
+}
+void Player::DashUpdate(float _DeltaTime)
+{
+
+}
+void Player::DashEnd()
+{
 }

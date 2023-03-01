@@ -8,6 +8,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnums.h"
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 Player* Player::MainPlayer;
 
@@ -45,6 +46,8 @@ void Player::Start()
 		GameEngineInput::CreateKey("NextLevel", 'P');
 		GameEngineInput::CreateKey("FreeMoveSwitch", '9');
 		GameEngineInput::CreateKey("ColMapMode", '0');
+		GameEngineInput::CreateKey("DebugRenderSwitch", 'I');
+		GameEngineInput::CreateKey("TestLevel", 'T');
 	}
 
 	{
@@ -98,6 +101,15 @@ void Player::Start()
 
 		ChangeState(PlayerState::STAGESTART);
 	}
+
+
+	//콜리전
+	{
+		BodyCollision = CreateCollision(MegamanX4CollisionOrder::PLAYER);
+		BodyCollision->SetMove({0, -65});
+		BodyCollision->SetScale({60 , 125 });
+	}
+
 }
 
 //레벨마다 다른 colimage를 캐릭마다 넣음
@@ -114,6 +126,7 @@ void Player::MoveCalculation(float _DeltaTime)
 	}
 
 	float4 NextPos = GetPos() + (MoveDir * _DeltaTime);
+	NextPos = RaiseUpCharacter(NextPos, _DeltaTime);
 
 	if (RGB(0, 0, 0) == ColImage->GetPixelColor(GetPos() + float4::Down, RGB(0, 0, 0)))
 	{
@@ -143,6 +156,28 @@ void Player::MoveCalculation(float _DeltaTime)
 	float4 CameraDir = float4(MoveDir.x, 0.0f);
 
 	GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+}
+
+float4 Player::RaiseUpCharacter(float4 _NextPos, float _DeltaTime)
+{
+	if (RGB(0, 0, 0) != ColImage->GetPixelColor(_NextPos, RGB(0, 0, 0)))
+	{
+		return _NextPos;
+	}
+
+	while (true)
+	{
+		MoveDir.y -= 1;
+
+		_NextPos = GetPos() + MoveDir * _DeltaTime;
+
+		if (RGB(0, 0, 0) == ColImage->GetPixelColor(_NextPos, RGB(0, 0, 0)))
+		{
+			continue;
+		}
+
+		return _NextPos;
+	}
 }
 
 bool FreeMove = false;
@@ -197,7 +232,24 @@ void Player::Update(float _DeltaTime)
 
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
+
+	if (nullptr != BodyCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+		
+		if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTERATTACK), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+
+				ColActor->Death();
+			}
+		}
+	}
 }
+
+
 
 void Player::DirCheck(const std::string_view& _AnimationName)
 {
@@ -245,7 +297,7 @@ void Player::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 
-	std::string CameraMouseText = "MousePositionCamera :";
+	std::string CameraMouseText = "";
 	CameraMouseText = CameraMouseText + (GetLevel()->GetMousePosToCamera().ToString());
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }

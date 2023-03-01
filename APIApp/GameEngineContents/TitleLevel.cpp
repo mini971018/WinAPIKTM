@@ -43,4 +43,8 @@ void TitleLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("CharacterSelect");
 	}
+	if (true == GameEngineInput::IsDown("TestLevel"))
+	{
+		GameEngineCore::GetInst()->ChangeLevel("TestLevel");
+	}
 }

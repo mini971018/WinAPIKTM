@@ -13,6 +13,7 @@ enum class PlayerState
 	ATTACK3,
 	ATTACKEND,
 	JUMPATTACK,
+	DASH,
 	STAGESTART, //스테이지 시작 시 플레이어가 바닥에 닿기 전 레이저 상태
 	STAGESTARTPOSE, //스테이지 시작 시 플레이어가 바닥에 닿은 후 애니메이션 상태
 	STAGEEND, //스테이지 종료 후 플레이어가 바닥에 떠서 날아가는 레이저 상태
@@ -63,8 +64,10 @@ private:
 	std::string DirString = "Right_";
 	void DirCheck(const std::string_view& _AnimationName);
 	
+	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
 
 	GameEngineRender* AnimationRender = nullptr;
+	GameEngineCollision* BodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
 
 	PlayerState StateValue = PlayerState::IDLE;
 
@@ -115,6 +118,10 @@ private:
 	void JumpAttackStart();
 	void JumpAttackUpdate(float _DeltaTime);
 	void JumpAttackEnd();
+
+	void DashStart();
+	void DashUpdate(float _DeltaTime);
+	void DashEnd();
 
 	void StageStartStart();
 	void StageStartUpdate(float _DeltaTime);

@@ -25,6 +25,5 @@ protected:
 
 private:
 	Player* CyberPeacockAreaLevelPlayer = nullptr;
-
 };
 

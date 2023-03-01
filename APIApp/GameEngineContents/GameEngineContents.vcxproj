@@ -80,19 +80,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="MegamanX4GameCore.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PlayLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -109,6 +101,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="SpacePortMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestLevelMap.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -186,10 +186,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="MegamanX4GameCore.cpp">
       <SubType>
       </SubType>
@@ -199,10 +195,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
-    <ClCompile Include="PlayLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="PrologueLevel.cpp">
       <SubType>
       </SubType>
@@ -216,6 +208,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="SpacePortMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestLevelMap.cpp">
       <SubType>
       </SubType>
     </ClCompile>
