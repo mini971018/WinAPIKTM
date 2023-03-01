@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineResources.h>
 
+#include "TestWall.h"
 #include "Player.h"
 #include "TestLevelMap.h"
 #include "ContentsEnums.h"
@@ -38,6 +39,11 @@ void TestLevel::Loading()
 		TestLevelPlayer->SetPos({ 440, 100 });
 		TestLevelPlayer->SetColImage("TestColMap.bmp");
 	}
+
+	{
+		TestWall* Wall = CreateActor<TestWall>();
+	}
+
 	{
 		TestLevelMap* Actor = CreateActor<TestLevelMap>();
 	}

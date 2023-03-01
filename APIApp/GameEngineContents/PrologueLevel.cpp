@@ -44,6 +44,8 @@ void PrologueLevel::Loading()
 		JumpAttackImage->Cut(10, 1);
 		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerStageChange.bmp"));
 		StageChangeImage->Cut(10, 3);
+		GameEngineImage* WallClimbImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerWallClimb.bmp"));
+		WallClimbImage->Cut(10, 1);
 
 	}
 	{
@@ -62,6 +64,8 @@ void PrologueLevel::Loading()
 		JumpAttackImage->Cut(10, 1);
 		GameEngineImage* StageChangeImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerStageChange.bmp"));
 		StageChangeImage->Cut(10, 3);
+		GameEngineImage* WallClimbImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerWallClimb.bmp"));
+		WallClimbImage->Cut(10, 1);
 	}
 	{
 		//¸Ê ÀÌ¹ÌÁö

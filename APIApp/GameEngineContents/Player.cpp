@@ -8,7 +8,6 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnums.h"
 #include <GameEngineBase/GameEngineMath.h>
-#include <GameEngineCore/GameEngineCollision.h>
 
 Player* Player::MainPlayer;
 
@@ -68,6 +67,9 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_AttackEnd", .ImageName = "RightPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpAttack", .ImageName = "RightPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbStart", .ImageName = "RightPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimb", .ImageName = "RightPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f});
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallKickJump", .ImageName = "RightPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.02f , .Loop = false });
 
 		//좌측 애니메이션
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle",      .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
@@ -83,6 +85,9 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3",   .ImageName = "LeftPlayerAttack.bmp", .Start = 31, .End = 45, .InterTime = 0.03f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_AttackEnd", .ImageName = "LeftPlayerAttack.bmp", .Start = 14, .End = 18, .InterTime = 0.1f,. Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpAttack", .ImageName = "LeftPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbStart", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimb", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallKickJump", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.02f , .Loop = false });
 
 		//스테이지 시작시
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
@@ -109,6 +114,25 @@ void Player::Start()
 		BodyCollision->SetMove({0, -65});
 		BodyCollision->SetScale({60 , 125 });
 	}
+
+	{
+		LeftWallCheckCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERCHECKWALL);
+		LeftWallCheckCollision->SetMove({-35, -65});
+		LeftWallCheckCollision->SetScale({10, 125});
+	}
+
+	{
+		RightWallCheckCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERCHECKWALL);
+		RightWallCheckCollision->SetMove({ 35, -65 });
+		RightWallCheckCollision->SetScale({ 10, 125 });
+	}
+
+	{
+		UpperWallCheckCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERCHECKWALL);
+		UpperWallCheckCollision->SetMove({ 0, -130 });
+		UpperWallCheckCollision->SetScale({ 60, 10 });
+	}
+
 
 }
 
@@ -232,24 +256,68 @@ void Player::Update(float _DeltaTime)
 
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
+	CheckWall();
 
-	if (nullptr != BodyCollision)
+	//if (nullptr != BodyCollision)
+	//{
+	//	std::vector<GameEngineCollision*> Collision;
+	//	
+	//	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTERATTACK), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+	//	{
+	//		for (size_t i = 0; i < Collision.size(); i++)
+	//		{
+	//			GameEngineActor* ColActor = Collision[i]->GetActor();
+
+	//			//ColActor->Death();
+	//		}
+	//	}
+	//}
+}
+
+void Player::CheckWall()
+{
+	if (nullptr != LeftWallCheckCollision)
 	{
 		std::vector<GameEngineCollision*> Collision;
-		
-		if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTERATTACK), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
-		{
-			for (size_t i = 0; i < Collision.size(); i++)
-			{
-				GameEngineActor* ColActor = Collision[i]->GetActor();
 
-				ColActor->Death();
-			}
+		if (true == LeftWallCheckCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::WALL), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			LeftWallCheck = true;
+		}
+		else
+		{
+			LeftWallCheck = false;
+		}
+	}
+
+	if (nullptr != RightWallCheckCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == RightWallCheckCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::WALL), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			RightWallCheck = true;
+		}
+		else
+		{
+			RightWallCheck = false;
+		}
+	}
+
+	if (nullptr != UpperWallCheckCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == UpperWallCheckCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::WALL), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			UpperWallCheck = true;
+		}
+		else
+		{
+			UpperWallCheck = false;
 		}
 	}
 }
-
-
 
 void Player::DirCheck(const std::string_view& _AnimationName)
 {

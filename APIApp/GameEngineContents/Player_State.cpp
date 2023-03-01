@@ -69,7 +69,6 @@ void Player::ChangeState(PlayerState _State)
 		DashStart();
 		break;
 	}
-
 	case PlayerState::STAGESTART:
 	{
 		StageStartStart();
@@ -88,6 +87,16 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::STAGEENDPOSE:
 	{
 		StageEndPoseStart();
+		break;
+	}
+	case PlayerState::WALLCLIMB:
+	{
+		WallClimbStart();
+		break;
+	}
+	case PlayerState::WALLKICKJUMP:
+	{
+		WallKickJumpStart();
 		break;
 	}
 
@@ -174,6 +183,16 @@ void Player::ChangeState(PlayerState _State)
 		StageEndPoseEnd();
 		break;
 	}
+	case PlayerState::WALLCLIMB:
+	{
+		WallClimbEnd();
+		break;
+	}
+	case PlayerState::WALLKICKJUMP:
+	{
+		WallKickJumpEnd();
+		break;
+	}
 	default:
 		break;
 	}
@@ -258,7 +277,16 @@ void Player::UpdateState(float _DeltaTime)
 		StageEndPoseUpdate(_DeltaTime);
 		break;
 	}
-
+	case PlayerState::WALLCLIMB:
+	{
+		WallClimbUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::WALLKICKJUMP:
+	{
+		WallKickJumpUpdate(_DeltaTime);
+		break;
+	}
 	default:
 		break;
 	}
@@ -272,7 +300,18 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsPress("MoveLeft") || GameEngineInput::IsPress("MoveRight"))
+	//동시에 누르면 진행하지 않음
+	if (GameEngineInput::IsPress("MoveLeft") && GameEngineInput::IsPress("MoveRight"))
+	{
+		return;
+	}
+
+	if (GameEngineInput::IsPress("MoveLeft") && false == LeftWallCheck)
+	{
+		ChangeState(PlayerState::MOVE);
+		return;
+	}
+	if (GameEngineInput::IsPress("MoveRight") && false == RightWallCheck)
 	{
 		ChangeState(PlayerState::MOVE);
 		return;
@@ -304,11 +343,20 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+
+	//동시에 누르면 진행하지 않음
+	if (GameEngineInput::IsPress("MoveLeft") && GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
 	if (GameEngineInput::IsPress("MoveLeft") == false && GameEngineInput::IsPress("MoveRight") == false)
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
+
 
 	if (GameEngineInput::IsDown("Jump"))
 	{
@@ -319,6 +367,19 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK1);
+		return;
+	}
+
+	//왼쪽이랑 오른쪽 으로 이동중에 벽을 만나면 idle상태로
+	if (GameEngineInput::IsPress("MoveLeft") && LeftWallCheck == true)
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (GameEngineInput::IsPress("MoveRight") && RightWallCheck == true)
+	{
+		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
@@ -334,6 +395,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (IsGround == false)
 	{
 		ChangeState(PlayerState::FALL);
+		return;
 	}
 
 
@@ -355,6 +417,12 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (UpperWallCheck == true)
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
 	if (AnimationRender->IsAnimationEnd())
 	{
 		DirCheck("Jump");
@@ -363,25 +431,50 @@ void Player::JumpUpdate(float _DeltaTime)
 	if (JumpCalTime > MaxJumpTime || GameEngineInput::IsUp("Jump"))
 	{
 		ChangeState(PlayerState::FALL);
+		return;
 	}
 	else
 	{
 		MoveDir += float4::Up * JumpForce;
 	}
 
+	//점프하며 왼쪽 또는 오른쪽으로 가는 도중 벽을 만났을 때,
 	if (GameEngineInput::IsPress("MoveLeft"))
 	{
-		MoveDir += float4::Left * MoveSpeed;
+		if (LeftWallCheck == true)
+		{
+			if (JumpCalTime > MinimumJumpTimeToClimbWall)
+			{
+				ChangeState(PlayerState::WALLCLIMB);
+				return;
+			}
+		}
+		else
+		{
+			MoveDir += float4::Left * MoveSpeed;
+		}
 	}
-	else if (GameEngineInput::IsPress("MoveRight"))
+	if (GameEngineInput::IsPress("MoveRight"))
 	{
-		MoveDir += float4::Right * MoveSpeed;
+		if ( RightWallCheck == true)
+		{
+			if (JumpCalTime > MinimumJumpTimeToClimbWall)
+			{
+				ChangeState(PlayerState::WALLCLIMB);
+				return;
+			}
+		}
+		else
+		{
+			MoveDir += float4::Right * MoveSpeed;
+		}
 	}
 
 	//점프 도중 어택 버튼 누르면 일반공격
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::JUMPATTACK);
+		return;
 	}
 
 	//Debug용 (점프시간 확인)
@@ -424,19 +517,37 @@ void Player::FallUpdate(float _DeltaTime)
 		DirCheck("FallStart");
 	}
 
+	//떨어지며 왼쪽 또는 오른쪽으로 가는 도중 벽을 만났을 때,
 	if (GameEngineInput::IsPress("MoveLeft"))
 	{
-		MoveDir += float4::Left * MoveSpeed;
+		if (LeftWallCheck == true)
+		{
+			ChangeState(PlayerState::WALLCLIMB);
+			return;
+		}
+		else
+		{
+			MoveDir += float4::Left * MoveSpeed;
+		}
 	}
-	else if (GameEngineInput::IsPress("MoveRight"))
+	if (GameEngineInput::IsPress("MoveRight"))
 	{
-		MoveDir += float4::Right * MoveSpeed;
+		if (RightWallCheck == true)
+		{
+			ChangeState(PlayerState::WALLCLIMB);
+			return;
+		}
+		else
+		{
+			MoveDir += float4::Right * MoveSpeed;
+		}
 	}
 
 	//FALL 도중 어택 버튼 누르면 일반공격
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::JUMPATTACK);
+		return;
 	}
 
 	//Fall 도중에 중력적용
@@ -447,10 +558,12 @@ void Player::FallUpdate(float _DeltaTime)
 		if (GameEngineInput::IsPress("MoveLeft") || GameEngineInput::IsPress("MoveRight"))
 		{
 			ChangeState(PlayerState::MOVE);
+			return;
 		}
 		else
 		{
 			ChangeState(PlayerState::LANDING);
+			return;
 		}
 	}
 }
@@ -470,6 +583,7 @@ void Player::LandingUpdate(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
+		return;
 	}
 }
 
@@ -486,11 +600,13 @@ void Player::Attack1Update(float _DeltaTime)
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK2);
+		return;
 	}
 
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::ATTACKEND);
+		return;
 	}
 }
 void Player::Attack1End()
@@ -507,11 +623,13 @@ void Player::Attack2Update(float _DeltaTime)
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK3);
+		return;
 	}
 
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::ATTACKEND);
+		return;
 	}
 
 
@@ -530,6 +648,7 @@ void Player::Attack3Update(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::ATTACKEND);
+		return;
 	}
 }
 void Player::Attack3End()
@@ -547,11 +666,13 @@ void Player::AttackEndUpdate(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
+		return;
 	}
 
 	if (GameEngineInput::IsPress("MoveLeft") || GameEngineInput::IsPress("MoveRight"))
 	{
 		ChangeState(PlayerState::MOVE);
+		return;
 	}
 }
 
@@ -574,6 +695,7 @@ void Player::StageStartUpdate(float _DeltaTime)
 	if (IsGround == true)
 	{
 		ChangeState(PlayerState::STAGESTARTPOSE);
+		return;
 	}
 }
 void Player::StageStartEnd()
@@ -592,6 +714,7 @@ void Player::StageStartPoseUpdate(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
+		return;
 	}
 }
 void Player::StageStartPoseEnd()
@@ -639,11 +762,13 @@ void Player::JumpAttackUpdate(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::FALL);
+		return;
 	}
 
 	if (IsGround == true)
 	{
 		ChangeState(PlayerState::LANDING);
+		return;
 	}
 
 	//JUMPATTACK 도중에 중력적용
@@ -665,4 +790,75 @@ void Player::DashUpdate(float _DeltaTime)
 }
 void Player::DashEnd()
 {
+}
+
+void Player::WallClimbStart()
+{
+	CurrentDir = DirString;
+	DirCheck("WallClimbStart");
+}
+void Player::WallClimbUpdate(float _DeltaTime)
+{
+	if (IsGround == true)
+	{
+		ChangeState(PlayerState::LANDING);
+		return;
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DirCheck("WallClimb");
+	}
+
+	if (CurrentDir == "Left_")
+	{
+		if(GameEngineInput::IsUp("MoveLeft"))
+		{
+			DirString = "Right_";
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+		if (LeftWallCheck == false)
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+	}
+	else
+	{
+		if (GameEngineInput::IsUp("MoveRight"))
+		{
+			{
+				DirString = "Left_";
+				ChangeState(PlayerState::FALL);
+				return;
+			}
+		}
+		if (RightWallCheck == false)
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+	}
+
+	//벽타는 중에 중력적용
+	MoveDir += (float4::Down * GravityInWallClimb);
+}
+void Player::WallClimbEnd()
+{
+	
+}
+
+
+void Player::WallKickJumpStart()
+{
+
+}
+void Player::WallKickJumpUpdate(float _DeltaTime)
+{
+
+}
+void Player::WallKickJumpEnd()
+{
+
 }
