@@ -85,6 +85,12 @@
     <ClInclude Include="TestWall.h">
       <Filter>3.Play\Test\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="WallClimbDustEffect.h">
+      <Filter>3.Play\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BossRoomWallCollision.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -170,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="TestWall.cpp">
       <Filter>3.Play\Test\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="WallClimbDustEffect.cpp">
+      <Filter>3.Play\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BossRoomWallCollision.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +271,9 @@
     </Filter>
     <Filter Include="3.Play\Test\Map">
       <UniqueIdentifier>{f14415c7-4c2e-440f-9b7f-d20cded627d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\Player\Effect">
+      <UniqueIdentifier>{d3faf77b-abe8-46ba-be5e-6da706aa775d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

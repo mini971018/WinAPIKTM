@@ -27,7 +27,13 @@ enum class PlayerState
 	WALLKICKDASHJUMP
 };
 
+enum class PlayerCameraLock
+{
+	CyberPeacockBoss,
+};
+
 class GameEngineImage;
+class WallClimbDustEffect;
 class Player : public GameEngineActor
 {
 public:
@@ -81,10 +87,11 @@ private:
 	
 	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
 
+
 	GameEngineRender* AnimationRender = nullptr;
+	WallClimbDustEffect* WallClimbDust;
 
 	GameEngineCollision* BodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
-
 
 	//각각 좌측 우측 상단에서 벽이 닿았는지 체크하는 콜리전
 	GameEngineCollision* LeftWallCheckCollision = nullptr;
@@ -102,6 +109,9 @@ private:
 	bool FreeMoveState(float _DeltaTime);
 
 	void CheckWall();
+
+	void CameraLock(float4 _MoveDir, float _DeltaTime);
+	PlayerCameraLock CameraLockState = PlayerCameraLock::CyberPeacockBoss;
 
 	//FSM 유한 상태 머신 : 적용되는 것들은 한가지 일을 할 때, 동시에 다른 일을 할 수 없다.
 	void ChangeState(PlayerState _State);

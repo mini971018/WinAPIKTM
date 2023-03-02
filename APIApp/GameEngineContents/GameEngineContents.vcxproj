@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossRoomWallCollision.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CharacterSelectBackground.h">
       <SubType>
       </SubType>
@@ -128,8 +132,16 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="WallClimbDustEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossRoomWallCollision.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="CharacterSelectBackground.cpp">
       <SubType>
       </SubType>
@@ -236,6 +248,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleStartObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WallClimbDustEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

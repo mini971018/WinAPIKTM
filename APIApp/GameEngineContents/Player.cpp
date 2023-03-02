@@ -9,6 +9,8 @@
 #include "ContentsEnums.h"
 #include <GameEngineBase/GameEngineMath.h>
 
+#include "WallClimbDustEffect.h"
+
 Player* Player::MainPlayer;
 
 void Player::SetMainPlayer(Player& _Player)
@@ -138,8 +140,6 @@ void Player::Start()
 		UpperWallCheckCollision->SetMove({ 0, -130 });
 		UpperWallCheckCollision->SetScale({ 60, 10 });
 	}
-
-
 }
 
 //레벨마다 다른 colimage를 캐릭마다 넣음
@@ -181,11 +181,57 @@ void Player::MoveCalculation(float _DeltaTime)
 	}
 
 	SetMove(MoveDir * _DeltaTime);
+	CameraLock(MoveDir, _DeltaTime);
 
-	//카메라
-	float4 CameraDir = float4(MoveDir.x, 0.0f);
 
-	GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+}
+
+void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
+{
+	switch (CameraLockState)
+	{
+	case PlayerCameraLock::CyberPeacockBoss:
+	{
+		float4 CameraDir = float4(MoveDir.x, 0.0f);
+		float4 CameraPos = GetLevel()->GetCameraPos();
+		float4 CharacterPos = GetPos();
+
+		if (CameraDir.x < 0.0f)
+		{
+			if (CameraPos.x <= 5764.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			if (CharacterPos.x - 440.0f >= CameraPos.x)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+		}
+		else
+		{
+			if (CameraPos.x >= 7964.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			if (CharacterPos.x <= CameraPos.x + 440.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+		}
+
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
 }
 
 float4 Player::RaiseUpCharacter(float4 _NextPos, float _DeltaTime)

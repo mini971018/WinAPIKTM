@@ -936,6 +936,16 @@ void Player::DashEndUpdate(float _DeltaTime)
 		ChangeState(PlayerState::DASH);
 		return;
 	}
+
+	if (CurrentDir == "Left_")
+	{
+		MoveDir += float4::Left * DashSpeed * 0.3f;
+	}
+	else
+	{
+		MoveDir += float4::Right * DashSpeed * 0.3f;
+	
+	}
 }
 void Player::DashEndEnd()
 {
@@ -954,7 +964,7 @@ void Player::DashJumpUpdate(float _DeltaTime)
 
 	if (UpperWallCheck == true)
 	{
-		ChangeState(PlayerState::FALL);
+		ChangeState(PlayerState::DASHFALL);
 		return;
 	}
 
@@ -1190,11 +1200,11 @@ void Player::WallKickJumpUpdate(float _DeltaTime)
 
 	if (CurrentDir == "Left_")
 	{
-		MoveDir += (float4::Up + float4::Right) * WallKickJumpForce;
+		MoveDir += (float4::Up  + (float4::Right * 0.5f)) * WallKickJumpForce;
 	}
 	else
 	{
-		MoveDir += (float4::Up + float4::Left) * WallKickJumpForce;
+		MoveDir += (float4::Up + (float4::Left * 0.5f)) * WallKickJumpForce;
 	}
 
 	if (AnimationRender->IsAnimationEnd())
@@ -1222,11 +1232,11 @@ void Player::WallKickDashJumpUpdate(float _DeltaTime)
 
 	if (CurrentDir == "Left_")
 	{
-		MoveDir += (float4::Up + float4::Right) * WallKickDashJumpForce;
+		MoveDir += (float4::Up + (float4::Right * 0.5f)) * WallKickDashJumpForce;
 	}
 	else
 	{
-		MoveDir += (float4::Up + float4::Left) * WallKickDashJumpForce;
+		MoveDir += (float4::Up + (float4::Left * 0.5f)) * WallKickDashJumpForce;
 	}
 
 	if (AnimationRender->IsAnimationEnd())

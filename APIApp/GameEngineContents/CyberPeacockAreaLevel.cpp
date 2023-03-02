@@ -1,12 +1,13 @@
 #include "CyberPeacockAreaLevel.h"
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineResources.h>
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #include "Player.h"
 #include "CyberPeacockAreaMap.h"
 #include "ContentsEnums.h"
-#include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineCore.h>
+#include "BossRoomWallCollision.h"
 
 CyberPeacockAreaLevel::CyberPeacockAreaLevel() 
 {
@@ -39,23 +40,28 @@ void CyberPeacockAreaLevel::Loading()
 	}
 
 
-
 	//액터 생성
 	{
 		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
-		CyberPeacockAreaLevelPlayer->SetPos({ 200,100 });
+		CyberPeacockAreaLevelPlayer->SetPos({ 6203, 4800 });
+		SetCameraPos({ 5763, 4659 });
 		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
 	}
 	{
 		CyberPeacockAreaMap* Actor = CreateActor<CyberPeacockAreaMap>();
 	}
+	{
+		{
+			GameEngineActor* Wall = CreateActor<BossRoomWallCollision>();
+		}
+	}
 }
 
 void CyberPeacockAreaLevel::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("NextLevel"))
+	if (GameEngineInput::IsDown("DebugRenderSwitch"))
 	{
-		GameEngineCore::GetInst()->ChangeLevel("MagmaDragoonArea");
+		DebugRenderSwitch();
 	}
 }
 
