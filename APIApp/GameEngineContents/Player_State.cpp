@@ -69,6 +69,21 @@ void Player::ChangeState(PlayerState _State)
 		DashStart();
 		break;
 	}
+	case PlayerState::DASHEND:
+	{
+		DashEndStart();
+		break;
+	}
+	case PlayerState::DASHJUMP:
+	{
+		DashJumpStart();
+		break;
+	}
+	case PlayerState::DASHFALL:
+	{
+		DashFallStart();
+		break;
+	}
 	case PlayerState::STAGESTART:
 	{
 		StageStartStart();
@@ -97,6 +112,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::WALLKICKJUMP:
 	{
 		WallKickJumpStart();
+		break;
+	}
+	case PlayerState::WALLKICKDASHJUMP:
+	{
+		WallKickDashJumpStart();
 		break;
 	}
 
@@ -162,7 +182,21 @@ void Player::ChangeState(PlayerState _State)
 		DashEnd();
 		break;
 	}
-
+	case PlayerState::DASHEND:
+	{
+		DashEndEnd();
+		break;
+	}
+	case PlayerState::DASHJUMP:
+	{
+		DashJumpEnd();
+		break;
+	}
+	case PlayerState::DASHFALL:
+	{
+		DashFallEnd();
+		break;
+	}
 	case PlayerState::STAGESTART:
 	{
 		StageStartEnd();
@@ -191,6 +225,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::WALLKICKJUMP:
 	{
 		WallKickJumpEnd();
+		break;
+	}
+	case PlayerState::WALLKICKDASHJUMP:
+	{
+		WallKickDashJumpEnd();
 		break;
 	}
 	default:
@@ -257,6 +296,21 @@ void Player::UpdateState(float _DeltaTime)
 		DashUpdate(_DeltaTime);
 		break;
 	}
+	case PlayerState::DASHEND:
+	{
+		DashEndUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::DASHJUMP:
+	{
+		DashJumpUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::DASHFALL:
+	{
+		DashFallUpdate(_DeltaTime);
+		break;
+	}
 	case PlayerState::STAGESTART:
 	{
 		StageStartUpdate(_DeltaTime);
@@ -285,6 +339,11 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::WALLKICKJUMP:
 	{
 		WallKickJumpUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::WALLKICKDASHJUMP:
+	{
+		WallKickDashJumpUpdate(_DeltaTime);
 		break;
 	}
 	default:
@@ -319,7 +378,14 @@ void Player::IdleUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Jump"))
 	{
-		ChangeState(PlayerState::JUMP);
+		if (GameEngineInput::IsPress("Dash"))
+		{
+			ChangeState(PlayerState::DASHJUMP);
+		}
+		else
+		{
+			ChangeState(PlayerState::JUMP);
+		}
 		return;
 	}
 
@@ -327,6 +393,11 @@ void Player::IdleUpdate(float _DeltaTime)
 	{
 		ChangeState(PlayerState::ATTACK1);
 		return;
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
 	}
 }
 
@@ -357,10 +428,23 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
+	}
 
 	if (GameEngineInput::IsDown("Jump"))
 	{
-		ChangeState(PlayerState::JUMP);
+		if (GameEngineInput::IsPress("Dash"))
+		{
+			ChangeState(PlayerState::DASHJUMP);
+		}
+		else
+		{
+			ChangeState(PlayerState::JUMP);
+		}
+
 		return;
 	}
 
@@ -417,6 +501,8 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	JumpCalTime += _DeltaTime;
+
 	if (UpperWallCheck == true)
 	{
 		ChangeState(PlayerState::FALL);
@@ -479,7 +565,6 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	//Debug용 (점프시간 확인)
 	{
-		JumpCalTime += _DeltaTime;
 
 		std::string PlayerJumpTime = "PlayerJumpTime : ";
 
@@ -782,15 +867,243 @@ void Player::JumpAttackEnd()
 
 void Player::DashStart()
 {
-
+	DashCalTime = 0.0f;
+	DirCheck("DashStart");
+	CurrentDir = DirString;
 }
 void Player::DashUpdate(float _DeltaTime)
 {
+	DashCalTime += _DeltaTime;
+
+	if (DashCalTime >= MaxDashTime || GameEngineInput::IsUp("Dash") || CurrentDir != DirString)
+	{
+		ChangeState(PlayerState::DASHEND);
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::DASHJUMP);
+		return;
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DirCheck("DashLoop");
+	}
+
+	if (DirString == "Right_")
+	{
+		if (RightWallCheck == true)
+		{
+			ChangeState(PlayerState::DASHEND);
+			return;
+		}
+		MoveDir += float4::Right * DashSpeed;
+	}
+	else
+	{
+		if (LeftWallCheck == true)
+		{
+			ChangeState(PlayerState::DASHEND);
+			return;
+		}
+
+		MoveDir += float4::Left * DashSpeed;
+	}
 
 }
 void Player::DashEnd()
 {
+	
 }
+
+void Player::DashEndStart()
+{
+	DirCheck("DashEnd");
+
+}
+void Player::DashEndUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
+	}
+}
+void Player::DashEndEnd()
+{
+
+}
+
+void Player::DashJumpStart()
+{
+	DirCheck("JumpStart");
+	JumpCalTime = 0.0f;
+	IsGround = false;
+}
+void Player::DashJumpUpdate(float _DeltaTime)
+{
+	JumpCalTime += _DeltaTime;
+
+	if (UpperWallCheck == true)
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DirCheck("Jump");
+	}
+
+	if (JumpCalTime > MaxJumpTime || GameEngineInput::IsUp("Jump"))
+	{
+		ChangeState(PlayerState::DASHFALL);
+		return;
+	}
+	else
+	{
+		MoveDir += float4::Up * JumpForce;
+	}
+
+	//점프하며 왼쪽 또는 오른쪽으로 가는 도중 벽을 만났을 때,
+	if (GameEngineInput::IsPress("MoveLeft"))
+	{
+		if (LeftWallCheck == true)
+		{
+			if (JumpCalTime > MinimumJumpTimeToClimbWall)
+			{
+				ChangeState(PlayerState::WALLCLIMB);
+				return;
+			}
+		}
+		else
+		{
+			MoveDir += float4::Left * DashSpeed;
+		}
+	}
+	if (GameEngineInput::IsPress("MoveRight"))
+	{
+		if (RightWallCheck == true)
+		{
+			if (JumpCalTime > MinimumJumpTimeToClimbWall)
+			{
+				ChangeState(PlayerState::WALLCLIMB);
+				return;
+			}
+		}
+		else
+		{
+			MoveDir += float4::Right * DashSpeed;
+		}
+	}
+
+	//점프 도중 어택 버튼 누르면 일반공격
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::JUMPATTACK);
+		return;
+	}
+
+	//Debug용 (점프시간 확인)
+	{
+		std::string PlayerJumpTime = "PlayerJumpTime : ";
+
+		PlayerJumpTime += std::to_string(JumpCalTime);
+
+		GameEngineLevel::DebugTextPush(PlayerJumpTime);
+	}
+}
+void Player::DashJumpEnd()
+{
+
+}
+
+void Player::DashFallStart()
+{
+	DirCheck("FallStart");
+	StartFallState = false;
+}
+
+void Player::DashFallUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		StartFallState = true;
+		DirCheck("Fall");
+	}
+
+	if (StartFallState == true)
+	{
+		DirCheck("Fall");
+	}
+	else
+	{
+		DirCheck("FallStart");
+	}
+
+	//떨어지며 왼쪽 또는 오른쪽으로 가는 도중 벽을 만났을 때,
+	if (GameEngineInput::IsPress("MoveLeft"))
+	{
+		if (LeftWallCheck == true)
+		{
+			ChangeState(PlayerState::WALLCLIMB);
+			return;
+		}
+		else
+		{
+			MoveDir += float4::Left * DashSpeed;
+		}
+	}
+	if (GameEngineInput::IsPress("MoveRight"))
+	{
+		if (RightWallCheck == true)
+		{
+			ChangeState(PlayerState::WALLCLIMB);
+			return;
+		}
+		else
+		{
+			MoveDir += float4::Right * DashSpeed;
+		}
+	}
+
+	//FALL 도중 어택 버튼 누르면 일반공격
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::JUMPATTACK);
+		return;
+	}
+
+	//Fall 도중에 중력적용
+	MoveDir += (float4::Down * Gravity);
+
+	if (IsGround == true)
+	{
+		if (GameEngineInput::IsPress("MoveLeft") || GameEngineInput::IsPress("MoveRight"))
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::LANDING);
+			return;
+		}
+	}
+
+}
+void Player::DashFallEnd()
+{
+}
+
 
 void Player::WallClimbStart()
 {
@@ -841,6 +1154,20 @@ void Player::WallClimbUpdate(float _DeltaTime)
 		}
 	}
 
+
+	if (GameEngineInput::IsDown("Jump"))
+	{
+		if (GameEngineInput::IsPress("Dash"))
+		{
+			ChangeState(PlayerState::WALLKICKDASHJUMP);
+		}
+		else
+		{
+			ChangeState(PlayerState::WALLKICKJUMP);
+		}
+		return;
+	}
+
 	//벽타는 중에 중력적용
 	MoveDir += (float4::Down * GravityInWallClimb);
 }
@@ -849,16 +1176,67 @@ void Player::WallClimbEnd()
 	
 }
 
-
 void Player::WallKickJumpStart()
 {
-
+	DirCheck("WallKickJump");
 }
 void Player::WallKickJumpUpdate(float _DeltaTime)
 {
+	if (UpperWallCheck == true)
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
 
+	if (CurrentDir == "Left_")
+	{
+		MoveDir += (float4::Up + float4::Right) * WallKickJumpForce;
+	}
+	else
+	{
+		MoveDir += (float4::Up + float4::Left) * WallKickJumpForce;
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
 }
 void Player::WallKickJumpEnd()
+{
+}
+
+void Player::WallKickDashJumpStart()
+{
+	DirCheck("WallKickJump");
+}
+
+void Player::WallKickDashJumpUpdate(float _DeltaTime)
+{
+	if (UpperWallCheck == true)
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+	if (CurrentDir == "Left_")
+	{
+		MoveDir += (float4::Up + float4::Right) * WallKickDashJumpForce;
+	}
+	else
+	{
+		MoveDir += (float4::Up + float4::Left) * WallKickDashJumpForce;
+	}
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::DASHJUMP);
+		return;
+	}
+}
+
+void Player::WallKickDashJumpEnd()
 {
 
 }

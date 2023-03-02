@@ -40,6 +40,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("MoveDown", 'S');
 		GameEngineInput::CreateKey("Jump", 'K');
 		GameEngineInput::CreateKey("Attack", 'J');
+		GameEngineInput::CreateKey("Dash", 'L');
 
 		//디버그 또는 확인용
 		GameEngineInput::CreateKey("NextLevel", 'P');
@@ -69,8 +70,10 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_JumpAttack", .ImageName = "RightPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbStart", .ImageName = "RightPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimb", .ImageName = "RightPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f});
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallKickJump", .ImageName = "RightPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.02f , .Loop = false });
-
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallKickJump", .ImageName = "RightPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.04f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashStart", .ImageName = "RightPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.045f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashLoop", .ImageName = "RightPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashEnd", .ImageName = "RightPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
 		//좌측 애니메이션
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle",      .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
@@ -87,7 +90,10 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_JumpAttack", .ImageName = "LeftPlayerJumpAttack.bmp", .Start = 0, .End = 7, .InterTime = 0.02f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbStart", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimb", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallKickJump", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.02f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallKickJump", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.04f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashStart", .ImageName = "LeftPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.045f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashLoop", .ImageName = "LeftPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashEnd", .ImageName = "LeftPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
 
 		//스테이지 시작시
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });

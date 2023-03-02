@@ -24,10 +24,15 @@ void TestWall::Start()
 		TestWall->SetScale({ 30 , 660 });
 	}
 
+	//{
+	//	GameEngineCollision* TestWall = CreateCollision(MegamanX4CollisionOrder::WALL);
+	//	TestWall->SetMove({ 0, 300 });
+	//	TestWall->SetScale({ 300 , 60 });
+	//}
+
 	{
 		GameEngineCollision* TestWall = CreateCollision(MegamanX4CollisionOrder::WALL);
-		TestWall->SetMove({ 0, 300 });
-		TestWall->SetScale({ 300 , 60 });
+		TestWall->SetMove({ 440, 0 });
+		TestWall->SetScale({ 880 , 50 });
 	}
-
 }

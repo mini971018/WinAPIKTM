@@ -14,13 +14,17 @@ enum class PlayerState
 	ATTACKEND,
 	JUMPATTACK,
 	DASH,
+	DASHEND,
+	DASHJUMP,
+	DASHFALL,
 	STAGESTART, //스테이지 시작 시 플레이어가 바닥에 닿기 전 레이저 상태
 	STAGESTARTPOSE, //스테이지 시작 시 플레이어가 바닥에 닿은 후 애니메이션 상태
 	STAGEEND, //스테이지 종료 후 플레이어가 바닥에 떠서 날아가는 레이저 상태
 	STAGEENDPOSE, //스테이지 종료 후 플레이어가 바닥에서 하는 애니메이션 상태
 
 	WALLCLIMB,
-	WALLKICKJUMP
+	WALLKICKJUMP,
+	WALLKICKDASHJUMP
 };
 
 class GameEngineImage;
@@ -49,15 +53,21 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	float MoveSpeed = 300.0f;
+	float MoveSpeed = 300.0f; //일반 이동 속도
+	float DashSpeed = MoveSpeed * 2.0f; //대쉬시 이동속도
+
 	float Gravity = 500.0f;
 	float GravityInWallClimb = 250.0f;
 	float JumpForce = 900.0f;
+	float WallKickJumpForce = 700.0f;
+	float WallKickDashJumpForce = WallKickJumpForce * 1.5f;
 
 	float JumpCalTime = 0.0f; //몇초동안 점프했는지 계산을 위한 변수
 	float MinimumJumpTimeToClimbWall = 0.15f; //벽을 타기위한 최소 점프시간
 	float MaxJumpTime = 0.23f; //최대 점프 가능한 시간
 	float MoveSpeedInStageChange = 1000.0f; //스테이지 시작, 종료등 레이저상태로 이동할 때의 속력
+	float DashCalTime = 0.0f; //몇초동안 대쉬했는지 계산을 위한 변수
+	float MaxDashTime = 0.7f; //최대 대쉬 가능한 시간
 
 	bool StartFallState = false;
 
@@ -141,6 +151,18 @@ private:
 	void DashUpdate(float _DeltaTime);
 	void DashEnd();
 
+	void DashEndStart();
+	void DashEndUpdate(float _DeltaTime);
+	void DashEndEnd();
+
+	void DashJumpStart();
+	void DashJumpUpdate(float _DeltaTime);
+	void DashJumpEnd();
+
+	void DashFallStart();
+	void DashFallUpdate(float _DeltaTime);
+	void DashFallEnd();
+
 	void StageStartStart();
 	void StageStartUpdate(float _DeltaTime);
 	void StageStartEnd();
@@ -164,6 +186,10 @@ private:
 	void WallKickJumpStart();
 	void WallKickJumpUpdate(float _DeltaTime);
 	void WallKickJumpEnd();
+
+	void WallKickDashJumpStart();
+	void WallKickDashJumpUpdate(float _DeltaTime);
+	void WallKickDashJumpEnd();
 
 	GameEngineImage* ColImage = nullptr;
 
