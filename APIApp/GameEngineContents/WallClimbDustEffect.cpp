@@ -22,13 +22,13 @@ void WallClimbDustEffect::Start()
 	{
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbDustStart", .ImageName = "RightPlayerWallClimbDust.bmp", .Start = 0, .End = 1, .InterTime = 0.045f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbDustLoop", .ImageName = "RightPlayerWallClimbDust.bmp", .Start = 2, .End = 4, .InterTime = 0.045f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbDustEnd", .ImageName = "RightPlayerWallClimbDust.bmp", .Start = 5, .End = 7, .InterTime = 0.045f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbDustEnd", .ImageName = "RightPlayerWallClimbDust.bmp", .Start = 5, .End = 8, .InterTime = 0.045f, .Loop = false });
 	}
 	//Left
 	{
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbDustStart", .ImageName = "LeftPlayerWallClimbDust.bmp", .Start = 0, .End = 1, .InterTime = 0.045f,  .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbDustLoop", .ImageName = "LeftPlayerWallClimbDust.bmp", .Start = 2, .End = 4, .InterTime = 0.045f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbDustEnd", .ImageName = "LeftPlayerWallClimbDust.bmp", .Start = 5, .End = 7, .InterTime = 0.045f, .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbDustEnd", .ImageName = "LeftPlayerWallClimbDust.bmp", .Start = 5, .End = 8, .InterTime = 0.045f, .Loop = false });
 	}
 
 	AnimationRender->Off();
@@ -36,26 +36,33 @@ void WallClimbDustEffect::Start()
 
 void WallClimbDustEffect::Update(float _DeltaTime)
 {
+	if (nullptr == AnimationRender)
+	{
+		return;
+	}
+
 	if (IsOn == true && AnimationRender->IsAnimationEnd())
 	{
-		AnimationRender->ChangeAnimation("Left_WallClimbDustLoop");
+		DirCheck("WallClimbDustLoop");
 	}
 
-	if (IsOn == false && AnimationRender->IsAnimationEnd())
-	{
-		AnimationRender->ChangeAnimation("Left_WallClimbDustEnd");
-	}
 }
 
-void WallClimbDustEffect::OnWallClimbDustEffect()
+void WallClimbDustEffect::OnWallClimbDustEffect(const std::string _DirString)
 {
-	AnimationRender->ChangeAnimation("Left_WallClimbDustStart");
+	DirString = _DirString;
+	DirCheck("WallClimbDustStart");
 	AnimationRender->On();
 	IsOn = true;
 }
 
 void WallClimbDustEffect::OffWallClimbDustEffect()
 {
-	AnimationRender->ChangeAnimation("Left_WallClimbDustEnd");
+	DirCheck("WallClimbDustEnd");
 	IsOn = false;
+}
+
+void WallClimbDustEffect::DirCheck(const std::string_view& _AnimationName)
+{
+	AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
 }

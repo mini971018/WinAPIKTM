@@ -27,8 +27,8 @@ void MegamanX4GameCore::Start()
 	CreateLevel<PrologueLevel>("Prologue");
 	CreateLevel<CharacterSelectLevel>("CharacterSelect");
 	CreateLevel<CyberPeacockAreaLevel>("CyberPeacockArea");
-	CreateLevel<MagmaDragoonAreaLevel>("MagmaDragoonArea");
-	CreateLevel<SpacePortLevel>("SpacePort");
+	//CreateLevel<MagmaDragoonAreaLevel>("MagmaDragoonArea");
+	//CreateLevel<SpacePortLevel>("SpacePort");
 	CreateLevel<TestLevel>("TestLevel");
 
 	ChangeLevel("Title");

@@ -10,6 +10,8 @@
 #include <GameEngineBase/GameEngineMath.h>
 
 #include "WallClimbDustEffect.h"
+#include "WallKickJumpEffect.h"
+#include "DashEffect.h"
 
 Player* Player::MainPlayer;
 
@@ -25,8 +27,8 @@ Player::Player()
 
 Player::~Player() 
 {
-}
 
+}
 
 
 void Player::Start()
@@ -50,6 +52,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("ColMapMode", '0');
 		GameEngineInput::CreateKey("DebugRenderSwitch", 'I');
 		GameEngineInput::CreateKey("TestLevel", 'T');
+		GameEngineInput::CreateKey("TestButton", 'H');
 	}
 
 	{
@@ -73,7 +76,7 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimbStart", .ImageName = "RightPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallClimb", .ImageName = "RightPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f});
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_WallKickJump", .ImageName = "RightPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.04f , .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashStart", .ImageName = "RightPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.045f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashStart", .ImageName = "RightPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.07f , .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashLoop", .ImageName = "RightPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashEnd", .ImageName = "RightPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
 		//좌측 애니메이션
@@ -93,7 +96,7 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimbStart", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 0, .End = 1, .InterTime = 0.05f, .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallClimb", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 2, .End = 4, .InterTime = 0.05f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_WallKickJump", .ImageName = "LeftPlayerWallClimb.bmp", .Start = 5, .End = 7, .InterTime = 0.04f , .Loop = false });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashStart", .ImageName = "LeftPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.045f , .Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashStart", .ImageName = "LeftPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.07f , .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashLoop", .ImageName = "LeftPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashEnd", .ImageName = "LeftPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
 
@@ -113,6 +116,7 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
 
 		ChangeState(PlayerState::STAGESTART);
+
 	}
 
 
@@ -139,6 +143,15 @@ void Player::Start()
 		UpperWallCheckCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERCHECKWALL);
 		UpperWallCheckCollision->SetMove({ 0, -130 });
 		UpperWallCheckCollision->SetScale({ 60, 10 });
+	}
+
+	{
+		if (nullptr != GetLevel())
+		{
+			WallClimbDust = GetLevel()->CreateActor<WallClimbDustEffect>();
+			WallKickEffect = GetLevel()->CreateActor<WallKickJumpEffect>();
+			PlayerDashEffect = GetLevel()->CreateActor<DashEffect>();
+		}
 	}
 }
 
@@ -182,7 +195,6 @@ void Player::MoveCalculation(float _DeltaTime)
 
 	SetMove(MoveDir * _DeltaTime);
 	CameraLock(MoveDir, _DeltaTime);
-
 
 }
 
@@ -309,6 +321,7 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
 	CheckWall();
+
 
 	//if (nullptr != BodyCollision)
 	//{

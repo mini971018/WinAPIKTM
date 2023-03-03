@@ -4,6 +4,10 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
+#include "WallClimbDustEffect.h"
+#include "WallKickJumpEffect.h"
+#include "DashEffect.h"
+
 void Player::ChangeState(PlayerState _State)
 {
 	PlayerState NextState = _State;
@@ -870,7 +874,20 @@ void Player::DashStart()
 	DashCalTime = 0.0f;
 	DirCheck("DashStart");
 	CurrentDir = DirString;
+	PlayerDashEffect->OnDashEffect(CurrentDir);
+
+	float4 MyPos = GetPos();
+	float4 EffectPos = { 70.0f, 30.0f };
+	if (DirString == "Left_")
+	{
+		PlayerDashEffect->SetPos({ MyPos.x + EffectPos.x, MyPos.y - EffectPos.y });
+	}
+	else
+	{
+		PlayerDashEffect->SetPos({ MyPos.x - EffectPos.x, MyPos.y - EffectPos.y });
+	}
 }
+
 void Player::DashUpdate(float _DeltaTime)
 {
 	DashCalTime += _DeltaTime;
@@ -899,6 +916,9 @@ void Player::DashUpdate(float _DeltaTime)
 			ChangeState(PlayerState::DASHEND);
 			return;
 		}
+
+		PlayerDashEffect->SetMove(float4::Right * DashSpeed * _DeltaTime);
+
 		MoveDir += float4::Right * DashSpeed;
 	}
 	else
@@ -909,13 +929,15 @@ void Player::DashUpdate(float _DeltaTime)
 			return;
 		}
 
+		PlayerDashEffect->SetMove(float4::Left * DashSpeed * _DeltaTime);
+
 		MoveDir += float4::Left * DashSpeed;
 	}
 
 }
 void Player::DashEnd()
 {
-	
+	PlayerDashEffect->OffDashEffect();
 }
 
 void Player::DashEndStart()
@@ -939,10 +961,20 @@ void Player::DashEndUpdate(float _DeltaTime)
 
 	if (CurrentDir == "Left_")
 	{
+		if (LeftWallCheck == true)
+		{
+			return;
+		}
+
 		MoveDir += float4::Left * DashSpeed * 0.3f;
 	}
 	else
 	{
+		if (RightWallCheck == true)
+		{
+			return;
+		}
+
 		MoveDir += float4::Right * DashSpeed * 0.3f;
 	
 	}
@@ -1115,10 +1147,21 @@ void Player::DashFallEnd()
 }
 
 
+
 void Player::WallClimbStart()
 {
 	CurrentDir = DirString;
 	DirCheck("WallClimbStart");
+	float4 MyPos = GetPos();
+	if (DirString == "Left_")
+	{
+		WallClimbDust->SetPos( {MyPos.x - 40, MyPos.y });
+	}
+	else
+	{
+		WallClimbDust->SetPos({ MyPos.x + 40, MyPos.y });
+	}
+	WallClimbDust->OnWallClimbDustEffect(DirString);
 }
 void Player::WallClimbUpdate(float _DeltaTime)
 {
@@ -1180,15 +1223,28 @@ void Player::WallClimbUpdate(float _DeltaTime)
 
 	//벽타는 중에 중력적용
 	MoveDir += (float4::Down * GravityInWallClimb);
+	//이펙트도 플레이어와 같은 속도로 내려감
+	WallClimbDust->SetMove(float4::Down * GravityInWallClimb * _DeltaTime);
 }
 void Player::WallClimbEnd()
 {
-	
+	WallClimbDust->OffWallClimbDustEffect();
 }
 
 void Player::WallKickJumpStart()
 {
+	CurrentDir = DirString;
 	DirCheck("WallKickJump");
+	float4 MyPos = GetPos();
+	if (DirString == "Left_")
+	{
+		WallKickEffect->SetPos({ MyPos.x - 40, MyPos.y - 15});
+	}
+	else
+	{
+		WallKickEffect->SetPos({ MyPos.x + 40, MyPos.y - 15 });
+	}
+	WallKickEffect->OnWallKickJumpEffect(CurrentDir);
 }
 void Player::WallKickJumpUpdate(float _DeltaTime)
 {
@@ -1215,11 +1271,24 @@ void Player::WallKickJumpUpdate(float _DeltaTime)
 }
 void Player::WallKickJumpEnd()
 {
+	WallKickEffect->OffWallKickJumpEffect();
 }
 
 void Player::WallKickDashJumpStart()
 {
+	CurrentDir = DirString;
 	DirCheck("WallKickJump");
+	float4 MyPos = GetPos();
+	if (DirString == "Left_")
+	{
+		WallKickEffect->SetPos({ MyPos.x - 40, MyPos.y - 15});
+	}
+	else
+	{
+		WallKickEffect->SetPos({ MyPos.x + 40, MyPos.y - 15});
+	}
+	WallKickEffect->OnWallKickJumpEffect(CurrentDir);
+
 }
 
 void Player::WallKickDashJumpUpdate(float _DeltaTime)
@@ -1248,5 +1317,5 @@ void Player::WallKickDashJumpUpdate(float _DeltaTime)
 
 void Player::WallKickDashJumpEnd()
 {
-
+	WallKickEffect->OffWallKickJumpEffect();
 }

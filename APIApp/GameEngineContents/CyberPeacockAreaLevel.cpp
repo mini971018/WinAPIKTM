@@ -42,17 +42,20 @@ void CyberPeacockAreaLevel::Loading()
 
 	//액터 생성
 	{
+		//플레이어
 		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
 		CyberPeacockAreaLevelPlayer->SetPos({ 6203, 4800 });
 		SetCameraPos({ 5763, 4659 });
 		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
 	}
 	{
+		//맵
 		CyberPeacockAreaMap* Actor = CreateActor<CyberPeacockAreaMap>();
 	}
 	{
+		//콜리전
 		{
-			GameEngineActor* Wall = CreateActor<BossRoomWallCollision>();
+			GameEngineActor* Wall = CreateActor<BossRoomWallCollision>(); //보스쪽 벽 콜리전
 		}
 	}
 }

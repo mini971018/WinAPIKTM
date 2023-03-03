@@ -34,6 +34,8 @@ enum class PlayerCameraLock
 
 class GameEngineImage;
 class WallClimbDustEffect;
+class WallKickJumpEffect;
+class DashEffect;
 class Player : public GameEngineActor
 {
 public:
@@ -87,9 +89,12 @@ private:
 	
 	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
 
-
 	GameEngineRender* AnimationRender = nullptr;
+
+	//캐릭터 이펙트 관련
 	WallClimbDustEffect* WallClimbDust;
+	WallKickJumpEffect* WallKickEffect;
+	DashEffect* PlayerDashEffect;
 
 	GameEngineCollision* BodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
 
@@ -97,6 +102,7 @@ private:
 	GameEngineCollision* LeftWallCheckCollision = nullptr;
 	GameEngineCollision* RightWallCheckCollision = nullptr;
 	GameEngineCollision* UpperWallCheckCollision = nullptr;
+
 
 	bool LeftWallCheck;
 	bool RightWallCheck;

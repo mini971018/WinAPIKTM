@@ -14,13 +14,15 @@ public:
 	WallClimbDustEffect& operator=(const WallClimbDustEffect& _Other) = delete;
 	WallClimbDustEffect& operator=(WallClimbDustEffect&& _Other) noexcept = delete;
 
-	void OnWallClimbDustEffect();
+	void OnWallClimbDustEffect(const std::string _DirString);
 	void OffWallClimbDustEffect();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
+	void DirCheck(const std::string_view& _AnimationName);
+	std::string DirString = "";
 	GameEngineRender* AnimationRender = nullptr;
 	bool IsOn;
 };
