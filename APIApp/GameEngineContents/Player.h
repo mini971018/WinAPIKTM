@@ -103,7 +103,6 @@ private:
 	GameEngineCollision* RightWallCheckCollision = nullptr;
 	GameEngineCollision* UpperWallCheckCollision = nullptr;
 
-
 	bool LeftWallCheck;
 	bool RightWallCheck;
 	bool UpperWallCheck;

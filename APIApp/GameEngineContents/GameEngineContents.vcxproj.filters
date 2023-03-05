@@ -88,14 +88,17 @@
     <ClInclude Include="WallClimbDustEffect.h">
       <Filter>3.Play\Player\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="BossRoomWallCollision.h">
-      <Filter>3.Play\CyberPeacockAreaLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="WallKickJumpEffect.h">
       <Filter>3.Play\Player\Effect</Filter>
     </ClInclude>
     <ClInclude Include="DashEffect.h">
       <Filter>3.Play\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BossRoomWallCollision.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\WallCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="CyberPeacockBoss.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,14 +189,20 @@
     <ClCompile Include="WallClimbDustEffect.cpp">
       <Filter>3.Play\Player\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="BossRoomWallCollision.cpp">
-      <Filter>3.Play\CyberPeacockAreaLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="WallKickJumpEffect.cpp">
       <Filter>3.Play\Player\Effect</Filter>
     </ClCompile>
     <ClCompile Include="DashEffect.cpp">
       <Filter>3.Play\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BossRoomWallCollision.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\WallCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockBoss.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CyberPeacockBossState.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +295,12 @@
     </Filter>
     <Filter Include="3.Play\Player\Effect">
       <UniqueIdentifier>{d3faf77b-abe8-46ba-be5e-6da706aa775d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel\Actor\WallCollision">
+      <UniqueIdentifier>{cbc16de1-9bb6-4e0b-b231-92c058be3439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\CyberPeacockAreaLevel\Actor\Boss">
+      <UniqueIdentifier>{4dc88e7d-650b-4df2-9a4e-a7d35c05306a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

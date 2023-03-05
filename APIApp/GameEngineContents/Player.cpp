@@ -52,7 +52,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("ColMapMode", '0');
 		GameEngineInput::CreateKey("DebugRenderSwitch", 'I');
 		GameEngineInput::CreateKey("TestLevel", 'T');
-		GameEngineInput::CreateKey("TestButton", 'H');
+
 	}
 
 	{
@@ -210,7 +210,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 
 		if (CameraDir.x < 0.0f)
 		{
-			if (CameraPos.x <= 5764.0f)
+			if (CameraPos.x <= 5765.0f)
 			{
 				CameraDir.x = 0.0f;
 			}
