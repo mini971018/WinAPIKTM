@@ -13,11 +13,14 @@ enum class CyberPeacockState
 	ATTACK1,  // 날개로 위로 올라가며 공격 -> DIS3
 	ATTACK2,  // 날개 펼치기 -> DIS2
 	ATTACK3,  // 미사일 공격 -> DIS1
+	ATTACK3TARGETMISSILE, // 어택 3 이후 타겟이펙트가 나오고, 미사일이 발사됨.
 	DEAD,
 	WAITASECOND,
+	WAITASECONDINATTACK,
 };
 
-
+class BossMissile;
+class BossTargetEffect;
 class CyberPeacockBoss : public GameEngineActor
 {
 public:
@@ -46,26 +49,36 @@ private:
 	void UpdateState(float _Time);
 	void SetRandomPattern();
 
-
 	int BasicPatternCount = 0;    //처음에 기본적으로 설정되어있는 스테이트 갯수
 	int PatternCountSize = 0;     //들어간 총 패턴 갯수
 	int CurrentPatternNumber = 0; //현재 몇번째 상태인지
 	bool DoNextPattern = false;   //다음 상태로 넘어가는지 여부
 	void SetNextPattern();        //다음 상태로 넘겨줌
 
+	//패턴 관련
 	float AttackXClampDistance = 100.0f;
 	float MinBossRoomX = 7832.0f;
 	float MaxBossRoomX = 8755.0f;
 	float FloorY = 5280.0f;
 	float4 LeftMissilePos = { 8043.0f, 5120.0f };
 	float4 RightMissilePos = { 8545.0f, 5120.0f };
+	float Attack1Speed = 1000.0f; //Attack1 속도
 
+	bool CheckBool = false; //애니메이션 내에서 애니메이션이 끝난 이후에 움직이는 등의 행동을 하는 bool값
 	float AttackXClamp(float _PosX);
 	float CheckTime = 0.0f;
 	void SetBossPos(float _Value); //랜덤한 범위 안에서 보스가 나올 값이 계산되고, dir이 바뀜
 	void SetBossDir(); //보스의 dir 변경
 
 	void SetBossPosInAttack3();
+
+	//Attack3 관련
+	std::vector<BossMissile*> Missiles;
+	BossTargetEffect* TargetEffect;
+	void SetBossAttack3();
+	float MissileCalTime = 0.0f;
+	float MissileRateTime = 1.5f;
+	size_t MissileCount = 0;
 
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전
@@ -106,6 +119,10 @@ private:
 	void Attack3End();
 	void Attack3Update(float _DeltaTime);
 
+	void Attack3TargetMissileStart();
+	void Attack3TargetMissileEnd();
+	void Attack3TargetMissileUpdate(float _DeltaTime);
+
 	void DeadStart();
 	void DeadEnd();
 	void DeadUpdate(float _DeltaTime);
@@ -113,4 +130,8 @@ private:
 	void WaitASecondStart();
 	void WaitASecondEnd();
 	void WaitASecondUpdate(float _DeltaTime);
+
+	void WaitASecondInAttackStart();
+	void WaitASecondInAttackEnd();
+	void WaitASecondInAttackUpdate(float _DeltaTime);
 };

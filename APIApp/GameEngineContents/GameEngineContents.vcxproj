@@ -19,7 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossMissile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BossRoomWallCollision.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="BossTargetEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -150,7 +158,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossMissile.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BossRoomWallCollision.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BossTargetEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

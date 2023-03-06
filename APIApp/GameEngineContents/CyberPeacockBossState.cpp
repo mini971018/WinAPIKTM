@@ -1,5 +1,6 @@
 #include "CyberPeacockBoss.h"
 #include <GameEngineCore/GameEngineRender.h>
+#include "BossTargetEffect.h"
 
 void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 {
@@ -56,6 +57,13 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 		Attack3Start();
 		break;
 	}
+
+	case CyberPeacockState::ATTACK3TARGETMISSILE:
+	{
+		Attack3TargetMissileStart();
+		break;
+	}
+
 	case CyberPeacockState::DEAD:
 	{
 		DeadStart();
@@ -64,6 +72,11 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 	case CyberPeacockState::WAITASECOND:
 	{
 		WaitASecondStart();
+		break;
+	}
+	case CyberPeacockState::WAITASECONDINATTACK:
+	{
+		WaitASecondInAttackStart();
 		break;
 	}
 	default:
@@ -118,6 +131,12 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 		Attack3End();
 		break;
 	}
+	case CyberPeacockState::ATTACK3TARGETMISSILE:
+	{
+		Attack3TargetMissileEnd();
+		break;
+	}
+
 	case CyberPeacockState::DEAD:
 	{
 		DeadEnd();
@@ -126,6 +145,11 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 	case CyberPeacockState::WAITASECOND:
 	{
 		WaitASecondEnd();
+		break;
+	}
+	case CyberPeacockState::WAITASECONDINATTACK:
+	{
+		WaitASecondInAttackEnd();
 		break;
 	}
 	default:
@@ -182,6 +206,11 @@ void CyberPeacockBoss::UpdateState(float _DeltaTime)
 		Attack3Update(_DeltaTime);
 		break;
 	}
+	case CyberPeacockState::ATTACK3TARGETMISSILE:
+	{
+		Attack3TargetMissileUpdate(_DeltaTime);
+		break;
+	}
 	case CyberPeacockState::DEAD:
 	{
 		DeadUpdate(_DeltaTime);
@@ -190,6 +219,11 @@ void CyberPeacockBoss::UpdateState(float _DeltaTime)
 	case CyberPeacockState::WAITASECOND:
 	{
 		WaitASecondUpdate(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::WAITASECONDINATTACK:
+	{
+		WaitASecondInAttackUpdate(_DeltaTime);
 		break;
 	}
 	default:
@@ -316,8 +350,8 @@ void CyberPeacockBoss::Attack3AppearEnd()
 void CyberPeacockBoss::Attack1Start()
 {
 	CheckTime = 0.0f;
+	CheckBool = false;
 	DirCheck("Attack1");
-	
 }
 
 void CyberPeacockBoss::Attack1Update(float _DeltaTime)
@@ -327,11 +361,17 @@ void CyberPeacockBoss::Attack1Update(float _DeltaTime)
 	if (AnimationRender->IsAnimationEnd())
 	{
 		DirCheck("Attack1Loop");
+		CheckBool = true;
 	}
 
-	if (CheckTime >= 1.0f)
+	if (CheckTime >= 0.25f)
 	{
 		DoNextPattern = true;
+	}
+
+	if (CheckBool = true)
+	{
+		SetMove(float4::Up * Attack1Speed * _DeltaTime);
 	}
 }
 
@@ -369,15 +409,53 @@ void CyberPeacockBoss::Attack3Update(float _DeltaTime)
 {
 	if (AnimationRender->IsAnimationEnd())
 	{
+		if (DirString == "Left_")
+		{
+			TargetEffect->SetPos({8477, 4958});
+		}
+		else
+		{
+			TargetEffect->SetPos({ 8112, 4958 });
+		}
+		TargetEffect->TargetEffectOn();
 		DoNextPattern = true;
 	}
-}
 
+}
 
 void CyberPeacockBoss::Attack3End()
 {
 
 }
+
+void CyberPeacockBoss::Attack3TargetMissileStart()
+{
+	CheckTime = 0.0f;
+	MissileCount = 0;
+	MissileCalTime = 0.0f;
+}
+void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
+{
+	CheckTime += _DeltaTime;
+	MissileCalTime += _DeltaTime;
+
+	if (CheckTime > 12.5f)
+	{
+		DoNextPattern = true;
+	}
+
+	if (MissileCalTime > MissileRateTime && MissileCount <= 6)
+	{
+		DirCheck("Attack3Missile");
+		++MissileCount;
+		MissileCalTime -= MissileRateTime;
+	}
+}
+void CyberPeacockBoss::Attack3TargetMissileEnd()
+{
+	TargetEffect->TargetEffectOff();
+}
+
 
 void CyberPeacockBoss::DeadStart()
 {
@@ -412,4 +490,27 @@ void CyberPeacockBoss::WaitASecondUpdate(float _DeltaTime)
 
 void CyberPeacockBoss::WaitASecondEnd()
 {
+}
+
+
+
+void CyberPeacockBoss::WaitASecondInAttackStart()
+{
+	CheckTime = 0.0f;
+}
+
+void CyberPeacockBoss::WaitASecondInAttackUpdate(float _DeltaTime)
+{
+	CheckTime += _DeltaTime;
+
+	if (CheckTime >= 0.35f)
+	{
+		DoNextPattern = true;
+	}
+}
+
+
+void CyberPeacockBoss::WaitASecondInAttackEnd()
+{
+
 }

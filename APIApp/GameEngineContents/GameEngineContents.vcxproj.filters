@@ -100,6 +100,12 @@
     <ClInclude Include="CyberPeacockBoss.h">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="BossMissile.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossTargetEffect.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -202,6 +208,12 @@
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
     <ClCompile Include="CyberPeacockBossState.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMissile.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossTargetEffect.cpp">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>

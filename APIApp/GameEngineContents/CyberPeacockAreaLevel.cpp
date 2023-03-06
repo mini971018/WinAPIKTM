@@ -80,6 +80,14 @@ void CyberPeacockAreaLevel::Loading()
 			GameEngineImage* Disappear3Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightBossDisappear3.bmp"));
 			Disappear3Image->Cut(10, 1);
 		}
+		//이펙트
+		{
+			GameEngineImage* MissileImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossMissile.bmp"));
+			MissileImage->Cut(2, 1);
+			GameEngineImage* MissileRollImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossMissileRoll.bmp"));
+			MissileRollImage->Cut(2, 1);
+			GameEngineImage* TargetImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossTarget.bmp"));
+		}
 	}
 	//액터 생성
 	{

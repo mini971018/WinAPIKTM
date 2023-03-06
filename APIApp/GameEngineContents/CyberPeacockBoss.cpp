@@ -11,6 +11,8 @@
 #include <GameEngineBase/GameEngineRandom.h>
 #include <vector>
 #include "Player.h"
+#include "BossMissile.h"
+#include "BossTargetEffect.h"
 
 CyberPeacockBoss::CyberPeacockBoss() 
 {
@@ -41,24 +43,25 @@ void CyberPeacockBoss::Start()
 	//우측 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Appear", .ImageName = "RightBossAppear.bmp", .Start = 0, .End = 12, .InterTime = 0.03f, .Loop = false});
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear", .ImageName = "RightBossDisappear1.bmp", .Start = 0, .End = 13, .InterTime = 0.03f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack1", .ImageName = "RightBossAttack1.bmp", .Start = 0, .End = 3, .InterTime = 0.05f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack1", .ImageName = "RightBossAttack1.bmp", .Start = 0, .End = 3, .InterTime = 0.04f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack1Loop", .ImageName = "RightBossAttack1.bmp", .Start = 3, .End = 6, .InterTime = 0.02f});
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack2", .ImageName = "RightBossAttack2.bmp", .Start = 0, .End = 15, .InterTime = 0.055f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear2", .ImageName = "RightBossDisappear2.bmp", .Start = 0, .End = 5, .InterTime = 0.03f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear2", .ImageName = "RightBossDisappear2.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightBossAttack3.bmp", .Start = 0, .End = 14, .InterTime = 0.09f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3Missile", .ImageName = "RightBossAttack3.bmp", .Start = 14, .End = 15, .InterTime = 0.1f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear3", .ImageName = "RightBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.03f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear3", .ImageName = "RightBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
 
 	//좌측 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Appear", .ImageName = "LeftBossAppear.bmp", .Start = 0, .End = 12, .InterTime = 0.03f,  .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear", .ImageName = "LeftBossDisappear1.bmp", .Start = 0, .End = 13, .InterTime = 0.03f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack1", .ImageName = "LeftBossAttack1.bmp", .Start = 0, .End = 3, .InterTime = 0.05f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack1Loop", .ImageName = "LeftBossAttack1.bmp", .Start = 3, .End = 6, .InterTime = 0.02f});
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack1", .ImageName = "LeftBossAttack1.bmp", .Start = 0, .End = 3, .InterTime = 0.04f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack1Loop", .ImageName = "LeftBossAttack1.bmp", .Start = 3, .End = 6, .InterTime = 0.025f});
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack2", .ImageName = "LeftBossAttack2.bmp", .Start = 0, .End = 15, .InterTime = 0.055f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear2", .ImageName = "LeftBossDisappear2.bmp", .Start = 0, .End = 5, .InterTime = 0.03f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3", .ImageName = "LeftBossAttack3.bmp", .Start = 0, .End = 13, .InterTime = 0.09f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear2", .ImageName = "LeftBossDisappear2.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3", .ImageName = "LeftBossAttack3.bmp", .Start = 0, .End = 14, .InterTime = 0.09f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3Missile", .ImageName = "LeftBossAttack3.bmp", .Start = 14, .End = 15, .InterTime = 0.1f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear3", .ImageName = "LeftBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.03f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear3", .ImageName = "LeftBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
+	
 	ChangeState(CyberPeacockState::IDLE);
 	AnimationRender->ChangeAnimation("NoAnim");
 
@@ -66,37 +69,47 @@ void CyberPeacockBoss::Start()
 	PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 	PatternList.push_back(CyberPeacockState::WAITASECOND);
 	BasicPatternCount = static_cast<int>(PatternList.size());
+
 	SetRandomPattern();
+	SetBossAttack3();
 }
 
 void CyberPeacockBoss::SetRandomPattern()
 {
 	for (int i = 0; i < 10; ++i)
 	{
-		int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 3);
-
+		int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 6);
+		randomInt = 4;
+		
 		switch (randomInt)
 		{
 		case 0:
+		case 1:
 			PatternList.push_back(CyberPeacockState::APPEAR);
+			PatternList.push_back(CyberPeacockState::WAITASECONDINATTACK);
 			PatternList.push_back(CyberPeacockState::ATTACK1);
 			PatternList.push_back(CyberPeacockState::DISAPPEAR3);
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
 			break;
-		case 1:
+		case 2:
+		case 3:
 			PatternList.push_back(CyberPeacockState::APPEAR);
+			PatternList.push_back(CyberPeacockState::WAITASECONDINATTACK);
 			PatternList.push_back(CyberPeacockState::ATTACK2);
 			PatternList.push_back(CyberPeacockState::DISAPPEAR2);
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
 			break;
-		case 2:
+		case 4:
 			PatternList.push_back(CyberPeacockState::ATTACK3APPEAR);
 			PatternList.push_back(CyberPeacockState::ATTACK3);
+			PatternList.push_back(CyberPeacockState::ATTACK3TARGETMISSILE);
 			PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
 			break;
-		case 3:
+		case 5:
+		case 6:
 			PatternList.push_back(CyberPeacockState::APPEAR);
+			PatternList.push_back(CyberPeacockState::WAITASECONDINATTACK);
 			PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
 			break;
@@ -106,6 +119,16 @@ void CyberPeacockBoss::SetRandomPattern()
 	}
 	PatternCountSize = static_cast<int>(PatternList.size());
 
+}
+
+void CyberPeacockBoss::SetBossAttack3()
+{
+	for (int i = 0; i < 1; ++i)
+	{
+		BossMissile* bossMissile = GetLevel()->CreateActor<BossMissile>();
+		Missiles.push_back(bossMissile);
+	}
+	TargetEffect = GetLevel()->CreateActor<BossTargetEffect>();
 }
 
 void CyberPeacockBoss::Update(float _DeltaTime)
@@ -126,7 +149,7 @@ void CyberPeacockBoss::Update(float _DeltaTime)
 
 void CyberPeacockBoss::DirCheck(const std::string_view& _AnimationName)
 {
-	AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
+	AnimationRender->ChangeAnimation(DirString + _AnimationName.data(), true);
 }
 
 void CyberPeacockBoss::SetNextPattern()
