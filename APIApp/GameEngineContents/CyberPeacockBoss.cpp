@@ -10,7 +10,7 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <vector>
-
+#include "Player.h"
 
 CyberPeacockBoss::CyberPeacockBoss() 
 {
@@ -32,7 +32,7 @@ void CyberPeacockBoss::Start()
 
 	AnimationRender = CreateRender(MegamanX4PlayRenderOrder::BOSS);
 	AnimationRender->SetScale({ 704, 704 });
-	SetPos({ 6500, 5275 });
+	SetPos({ 8545, 5120 });
 
 	//시작 및 종료 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "NoAnim", .ImageName = "LeftBossDisappear1.bmp", .Start = 13, .End = 13, .InterTime = 0.055f, .Loop = false });
@@ -48,6 +48,7 @@ void CyberPeacockBoss::Start()
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightBossAttack3.bmp", .Start = 0, .End = 14, .InterTime = 0.09f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3Missile", .ImageName = "RightBossAttack3.bmp", .Start = 14, .End = 15, .InterTime = 0.1f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear3", .ImageName = "RightBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.03f, .Loop = false });
+
 	//좌측 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Appear", .ImageName = "LeftBossAppear.bmp", .Start = 0, .End = 12, .InterTime = 0.03f,  .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear", .ImageName = "LeftBossDisappear1.bmp", .Start = 0, .End = 13, .InterTime = 0.03f, .Loop = false });
@@ -64,7 +65,7 @@ void CyberPeacockBoss::Start()
 	PatternList.push_back(CyberPeacockState::STARTANIMATION);
 	PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 	PatternList.push_back(CyberPeacockState::WAITASECOND);
-	BasicPatternCount = PatternList.size();
+	BasicPatternCount = static_cast<int>(PatternList.size());
 	SetRandomPattern();
 }
 
@@ -89,7 +90,7 @@ void CyberPeacockBoss::SetRandomPattern()
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
 			break;
 		case 2:
-			PatternList.push_back(CyberPeacockState::APPEAR);
+			PatternList.push_back(CyberPeacockState::ATTACK3APPEAR);
 			PatternList.push_back(CyberPeacockState::ATTACK3);
 			PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 			PatternList.push_back(CyberPeacockState::WAITASECOND);
@@ -103,7 +104,7 @@ void CyberPeacockBoss::SetRandomPattern()
 			break;
 		}
 	}
-	PatternCountSize = PatternList.size();
+	PatternCountSize = static_cast<int>(PatternList.size());
 
 }
 
@@ -112,6 +113,8 @@ void CyberPeacockBoss::Update(float _DeltaTime)
 	if (GameEngineInput::IsDown("TestButton1"))
 	{
 		DoNextPattern = true;
+		Player::MainPlayer->SetCameraLockState(PlayerCameraLock::CyberPeacockInBoss);	
+		GetLevel()->SetCameraPos({ 7789, 4659 });
 	}
 
 	UpdateState(_DeltaTime);
@@ -138,6 +141,63 @@ void CyberPeacockBoss::SetNextPattern()
 	DoNextPattern = false;
 }
 
+void CyberPeacockBoss::SetBossPos(float _Value)
+{
+	float RandomValue = GameEngineRandom::MainRandom.RandomFloat(-_Value, _Value);
+	float PlayerPosX = Player::MainPlayer->GetPos().x;
+	float BossPosX = RandomValue + PlayerPosX;
+
+	BossPosX = AttackXClamp(BossPosX);
+	SetPos({ BossPosX, FloorY });
+	SetBossDir();
+}
+
+float CyberPeacockBoss::AttackXClamp(float _PosX)
+{
+	if (_PosX >= MaxBossRoomX - AttackXClampDistance)
+	{
+		_PosX = MaxBossRoomX - AttackXClampDistance;
+	}
+	else if (_PosX <= MinBossRoomX + AttackXClampDistance)
+	{
+		_PosX = MinBossRoomX + AttackXClampDistance;
+	}
+
+	return _PosX;
+}
+
+
+void CyberPeacockBoss::SetBossDir()
+{
+	float PlayerPosX = Player::MainPlayer->GetPos().x;
+	float BossPosX = GetPos().x;
+
+	if (PlayerPosX >= BossPosX)
+	{
+		DirString = "Right_";
+	}
+	else
+	{
+		DirString = "Left_";
+	}
+}
+
+void CyberPeacockBoss::SetBossPosInAttack3()
+{
+	int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	if (randomInt == 0)
+	{
+		SetPos(LeftMissilePos);
+		DirString = "Right_";
+	}
+	else
+	{
+		SetPos(RightMissilePos);
+		DirString = "Left_";
+	}
+}
+
+
 void CyberPeacockBoss::Render(float _DeltaTime)
 {
 	float4 NextPos = GetPos();
@@ -153,3 +213,4 @@ void CyberPeacockBoss::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 }
+

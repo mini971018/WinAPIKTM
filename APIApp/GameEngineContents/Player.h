@@ -29,7 +29,8 @@ enum class PlayerState
 
 enum class PlayerCameraLock
 {
-	CyberPeacockBoss,
+	CyberPeacockBossRoom,
+	CyberPeacockInBoss,
 };
 
 class GameEngineImage;
@@ -54,6 +55,12 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 	void SetColImage(const std::string_view& _Name);
+
+	void SetCameraLockState(PlayerCameraLock _CameraState)
+	{
+		CameraLockState = _CameraState;
+	}
+
 
 protected: 
 	void Start() override;
@@ -116,7 +123,9 @@ private:
 	void CheckWall();
 
 	void CameraLock(float4 _MoveDir, float _DeltaTime);
-	PlayerCameraLock CameraLockState = PlayerCameraLock::CyberPeacockBoss;
+	PlayerCameraLock CameraLockState = PlayerCameraLock::CyberPeacockBossRoom;
+
+
 
 	//FSM 유한 상태 머신 : 적용되는 것들은 한가지 일을 할 때, 동시에 다른 일을 할 수 없다.
 	void ChangeState(PlayerState _State);

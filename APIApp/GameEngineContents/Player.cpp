@@ -202,7 +202,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 {
 	switch (CameraLockState)
 	{
-	case PlayerCameraLock::CyberPeacockBoss:
+	case PlayerCameraLock::CyberPeacockBossRoom:
 	{
 		float4 CameraDir = float4(MoveDir.x, 0.0f);
 		float4 CameraPos = GetLevel()->GetCameraPos();
@@ -225,6 +225,43 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 		else
 		{
 			if (CameraPos.x >= 7964.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			if (CharacterPos.x <= CameraPos.x + 440.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+		}
+
+		break;
+	}
+	case PlayerCameraLock::CyberPeacockInBoss:
+	{
+		float4 CameraDir = float4(MoveDir.x, 0.0f);
+		float4 CameraPos = GetLevel()->GetCameraPos();
+		float4 CharacterPos = GetPos();
+
+		if (CameraDir.x < 0.0f)
+		{
+			if (CameraPos.x <= 7789.0f)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			if (CharacterPos.x - 440.0f >= CameraPos.x)
+			{
+				CameraDir.x = 0.0f;
+			}
+
+			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+		}
+		else
+		{
+			if (CameraPos.x >= 8008.0f)
 			{
 				CameraDir.x = 0.0f;
 			}
@@ -321,7 +358,6 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
 	CheckWall();
-
 
 	//if (nullptr != BodyCollision)
 	//{
@@ -434,3 +470,4 @@ void Player::Render(float _DeltaTime)
 	CameraMouseText = CameraMouseText + (GetLevel()->GetMousePosToCamera().ToString());
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }
+

@@ -9,6 +9,7 @@ enum class CyberPeacockState
 	DISAPPEAR2, // 앉아서 사라짐
 	DISAPPEAR3, // 위로 올라가며 공격후 사라짐
 	APPEAR,
+	ATTACK3APPEAR,
 	ATTACK1,  // 날개로 위로 올라가며 공격 -> DIS3
 	ATTACK2,  // 날개 펼치기 -> DIS2
 	ATTACK3,  // 미사일 공격 -> DIS1
@@ -52,7 +53,19 @@ private:
 	bool DoNextPattern = false;   //다음 상태로 넘어가는지 여부
 	void SetNextPattern();        //다음 상태로 넘겨줌
 
+	float AttackXClampDistance = 100.0f;
+	float MinBossRoomX = 7832.0f;
+	float MaxBossRoomX = 8755.0f;
+	float FloorY = 5280.0f;
+	float4 LeftMissilePos = { 8043.0f, 5120.0f };
+	float4 RightMissilePos = { 8545.0f, 5120.0f };
+
+	float AttackXClamp(float _PosX);
 	float CheckTime = 0.0f;
+	void SetBossPos(float _Value); //랜덤한 범위 안에서 보스가 나올 값이 계산되고, dir이 바뀜
+	void SetBossDir(); //보스의 dir 변경
+
+	void SetBossPosInAttack3();
 
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전
@@ -76,6 +89,10 @@ private:
 	void AppearStart();
 	void AppearEnd();
 	void AppearUpdate(float _DeltaTime);
+
+	void Attack3AppearStart();
+	void Attack3AppearEnd();
+	void Attack3AppearUpdate(float _DeltaTime);
 
 	void Attack1Start();
 	void Attack1End();

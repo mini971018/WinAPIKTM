@@ -36,6 +36,11 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 		AppearStart();
 		break;
 	}
+	case CyberPeacockState::ATTACK3APPEAR:
+	{
+		Attack3AppearStart();
+		break;
+	}
 	case CyberPeacockState::ATTACK1:
 	{
 		Attack1Start();
@@ -91,6 +96,11 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 	case CyberPeacockState::APPEAR:
 	{
 		AppearEnd();
+		break;
+	}
+	case CyberPeacockState::ATTACK3APPEAR:
+	{
+		Attack3AppearEnd();
 		break;
 	}
 	case CyberPeacockState::ATTACK1:
@@ -150,6 +160,11 @@ void CyberPeacockBoss::UpdateState(float _DeltaTime)
 	case CyberPeacockState::APPEAR:
 	{
 		AppearUpdate(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::ATTACK3APPEAR:
+	{
+		Attack3AppearUpdate(_DeltaTime);
 		break;
 	}
 	case CyberPeacockState::ATTACK1:
@@ -260,6 +275,7 @@ void CyberPeacockBoss::DisAppear3End()
 
 void CyberPeacockBoss::AppearStart()
 {
+	SetBossPos(100.0f);
 	DirCheck("Appear");
 }
 
@@ -276,11 +292,32 @@ void CyberPeacockBoss::AppearEnd()
 
 }
 
+void CyberPeacockBoss::Attack3AppearStart()
+{
+	SetBossPosInAttack3();
+	DirCheck("Appear");
+}
+
+void CyberPeacockBoss::Attack3AppearUpdate(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DoNextPattern = true;
+	}
+}
+
+void CyberPeacockBoss::Attack3AppearEnd()
+{
+
+}
+
+
 
 void CyberPeacockBoss::Attack1Start()
 {
 	CheckTime = 0.0f;
 	DirCheck("Attack1");
+	
 }
 
 void CyberPeacockBoss::Attack1Update(float _DeltaTime)
