@@ -1,5 +1,6 @@
 #include "CyberPeacockBoss.h"
 #include <GameEngineCore/GameEngineRender.h>
+#include <GameEngineCore/GameEngineLevel.h>
 #include "BossTargetEffect.h"
 #include "BossMissile.h"
 
@@ -448,7 +449,7 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 	if (MissileCalTime > MissileRateTime && MissileCount <= 6)
 	{
 		DirCheck("Attack3Missile");
-		BossMissile* CurrentMissile = GetBossMissile();
+		BossMissile* CurrentMissile = GetLevel()->CreateActor<BossMissile>();
 
 		if (DirString == "Left_")
 		{
@@ -477,8 +478,6 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 
 			}
 		}
-
-
 		CurrentMissile->BossMissileOn();
 		++MissileCount;
 		MissileCalTime -= MissileRateTime;

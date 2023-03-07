@@ -73,14 +73,12 @@ private:
 	void SetBossPosInAttack3();
 
 	//Attack3 관련
-	std::vector<BossMissile*> Missiles;
 	std::vector<float4> MissilesPos;
 	BossTargetEffect* TargetEffect;
 	void SetBossAttack3();
 	float MissileCalTime = 0.0f;
 	float MissileRateTime = 1.5f;
 	size_t MissileCount = 0;
-	BossMissile* GetBossMissile();
 
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전
