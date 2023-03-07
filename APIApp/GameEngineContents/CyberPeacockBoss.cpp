@@ -79,7 +79,6 @@ void CyberPeacockBoss::SetRandomPattern()
 	for (int i = 0; i < 10; ++i)
 	{
 		int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 6);
-		randomInt = 4;
 		
 		switch (randomInt)
 		{

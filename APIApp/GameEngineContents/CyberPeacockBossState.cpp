@@ -451,6 +451,11 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 		DirCheck("Attack3Missile");
 		BossMissile* CurrentMissile = GetLevel()->CreateActor<BossMissile>();
 
+		float4 LeftUpUp = float4::Left + (float4::Up * 2);
+		float4 LeftUpLow = (float4::Left * 2) + float4::Up;
+		float4 RightUpUp = float4::Right + (float4::Up * 2);
+		float4 RightUpLow = (float4::Right) * 2 + float4::Up;
+
 		if (DirString == "Left_")
 		{
 			if (MissileCount < 4)
@@ -462,6 +467,33 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 				float4 Pos = { GetPos().x + MissilesPos[MissileCount].x, GetPos().y - MissilesPos[MissileCount].y };
 
 				CurrentMissile->SetPos(Pos);
+			}
+
+			switch (MissileCount)
+			{
+			case 0:
+				CurrentMissile->BossMissileOn(float4::Left);
+				break;
+			case 1:
+				CurrentMissile->BossMissileOn(LeftUpLow);
+				break;
+			case 2:
+				CurrentMissile->BossMissileOn(LeftUpUp);
+				break;
+			case 3:
+				CurrentMissile->BossMissileOn(float4::Up);
+				break;
+			case 4:
+				CurrentMissile->BossMissileOn(RightUpUp);
+				break;
+			case 5:
+				CurrentMissile->BossMissileOn(float4::Right + float4::Up);
+				break;
+			case 6:
+				CurrentMissile->BossMissileOn(RightUpLow);
+				break;
+			default:
+				break;
 			}
 		}
 		else
@@ -475,10 +507,36 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 			else
 			{
 				CurrentMissile->SetPos(GetPos() - MissilesPos[MissileCount]);
+			}
 
+			switch (MissileCount)
+			{
+			case 0:
+				CurrentMissile->BossMissileOn(float4::Right);
+				break;
+			case 1:
+				CurrentMissile->BossMissileOn(RightUpLow);
+				break;
+			case 2:
+				CurrentMissile->BossMissileOn(RightUpUp);
+				break;
+			case 3:
+				CurrentMissile->BossMissileOn(float4::Up);
+				break;
+			case 4:
+				CurrentMissile->BossMissileOn(LeftUpUp);
+				break;
+			case 5:
+				CurrentMissile->BossMissileOn(float4::Left + float4::Up);
+				break;
+			case 6:
+				CurrentMissile->BossMissileOn(LeftUpLow);
+				break;
+			default:
+				break;
 			}
 		}
-		CurrentMissile->BossMissileOn();
+
 		++MissileCount;
 		MissileCalTime -= MissileRateTime;
 	}
@@ -535,7 +593,7 @@ void CyberPeacockBoss::WaitASecondInAttackUpdate(float _DeltaTime)
 {
 	CheckTime += _DeltaTime;
 
-	if (CheckTime >= 0.35f)
+	if (CheckTime >= 0.75f)
 	{
 		DoNextPattern = true;
 	}

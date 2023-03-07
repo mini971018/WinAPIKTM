@@ -157,7 +157,6 @@ private:
 		float CurrentTime = 0.0f;
 		bool Loop = true;
 
-
 		bool IsEnd();
 
 		void Render(float _DeltaTime);

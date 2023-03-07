@@ -39,16 +39,31 @@ void BossMissile::Update(float _DeltaTime)
 	else
 	{
 		//미사일 날아가는 행동
-		float4 Angle = Player::MainPlayer->GetPos() - GetPos();
-		float Deg = Angle.NormalizeReturn().GetAnagleDeg();
+		float4 PlayerPos = Player::MainPlayer->GetPos();
+		PlayerPos = { PlayerPos.x, PlayerPos.y - 50.0f };
+		float4 Angle = PlayerPos - GetPos();
+		
+		AngleTime += _DeltaTime;
 
-		AnimationRender->SetAngle(-Deg);
+		if (AngleTime >= 0.02f)
+		{
+			Dir = Angle.NormalizeReturn();
+			AngleTime = 0.0f;
+			float Deg = Angle.NormalizeReturn().GetAnagleDeg();
+			AnimationRender->SetAngle(-Deg);
+		}
+
+		SetMove(Dir.NormalizeReturn() * 450.0f * _DeltaTime);
 	}
 }
 
-void BossMissile::BossMissileOn()
+void BossMissile::BossMissileOn(float4 _Dir)
 {
-	AnimationRender->ChangeAnimation("MissileAnim");
+	Dir = _Dir;
+	CurrentAngle = Dir.NormalizeReturn().GetAnagleDeg();
+	AnimationRender->ChangeAnimation("MissileAnim", true);
+	AnimationRender->SetAngle(-CurrentAngle);
+
 	AnimationRender->On();
 }
 
@@ -62,12 +77,13 @@ void BossMissile::Render(float _DeltaTime)
 	//	return;
 	//}
 
-	//float4 Angle = Player::MainPlayer->GetPos() - GetPos();
-	//float Rad = Angle.GetAnagleDeg();
+	float4 Angle = Player::MainPlayer->GetPos() - GetPos();
+	float Deg = Angle.GetAnagleDeg();
 
-	//std::string AngleText = "Angle : ";
-	//AngleText += std::to_string(Rad);
-	//GameEngineLevel::DebugTextPush(AngleText);
+
+	std::string AngleText = "Angle : ";
+	AngleText += std::to_string(Deg);
+	GameEngineLevel::DebugTextPush(AngleText);
 
 	Rectangle(DoubleDC,
 		ActorPos.ix() - 5,
