@@ -1,6 +1,7 @@
 #include "CyberPeacockBoss.h"
 #include <GameEngineCore/GameEngineRender.h>
 #include "BossTargetEffect.h"
+#include "BossMissile.h"
 
 void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 {
@@ -447,6 +448,38 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 	if (MissileCalTime > MissileRateTime && MissileCount <= 6)
 	{
 		DirCheck("Attack3Missile");
+		BossMissile* CurrentMissile = GetBossMissile();
+
+		if (DirString == "Left_")
+		{
+			if (MissileCount < 4)
+			{
+				CurrentMissile->SetPos(GetPos() - MissilesPos[MissileCount]);
+			}
+			else
+			{
+				float4 Pos = { GetPos().x + MissilesPos[MissileCount].x, GetPos().y - MissilesPos[MissileCount].y };
+
+				CurrentMissile->SetPos(Pos);
+			}
+		}
+		else
+		{
+			if (MissileCount < 4)
+			{
+				float4 Pos = { GetPos().x + MissilesPos[MissileCount].x, GetPos().y - MissilesPos[MissileCount].y };
+
+				CurrentMissile->SetPos(Pos);
+			}
+			else
+			{
+				CurrentMissile->SetPos(GetPos() - MissilesPos[MissileCount]);
+
+			}
+		}
+
+
+		CurrentMissile->BossMissileOn();
 		++MissileCount;
 		MissileCalTime -= MissileRateTime;
 	}

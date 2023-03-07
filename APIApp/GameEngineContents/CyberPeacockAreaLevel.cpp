@@ -84,6 +84,8 @@ void CyberPeacockAreaLevel::Loading()
 		{
 			GameEngineImage* MissileImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossMissile.bmp"));
 			MissileImage->Cut(2, 1);
+			GameEngineImage* MissileBoomImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossMissileBoom.bmp"));
+			MissileBoomImage->Cut(3, 1);
 			GameEngineImage* MissileRollImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossMissileRoll.bmp"));
 			MissileRollImage->Cut(2, 1);
 			GameEngineImage* TargetImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossTarget.bmp"));

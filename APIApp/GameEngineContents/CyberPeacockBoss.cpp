@@ -123,12 +123,35 @@ void CyberPeacockBoss::SetRandomPattern()
 
 void CyberPeacockBoss::SetBossAttack3()
 {
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		BossMissile* bossMissile = GetLevel()->CreateActor<BossMissile>();
 		Missiles.push_back(bossMissile);
 	}
+
+	MissilesPos.push_back({ 88, 137 });
+	MissilesPos.push_back({ 84, 194 });
+	MissilesPos.push_back({ 56, 235 });
+	MissilesPos.push_back({ 11, 262 });
+	MissilesPos.push_back({ 69, 262 });
+	MissilesPos.push_back({ 121, 235 });
+	MissilesPos.push_back({ 149, 188 });
+
 	TargetEffect = GetLevel()->CreateActor<BossTargetEffect>();
+}
+
+BossMissile* CyberPeacockBoss::GetBossMissile()
+{
+	for (int i = 0; i < Missiles.size(); ++i)
+	{
+		if (Missiles[i]->MissileOnOff == false)
+		{
+			return Missiles[i];
+			break;
+		}
+	}
+
+	return nullptr;
 }
 
 void CyberPeacockBoss::Update(float _DeltaTime)
