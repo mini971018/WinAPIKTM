@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineBase/GameEngineFile.h>
 
 #include "Player.h"
 #include "CyberPeacockAreaMap.h"
@@ -113,6 +114,23 @@ void CyberPeacockAreaLevel::Loading()
 			GameEngineActor* Wall = CreateActor<BossRoomWallCollision>(); //보스쪽 벽 콜리전
 		}
 	}
+
+	SoundLoad();
+}
+
+void CyberPeacockAreaLevel::SoundLoad()
+{
+	GameEngineDirectory Dir;
+
+	Dir.MoveParentToDirectory("ContentsResources");
+	Dir.Move("ContentsResources");
+	Dir.Move("Sound");
+	std::vector<GameEngineFile> Files = Dir.GetAllFile();
+
+	for (size_t i = 0; i < Files.size(); i++)
+	{
+		GameEngineResources::GetInst().SoundLoad(Files[i].GetFullPath());
+	}
 }
 
 void CyberPeacockAreaLevel::Update(float _DeltaTime)
@@ -126,6 +144,11 @@ void CyberPeacockAreaLevel::Update(float _DeltaTime)
 void CyberPeacockAreaLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	Player::SetMainPlayer(*CyberPeacockAreaLevelPlayer);
+	CyberPeacockAreaBGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("CyberPeacockStageBGM.mp3");
+	CyberPeacockAreaBGMPlayer.LoopCount(100);
+
+	GameEngineSoundPlayer ReadySound = GameEngineResources::GetInst().SoundPlayToControl("ReadySound.mp3");
+	ReadySound.LoopCount(1);
 }
 
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineResources.h>
 
-// Ό³Έν :
 class Player;
 class CyberPeacockAreaLevel : public GameEngineLevel
 {
@@ -25,6 +25,8 @@ protected:
 
 private:
 	Player* CyberPeacockAreaLevelPlayer = nullptr;
-	
+	GameEngineSoundPlayer CyberPeacockAreaBGMPlayer;
+	GameEngineSoundPlayer BossBGMPlayer;
+	void SoundLoad();
 };
 

@@ -115,8 +115,8 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndLoopAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
 
-		ChangeState(PlayerState::STAGESTART);
-
+		ChangeState(PlayerState::READY);
+		AnimationRender->Off();
 	}
 
 

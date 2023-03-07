@@ -3,6 +3,8 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineResources.h>
+#include <GameEngineBase/GameEngineRandom.h>
 
 #include "WallClimbDustEffect.h"
 #include "WallKickJumpEffect.h"
@@ -13,11 +15,17 @@ void Player::ChangeState(PlayerState _State)
 	PlayerState NextState = _State;
 	PlayerState PrevState = StateValue;
 
+	CurrentState = PrevState;
 	StateValue = NextState;
 
 	//상태가 변했을 때, 끝날 때 필요한 코드, 시작할 때 필요한 코드를 출력하기 위함
 	switch (NextState)
 	{
+	case PlayerState::READY:
+	{
+		ReadyStart();
+		break;
+	}
 	case PlayerState::IDLE:
 	{
 		IdleStart();
@@ -131,6 +139,11 @@ void Player::ChangeState(PlayerState _State)
 
 	switch (PrevState)
 	{
+	case PlayerState::READY:
+	{
+		ReadyEnd();
+		break;
+	}
 	case PlayerState::IDLE:
 	{
 		IdleEnd();
@@ -245,6 +258,11 @@ void Player::UpdateState(float _DeltaTime)
 {
 	switch (StateValue)
 	{
+	case PlayerState::READY:
+	{
+		ReadyUpdate(_DeltaTime);
+		break;
+	}
 	case PlayerState::IDLE:
 	{
 		IdleUpdate(_DeltaTime);
@@ -355,6 +373,25 @@ void Player::UpdateState(float _DeltaTime)
 	}
 }
 
+
+void Player::ReadyStart()
+{
+	ReadyCalTime = 0.0f;
+	AnimationRender->Off();
+}
+void Player::ReadyUpdate(float _DeltaTime)
+{
+	ReadyCalTime += _DeltaTime;
+
+	if (ReadyCalTime >= 1.5f)
+	{
+		ChangeState(PlayerState::STAGESTART);
+	}
+}
+void Player::ReadyEnd()
+{
+
+}
 
 void Player::IdleStart()
 {
@@ -501,6 +538,30 @@ void Player::JumpStart()
 	DirCheck("JumpStart");
 	JumpCalTime = 0.0f;
 	IsGround = false;
+
+	if (CurrentState != PlayerState::WALLKICKJUMP && CurrentState != PlayerState::WALLKICKDASHJUMP)
+	{
+		GameEngineSoundPlayer JumpSound = GameEngineResources::GetInst().SoundPlayToControl("JumpSound.mp3");
+		JumpSound.LoopCount(1);
+
+		int RandomVoice = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+		if (RandomVoice == 0)
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Attack2.mp3");
+			VoiceSound.LoopCount(1);
+		}
+		else if (RandomVoice == 1)
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump2Voice.mp3");
+			VoiceSound.LoopCount(1);
+		}
+		else
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump3Voice.mp3");
+			VoiceSound.LoopCount(1);
+		}
+	}
 }
 
 void Player::JumpUpdate(float _DeltaTime)
@@ -569,7 +630,6 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	//Debug용 (점프시간 확인)
 	{
-
 		std::string PlayerJumpTime = "PlayerJumpTime : ";
 
 		PlayerJumpTime += std::to_string(JumpCalTime);
@@ -683,6 +743,10 @@ void Player::LandingEnd()
 void Player::Attack1Start()
 {
 	DirCheck("Attack1");
+	GameEngineSoundPlayer AttackSound = GameEngineResources::GetInst().SoundPlayToControl("Attack1.mp3");
+	AttackSound.LoopCount(1);
+	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
+	BladeSound.LoopCount(1);
 }
 void Player::Attack1Update(float _DeltaTime)
 {
@@ -706,6 +770,10 @@ void Player::Attack1End()
 void Player::Attack2Start()
 {
 	DirCheck("Attack2");
+	GameEngineSoundPlayer AttackSound = GameEngineResources::GetInst().SoundPlayToControl("Attack2.mp3");
+	AttackSound.LoopCount(1);
+	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
+	BladeSound.LoopCount(1);
 }
 void Player::Attack2Update(float _DeltaTime)
 {
@@ -731,6 +799,10 @@ void Player::Attack2End()
 void Player::Attack3Start()
 {
 	DirCheck("Attack3");
+	GameEngineSoundPlayer AttackSound = GameEngineResources::GetInst().SoundPlayToControl("Attack3.mp3");
+	AttackSound.LoopCount(1);
+	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
+	BladeSound.LoopCount(1);
 }
 void Player::Attack3Update(float _DeltaTime)
 {
@@ -774,10 +846,15 @@ void Player::AttackEndEnd()
 
 void Player::StageStartStart()
 {
+	AnimationRender->On();
 	DirCheck("StageStartLoopAnim");
+
+	GameEngineSoundPlayer ReadySound = GameEngineResources::GetInst().SoundPlayToControl("PlayerStartSound.mp3");
+	ReadySound.LoopCount(1);
 }
 void Player::StageStartUpdate(float _DeltaTime)
 {
+
 	//스테이지 체인지시 이동
 	MoveDir += (float4::Down * MoveSpeedInStageChange);
 
@@ -844,6 +921,8 @@ void Player::StageEndPoseEnd()
 void Player::JumpAttackStart()
 {
 	DirCheck("JumpAttack");
+	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
+	BladeSound.LoopCount(1);
 }
 
 void Player::JumpAttackUpdate(float _DeltaTime)
@@ -875,6 +954,8 @@ void Player::DashStart()
 	DirCheck("DashStart");
 	CurrentDir = DirString;
 	PlayerDashEffect->OnDashEffect(CurrentDir);
+	PlayerDashSound = GameEngineResources::GetInst().SoundPlayToControl("DashSound.mp3");
+	PlayerDashSound.LoopCount(1);
 
 	float4 MyPos = GetPos();
 	float4 EffectPos = { 70.0f, 30.0f };
@@ -938,6 +1019,7 @@ void Player::DashUpdate(float _DeltaTime)
 void Player::DashEnd()
 {
 	PlayerDashEffect->OffDashEffect();
+	PlayerDashSound.PauseOn();
 }
 
 void Player::DashEndStart()
@@ -986,6 +1068,30 @@ void Player::DashEndEnd()
 
 void Player::DashJumpStart()
 {
+	if (CurrentState != PlayerState::WALLKICKJUMP && CurrentState != PlayerState::WALLKICKDASHJUMP)
+	{
+		GameEngineSoundPlayer JumpSound = GameEngineResources::GetInst().SoundPlayToControl("JumpSound.mp3");
+		JumpSound.LoopCount(1);
+
+		int RandomVoice = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+		if (RandomVoice == 0)
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Attack2.mp3");
+			VoiceSound.LoopCount(1);
+		}
+		else if (RandomVoice == 1)
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump2Voice.mp3");
+			VoiceSound.LoopCount(1);
+		}
+		else
+		{
+			GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump3Voice.mp3");
+			VoiceSound.LoopCount(1);
+		}
+	}
+
 	DirCheck("JumpStart");
 	JumpCalTime = 0.0f;
 	IsGround = false;
@@ -1150,6 +1256,11 @@ void Player::DashFallEnd()
 
 void Player::WallClimbStart()
 {
+	
+
+	GameEngineSoundPlayer StickSound = GameEngineResources::GetInst().SoundPlayToControl("StickWall.mp3");
+	StickSound.LoopCount(1);
+
 	CurrentDir = DirString;
 	DirCheck("WallClimbStart");
 	float4 MyPos = GetPos();
@@ -1229,10 +1340,15 @@ void Player::WallClimbUpdate(float _DeltaTime)
 void Player::WallClimbEnd()
 {
 	WallClimbDust->OffWallClimbDustEffect();
+
+
 }
 
 void Player::WallKickJumpStart()
 {
+	GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump3Voice.mp3");
+	VoiceSound.LoopCount(1);
+
 	CurrentDir = DirString;
 	DirCheck("WallKickJump");
 	float4 MyPos = GetPos();
@@ -1276,6 +1392,8 @@ void Player::WallKickJumpEnd()
 
 void Player::WallKickDashJumpStart()
 {
+	GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("Jump3Voice.mp3");
+	VoiceSound.LoopCount(1);
 	CurrentDir = DirString;
 	DirCheck("WallKickJump");
 	float4 MyPos = GetPos();

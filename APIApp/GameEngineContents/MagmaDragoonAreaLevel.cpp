@@ -51,4 +51,5 @@ void MagmaDragoonAreaLevel::Update(float _DeltaTime)
 void MagmaDragoonAreaLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	Player::SetMainPlayer(*MagmaDragoonAreaLevelPlayer);
+
 }

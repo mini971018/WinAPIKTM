@@ -41,10 +41,16 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("NextLevel"))
 	{
+		GameEngineSoundPlayer ButtonSound =  GameEngineResources::GetInst().SoundPlayToControl("TitleButtonSound.mp3");
+		ButtonSound.LoopCount(1);
+		BGMPlayer.PauseOn();
 		GameEngineCore::GetInst()->ChangeLevel("CharacterSelect");
 	}
-	if (true == GameEngineInput::IsDown("TestLevel"))
-	{
-		GameEngineCore::GetInst()->ChangeLevel("TestLevel");
-	}
+
+}
+
+void TitleLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("TitleBGM.mp3");
+	BGMPlayer.LoopCount(1);
 }

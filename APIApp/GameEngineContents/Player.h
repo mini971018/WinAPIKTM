@@ -1,8 +1,10 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 enum class PlayerState
 {
+	READY,
 	IDLE,
 	MOVE,
 	JUMP,
@@ -84,6 +86,8 @@ private:
 	float DashCalTime = 0.0f; //몇초동안 대쉬했는지 계산을 위한 변수
 	float MaxDashTime = 0.7f; //최대 대쉬 가능한 시간
 
+	float ReadyCalTime = 0.0f;
+
 	bool StartFallState = false;
 
 	bool IsGround = false;
@@ -93,7 +97,7 @@ private:
 	std::string DirString = "Right_";
 	std::string CurrentDir = "";
 	void DirCheck(const std::string_view& _AnimationName);
-	
+	PlayerState CurrentState;
 	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
 
 	GameEngineRender* AnimationRender = nullptr;
@@ -125,11 +129,15 @@ private:
 	void CameraLock(float4 _MoveDir, float _DeltaTime);
 	PlayerCameraLock CameraLockState = PlayerCameraLock::CyberPeacockBossRoom;
 
-
+	GameEngineSoundPlayer PlayerDashSound;
 
 	//FSM 유한 상태 머신 : 적용되는 것들은 한가지 일을 할 때, 동시에 다른 일을 할 수 없다.
 	void ChangeState(PlayerState _State);
 	void UpdateState(float _Time);
+
+	void ReadyStart();
+	void ReadyUpdate(float _DeltaTime);
+	void ReadyEnd();
 
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);

@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
-
+#include <GameEngineCore/GameEngineResources.h>
 
 class CharacterSelectMegamanIcon;
 class CharacterSelectZeroIcon;
@@ -22,13 +22,14 @@ protected:
 	void Loading() override;
 	void Update(float _DeltaTime) override;
 
-	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
+	void LevelChangeStart(GameEngineLevel* _PrevLevel);
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 
 private:
 	CharacterSelectZeroIcon* SelectZeroIcon;
 	CharacterSelectMegamanIcon* SelectMegamanIcon;
 	CharacterSelectZeroModel* ZeroModel;
+	GameEngineSoundPlayer BGMPlayer;
 
 	void SwitchIcon(const std::string_view& _Name);
 

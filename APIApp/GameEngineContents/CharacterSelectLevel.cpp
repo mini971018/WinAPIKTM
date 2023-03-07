@@ -67,12 +67,20 @@ void CharacterSelectLevel::Loading()
 	ZeroModel = CreateActor<CharacterSelectZeroModel>();
 }
 
+void CharacterSelectLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("PlayerSelectBGM.mp3");
+	BGMPlayer.LoopCount(100);
+}
+
 void CharacterSelectLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("NextLevel") && SelectZeroIcon->IsUpdate())
 	{
 		ZeroModel->SetModelAnimation(ZeroModelAnimation::CHANGELEVEL);
 		LevelChangeState = true;
+		GameEngineSoundPlayer SelectSound = GameEngineResources::GetInst().SoundPlayToControl("SelectCharacter.mp3");
+		SelectSound.LoopCount(1);
 	}
 
 	if (GameEngineInput::IsDown("MoveLeft"))
@@ -91,6 +99,7 @@ void CharacterSelectLevel::Update(float _DeltaTime)
 
 	if (LevelChangeTime > ChangeLevelElapsedTime)
 	{
+		BGMPlayer.PauseOn();
 		GameEngineCore::GetInst()->ChangeLevel("CyberPeacockArea");
 	}
 }
@@ -101,11 +110,17 @@ void CharacterSelectLevel::SwitchIcon(const std::string_view& _Name)
 	{
 		SelectMegamanIcon->On();
 		SelectZeroIcon->Off();
+		GameEngineSoundPlayer SwitchSound = GameEngineResources::GetInst().SoundPlayToControl("SwitchCharacter.mp3");
+		SwitchSound.LoopCount(1);
 	}
 	else if(SelectMegamanIcon->IsUpdate() && _Name == "MoveRight")
 	{
 		SelectMegamanIcon->Off();
 		SelectZeroIcon->On();
 		ZeroModel->SetModelAnimation(ZeroModelAnimation::ATTACK);
+		GameEngineSoundPlayer SwitchSound = GameEngineResources::GetInst().SoundPlayToControl("SwitchCharacter.mp3");
+		SwitchSound.LoopCount(1);
 	}
+
+
 }
