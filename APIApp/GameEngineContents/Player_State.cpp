@@ -9,6 +9,7 @@
 #include "WallClimbDustEffect.h"
 #include "WallKickJumpEffect.h"
 #include "DashEffect.h"
+#include "BossRoomDoor.h"
 
 void Player::ChangeState(PlayerState _State)
 {
@@ -1517,6 +1518,8 @@ void Player::OpenDoor1Start()
 	OpenDoorCalTime = 0.0f;
 	OpenDoorCalTime2 = 0.0f;
 	OpenDoorMoveState = false;
+	Door1->Open();
+	
 }
 void Player::OpenDoor1Update(float _DeltaTime)
 {
@@ -1574,6 +1577,7 @@ void Player::OpenDoor2Start()
 	OpenDoorCalTime = 0.0f;
 	OpenDoorCalTime2 = 0.0f;
 	OpenDoorMoveState = false;
+	Door2->Open();
 }
 void Player::OpenDoor2Update(float _DeltaTime)
 {

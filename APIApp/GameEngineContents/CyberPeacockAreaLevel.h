@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 
 class Player;
+class BossRoomDoor;
 class CyberPeacockAreaLevel : public GameEngineLevel
 {
 public:
@@ -16,6 +17,7 @@ public:
 	CyberPeacockAreaLevel& operator=(const CyberPeacockAreaLevel& _Other) = delete;
 	CyberPeacockAreaLevel& operator=(CyberPeacockAreaLevel&& _Other) noexcept = delete;
 
+
 protected:
 	void Loading() override;
 	void Update(float _DeltaTime) override;
@@ -27,6 +29,10 @@ private:
 	Player* CyberPeacockAreaLevelPlayer = nullptr;
 	GameEngineSoundPlayer CyberPeacockAreaBGMPlayer;
 	GameEngineSoundPlayer BossBGMPlayer;
+
+	BossRoomDoor* Door1;
+	BossRoomDoor* Door2;
+
 	void SoundLoad();
 };
 

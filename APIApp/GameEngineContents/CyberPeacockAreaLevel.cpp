@@ -112,13 +112,6 @@ void CyberPeacockAreaLevel::Loading()
 	}
 	//액터 생성
 	{
-		//플레이어
-		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
-		CyberPeacockAreaLevelPlayer->SetPos({ 6203, 4800 });
-		SetCameraPos({ 5763, 4659 });
-		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
-	}
-	{
 		//보스
 		CyberPeacockBoss* Actor = CreateActor<CyberPeacockBoss>();
 	}
@@ -135,15 +128,19 @@ void CyberPeacockAreaLevel::Loading()
 	{
 		//문 오브젝트
 		{
-			BossRoomDoor* Door = CreateActor<BossRoomDoor>();
-			Door->SetPos({ 6952, 5275 });
-		
+			Door1 = CreateActor<BossRoomDoor>();
+			Door1->SetPos({ 6952, 5275 });
+			Door2 = CreateActor<BossRoomDoor>();
+			Door2->SetPos({ 7788, 5275 });
 		}
-		{
-			BossRoomDoor* Door = CreateActor<BossRoomDoor>();
-			Door->SetPos({ 7788, 5275 });
-		}
-
+	}
+	{
+		//플레이어
+		CyberPeacockAreaLevelPlayer = CreateActor<Player>();
+		CyberPeacockAreaLevelPlayer->SetPos({ 6203, 4800 });
+		SetCameraPos({ 5763, 4659 });
+		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
+		CyberPeacockAreaLevelPlayer->SetDoor(Door1, Door2);
 	}
 
 	SoundLoad();

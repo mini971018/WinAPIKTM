@@ -56,14 +56,14 @@ void BossRoomWallCollision::Start()
 		WallCollision->SetScale({ 84 , 176 });
 	}
 
-	//{
-	//	GameEngineCollision* DoorOpenCollision = CreateCollision(MegamanX4CollisionOrder::OPENDOOR1);
-	//	DoorOpenCollision->SetMove({ 6912, 5187 });
-	//	DoorOpenCollision->SetScale({ 10 , 176 });
-	//}
-	//{
-	//	GameEngineCollision* DoorOpenCollision = CreateCollision(MegamanX4CollisionOrder::OPENDOOR2);
-	//	DoorOpenCollision->SetMove({ 7748, 5187 });
-	//	DoorOpenCollision->SetScale({ 10 , 176 });
-	//}
+	{
+		GameEngineCollision* DoorOpenCollision = CreateCollision(MegamanX4CollisionOrder::OPENDOOR1);
+		DoorOpenCollision->SetMove({ 6912, 5187 });
+		DoorOpenCollision->SetScale({ 10 , 176 });
+	}
+	{
+		GameEngineCollision* DoorOpenCollision = CreateCollision(MegamanX4CollisionOrder::OPENDOOR2);
+		DoorOpenCollision->SetMove({ 7748, 5187 });
+		DoorOpenCollision->SetScale({ 10 , 176 });
+	}
 }

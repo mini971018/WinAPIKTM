@@ -39,6 +39,7 @@ enum class PlayerCameraLock
 	CyberPeacockInBoss,
 };
 
+class BossRoomDoor;
 class GameEngineImage;
 class WallClimbDustEffect;
 class WallKickJumpEffect;
@@ -67,6 +68,11 @@ public:
 		CameraLockState = _CameraState;
 	}
 
+	void SetDoor(BossRoomDoor* _Door1, BossRoomDoor* _Door2)
+	{
+		Door1 = _Door1;
+		Door2 = _Door2;
+	}
 
 protected: 
 	void Start() override;
@@ -130,6 +136,8 @@ private:
 	float OpenDoorCalTime2 = 0.0f; //1초뒤 이동하는 데에 사용되는 시간
 	float Time = 0.0f;
 
+	BossRoomDoor* Door1;
+	BossRoomDoor* Door2;
 
 	PlayerState StateValue = PlayerState::IDLE;
 
