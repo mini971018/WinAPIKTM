@@ -63,6 +63,7 @@ private:
 	float4 LeftMissilePos = { 8043.0f, 5120.0f };
 	float4 RightMissilePos = { 8545.0f, 5120.0f };
 	float Attack1Speed = 1000.0f; //Attack1 속도
+	float ExplosionCalTime = 0.0f;
 
 	bool CheckBool = false; //애니메이션 내에서 애니메이션이 끝난 이후에 움직이는 등의 행동을 하는 bool값
 	float AttackXClamp(float _PosX);
@@ -72,12 +73,15 @@ private:
 
 	void SetBossPosInAttack3();
 
+	//사운드를 받아와 한번 재생하는 함수
+	void PlaySoundOnce(const std::string_view& _Text);
+
 	//Attack3 관련
 	std::vector<float4> MissilesPos;
 	BossTargetEffect* TargetEffect;
 	void SetBossAttack3();
 	float MissileCalTime = 0.0f;
-	float MissileRateTime = 1.5f;
+	float MissileRateTime = 2.0f;
 	size_t MissileCount = 0;
 
 	//FSM 유한 상태 머신

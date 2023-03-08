@@ -163,6 +163,11 @@ void Player::SetColImage(const std::string_view& _Name)
 
 void Player::MoveCalculation(float _DeltaTime)
 {
+	if (OpenDoorState == true)
+	{
+		return;
+	}
+
 	if (ColImage == nullptr)
 	{
 		MsgAssert("현재 스테이지의 플레이어 충돌용 맵 이미지가 없습니다.");
@@ -200,6 +205,11 @@ void Player::MoveCalculation(float _DeltaTime)
 
 void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 {
+	if (OpenDoorState == true)
+	{
+		return;
+	}
+
 	switch (CameraLockState)
 	{
 	case PlayerCameraLock::CyberPeacockBossRoom:
@@ -224,7 +234,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 		}
 		else
 		{
-			if (CameraPos.x >= 7964.0f)
+			if (CameraPos.x >= 6113.0f)
 			{
 				CameraDir.x = 0.0f;
 			}
@@ -236,6 +246,14 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
 		}
+
+		break;
+	}
+	case PlayerCameraLock::CyberPeacockBossRoom2:
+	{
+		float4 CameraPos = GetLevel()->GetCameraPos();
+
+		GetLevel()->SetCameraPos({ 6949.0f, CameraPos.y});
 
 		break;
 	}
@@ -403,6 +421,25 @@ void Player::CheckWall()
 		{
 			RightWallCheck = false;
 		}
+
+		if (true == RightWallCheckCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::OPENDOOR1), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			OpenDoorBool1 = true;
+		}
+		else
+		{
+			OpenDoorBool1 = false;
+		}
+
+		if (true == RightWallCheckCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::OPENDOOR2), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			OpenDoorBool2 = true;
+		}
+		else
+		{
+			OpenDoorBool2 = false;
+		}
+
 	}
 
 	if (nullptr != UpperWallCheckCollision)

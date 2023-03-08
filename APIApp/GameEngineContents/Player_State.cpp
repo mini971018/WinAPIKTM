@@ -131,6 +131,16 @@ void Player::ChangeState(PlayerState _State)
 		WallKickDashJumpStart();
 		break;
 	}
+	case PlayerState::OPENDOOR1:
+	{
+		OpenDoor1Start();
+		break;
+	}
+	case PlayerState::OPENDOOR2:
+	{
+		OpenDoor2Start();
+		break;
+	}
 
 	default:
 		break;
@@ -249,6 +259,17 @@ void Player::ChangeState(PlayerState _State)
 		WallKickDashJumpEnd();
 		break;
 	}
+	case PlayerState::OPENDOOR1:
+	{
+		OpenDoor1End();
+		break;
+	}
+	case PlayerState::OPENDOOR2:
+	{
+		OpenDoor2End();
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -366,6 +387,16 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::WALLKICKDASHJUMP:
 	{
 		WallKickDashJumpUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::OPENDOOR1:
+	{
+		OpenDoor1Update(_DeltaTime);
+		break;
+	}
+	case PlayerState::OPENDOOR2:
+	{
+		OpenDoor2Update(_DeltaTime);
 		break;
 	}
 	default:
@@ -494,6 +525,22 @@ void Player::MoveUpdate(float _DeltaTime)
 		ChangeState(PlayerState::ATTACK1);
 		return;
 	}
+
+	if (GameEngineInput::IsPress("MoveRight") && OpenDoorBool1 == true)
+	{
+		ChangeState(PlayerState::OPENDOOR1);
+		return;
+	}
+
+
+	if (GameEngineInput::IsPress("MoveRight") && OpenDoorBool2 == true)
+	{
+		ChangeState(PlayerState::OPENDOOR2);
+		return;
+		
+	}
+
+
 
 	//왼쪽이랑 오른쪽 으로 이동중에 벽을 만나면 idle상태로
 	if (GameEngineInput::IsPress("MoveLeft") && LeftWallCheck == true)
@@ -992,6 +1039,18 @@ void Player::DashUpdate(float _DeltaTime)
 
 	if (DirString == "Right_")
 	{
+		if (OpenDoorBool1 == true)
+		{
+			ChangeState(PlayerState::OPENDOOR1);
+			return;
+		}
+
+		if (OpenDoorBool2 == true)
+		{
+			ChangeState(PlayerState::OPENDOOR2);
+			return;
+		}
+
 		if (RightWallCheck == true)
 		{
 			ChangeState(PlayerState::DASHEND);
@@ -1436,4 +1495,124 @@ void Player::WallKickDashJumpUpdate(float _DeltaTime)
 void Player::WallKickDashJumpEnd()
 {
 	WallKickEffect->OffWallKickJumpEffect();
+}
+
+
+//bool OpenDoorMoveState = false; // true 면 이동
+//float OpenDoorCalTime = 0.0f; //스테이트의 총 사용되는 시간
+//float OpenDoorCalTime2 = 0.0f; //1초뒤 이동하는 데에 사용되는 시간
+float4 PlayerStart;
+float4 CameraStart;
+float4 PlayerEnd;
+float4 CameraEnd;
+
+void Player::OpenDoor1Start()
+{
+	PlayerStart = GetPos();
+	CameraStart = GetLevel()->GetCameraPos();
+	PlayerEnd = { 7074.0f, PlayerStart.y };
+	CameraEnd = { 6950.0f , CameraStart.y };
+	Time = 0.0f;
+	OpenDoorState = true;
+	OpenDoorCalTime = 0.0f;
+	OpenDoorCalTime2 = 0.0f;
+	OpenDoorMoveState = false;
+}
+void Player::OpenDoor1Update(float _DeltaTime)
+{
+	OpenDoorCalTime += _DeltaTime;
+	OpenDoorCalTime2 += _DeltaTime;
+
+	if (OpenDoorCalTime2 >= 1.0f && OpenDoorCalTime2 <= 3.0f)
+	{
+		OpenDoorMoveState = true;
+	}
+	else
+	{
+		OpenDoorMoveState = false;
+	}
+
+	if (OpenDoorMoveState == true)
+	{
+		Time += _DeltaTime * 0.5f;
+		float4 PlayerPos = float4::LerpClamp(PlayerStart, PlayerEnd, Time);
+		float4 CameraPos = float4::LerpClamp(CameraStart, CameraEnd, Time);
+
+		if (Time >= 2.0f)
+		{
+			OpenDoorMoveState = false;
+			Time = 0.0f;
+
+		}
+
+		SetPos(PlayerPos);
+		GetLevel()->SetCameraPos(CameraPos);
+	}
+
+	if (OpenDoorCalTime >= 4.0f)
+	{
+		ChangeState(PlayerState::IDLE);
+
+	}
+}
+
+void Player::OpenDoor1End()
+{
+	OpenDoorState = false;
+	CameraLockState = PlayerCameraLock::CyberPeacockBossRoom2;
+
+}
+
+void Player::OpenDoor2Start()
+{
+	PlayerStart = GetPos();
+	CameraStart = GetLevel()->GetCameraPos();
+	PlayerEnd = { 7905.0f, PlayerStart.y };
+	CameraEnd = { 7789.0f , CameraStart.y };
+	Time = 0.0f;
+	OpenDoorState = true;
+	OpenDoorCalTime = 0.0f;
+	OpenDoorCalTime2 = 0.0f;
+	OpenDoorMoveState = false;
+}
+void Player::OpenDoor2Update(float _DeltaTime)
+{
+	OpenDoorCalTime += _DeltaTime;
+	OpenDoorCalTime2 += _DeltaTime;
+
+	if (OpenDoorCalTime2 >= 1.0f && OpenDoorCalTime2 <= 3.0f)
+	{
+		OpenDoorMoveState = true;
+	}
+	else
+	{
+		OpenDoorMoveState = false;
+	}
+
+	if (OpenDoorMoveState == true)
+	{
+		Time += _DeltaTime * 0.5f;
+		float4 PlayerPos = float4::LerpClamp(PlayerStart, PlayerEnd, Time);
+		float4 CameraPos = float4::LerpClamp(CameraStart, CameraEnd, Time);
+
+		if (Time >= 2.0f)
+		{
+			OpenDoorMoveState = false;
+			Time = 0.0f;
+
+		}
+
+		SetPos(PlayerPos);
+		GetLevel()->SetCameraPos(CameraPos);
+	}
+
+	if (OpenDoorCalTime >= 4.0f)
+	{
+		ChangeState(PlayerState::IDLE);
+	}
+}
+void Player::OpenDoor2End()
+{
+	OpenDoorState = false;
+	CameraLockState = PlayerCameraLock::CyberPeacockInBoss;
 }

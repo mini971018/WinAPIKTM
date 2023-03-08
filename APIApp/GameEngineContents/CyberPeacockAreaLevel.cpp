@@ -4,12 +4,14 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineBase/GameEngineFile.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
 #include "CyberPeacockAreaMap.h"
 #include "ContentsEnums.h"
 #include "BossRoomWallCollision.h"
 #include "CyberPeacockBoss.h"
+#include "BossRoomDoor.h"
 
 CyberPeacockAreaLevel::CyberPeacockAreaLevel() 
 {
@@ -41,6 +43,18 @@ void CyberPeacockAreaLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("CyberPeacockAreaStructure.bmp"));
 	}
 	{
+		//보스 문 이미지
+		GameEngineImage* BossDoorOpen = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossDoorOpen.bmp"));
+		BossDoorOpen->Cut(5, 3);
+		GameEngineImage* BossDoorClose = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossDoorClose.bmp"));
+		BossDoorClose->Cut(5, 3);
+	}
+	{
+		//폭발 이미지
+		GameEngineImage* Explosion = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("Explosion.bmp"));
+		Explosion->Cut(5, 7);
+	}
+	{
 		//보스 이미지
 		//시작 및 종료
 		{
@@ -63,6 +77,8 @@ void CyberPeacockAreaLevel::Loading()
 			Attack3Image->Cut(10, 2);
 			GameEngineImage* Disappear3Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftBossDisappear3.bmp"));
 			Disappear3Image->Cut(10, 1);
+			GameEngineImage* DeadImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftBossDead.bmp"));
+			DeadImage->Cut(1, 1);
 		}
 		//우측
 		{
@@ -80,6 +96,8 @@ void CyberPeacockAreaLevel::Loading()
 			Attack3Image->Cut(10, 2);
 			GameEngineImage* Disappear3Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightBossDisappear3.bmp"));
 			Disappear3Image->Cut(10, 1);
+			GameEngineImage* DeadImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightBossDead.bmp"));
+			DeadImage->Cut(1, 1);
 		}
 		//이펙트
 		{
@@ -113,6 +131,19 @@ void CyberPeacockAreaLevel::Loading()
 		{
 			GameEngineActor* Wall = CreateActor<BossRoomWallCollision>(); //보스쪽 벽 콜리전
 		}
+	}
+	{
+		//문 오브젝트
+		{
+			BossRoomDoor* Door = CreateActor<BossRoomDoor>();
+			Door->SetPos({ 6952, 5275 });
+		
+		}
+		{
+			BossRoomDoor* Door = CreateActor<BossRoomDoor>();
+			Door->SetPos({ 7788, 5275 });
+		}
+
 	}
 
 	SoundLoad();

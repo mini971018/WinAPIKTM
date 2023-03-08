@@ -50,6 +50,7 @@ void CyberPeacockBoss::Start()
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3", .ImageName = "RightBossAttack3.bmp", .Start = 0, .End = 14, .InterTime = 0.09f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Attack3Missile", .ImageName = "RightBossAttack3.bmp", .Start = 14, .End = 15, .InterTime = 0.1f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Disappear3", .ImageName = "RightBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Right_BossDead", .ImageName = "RightBossDead.bmp", .Start = 0, .End = 0, .InterTime = 0.04f, .Loop = false });
 
 	//좌측 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Appear", .ImageName = "LeftBossAppear.bmp", .Start = 0, .End = 12, .InterTime = 0.03f,  .Loop = false });
@@ -61,6 +62,7 @@ void CyberPeacockBoss::Start()
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3", .ImageName = "LeftBossAttack3.bmp", .Start = 0, .End = 14, .InterTime = 0.09f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Attack3Missile", .ImageName = "LeftBossAttack3.bmp", .Start = 14, .End = 15, .InterTime = 0.1f, .Loop = false });
 	AnimationRender->CreateAnimation({ .AnimationName = "Left_Disappear3", .ImageName = "LeftBossDisappear3.bmp", .Start = 0, .End = 5, .InterTime = 0.04f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "Left_BossDead", .ImageName = "LeftBossDead.bmp", .Start = 0, .End = 0, .InterTime = 0.04f, .Loop = false });
 	
 	ChangeState(CyberPeacockState::IDLE);
 	AnimationRender->ChangeAnimation("NoAnim");
@@ -140,6 +142,10 @@ void CyberPeacockBoss::Update(float _DeltaTime)
 		DoNextPattern = true;
 		Player::MainPlayer->SetCameraLockState(PlayerCameraLock::CyberPeacockInBoss);	
 		GetLevel()->SetCameraPos({ 7789, 4659 });
+	}
+	if (GameEngineInput::IsDown("TestButton2"))
+	{
+		ChangeState(CyberPeacockState::DEAD);
 	}
 
 	UpdateState(_DeltaTime);
@@ -239,3 +245,8 @@ void CyberPeacockBoss::Render(float _DeltaTime)
 	);
 }
 
+void CyberPeacockBoss::PlaySoundOnce(const std::string_view& _Text)
+{
+	GameEngineSoundPlayer Sound = GameEngineResources::GetInst().SoundPlayToControl(_Text.data());
+	Sound.LoopCount(1);
+}

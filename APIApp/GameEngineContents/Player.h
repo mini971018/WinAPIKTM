@@ -26,12 +26,16 @@ enum class PlayerState
 
 	WALLCLIMB,
 	WALLKICKJUMP,
-	WALLKICKDASHJUMP
+	WALLKICKDASHJUMP,
+
+	OPENDOOR1,
+	OPENDOOR2
 };
 
 enum class PlayerCameraLock
 {
 	CyberPeacockBossRoom,
+	CyberPeacockBossRoom2,
 	CyberPeacockInBoss,
 };
 
@@ -117,6 +121,15 @@ private:
 	bool LeftWallCheck;
 	bool RightWallCheck;
 	bool UpperWallCheck;
+
+	bool OpenDoorState = false; //오픈 도어 스테이트 중에는 카메라 또는 플레이어의 이동을 막는다.
+	bool OpenDoorBool1 = false; //문에 닿았는지 확인
+	bool OpenDoorBool2 = false;
+	bool OpenDoorMoveState = false; // true 면 이동
+	float OpenDoorCalTime = 0.0f; //스테이트의 총 사용되는 시간
+	float OpenDoorCalTime2 = 0.0f; //1초뒤 이동하는 데에 사용되는 시간
+	float Time = 0.0f;
+
 
 	PlayerState StateValue = PlayerState::IDLE;
 
@@ -222,6 +235,14 @@ private:
 	void WallKickDashJumpStart();
 	void WallKickDashJumpUpdate(float _DeltaTime);
 	void WallKickDashJumpEnd();
+
+	void OpenDoor1Start();
+	void OpenDoor1Update(float _DeltaTime);
+	void OpenDoor1End();
+
+	void OpenDoor2Start();
+	void OpenDoor2Update(float _DeltaTime);
+	void OpenDoor2End();
 
 	GameEngineImage* ColImage = nullptr;
 

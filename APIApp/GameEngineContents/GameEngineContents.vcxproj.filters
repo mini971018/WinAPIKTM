@@ -106,6 +106,12 @@
     <ClInclude Include="BossTargetEffect.h">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="ExplosionEffect.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossRoomDoor.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -214,6 +220,12 @@
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
     <ClCompile Include="BossTargetEffect.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionEffect.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossRoomDoor.cpp">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>

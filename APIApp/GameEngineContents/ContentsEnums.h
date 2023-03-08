@@ -6,6 +6,7 @@ enum class MegamanX4PlayRenderOrder
 	MAP,
 	COLMAP,
 	MONSTER,
+	OBJECT,
 	PLAYERLOWEREFFECT,
 	BOSS,
 	PLAYER,
@@ -29,6 +30,8 @@ enum class MegamanX4CollisionOrder
 {
 	PLAYER,
 	PLAYERCHECKWALL, //플레이어가 벽을 체크하는 콜리전
+	OPENDOOR1,
+	OPENDOOR2,
 	WALL, //벽 콜리전
 	MONSTER,
 	PLAYERATTACK,

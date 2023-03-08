@@ -1,8 +1,11 @@
 #include "CyberPeacockBoss.h"
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineResources.h>
+#include <GameEngineBase/GameEngineRandom.h>
 #include "BossTargetEffect.h"
 #include "BossMissile.h"
+#include "ExplosionEffect.h"
 
 void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 {
@@ -254,6 +257,7 @@ void CyberPeacockBoss::StartAnimationEnd()
 
 void CyberPeacockBoss::DisAppear1Start()
 {
+	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Disappear");
 }
 
@@ -273,6 +277,7 @@ void CyberPeacockBoss::DisAppear1End()
 
 void CyberPeacockBoss::DisAppear2Start()
 {
+	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Disappear2");
 }
 
@@ -292,6 +297,7 @@ void CyberPeacockBoss::DisAppear2End()
 
 void CyberPeacockBoss::DisAppear3Start()
 {
+	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Disappear3");
 }
 
@@ -312,6 +318,7 @@ void CyberPeacockBoss::DisAppear3End()
 void CyberPeacockBoss::AppearStart()
 {
 	SetBossPos(100.0f);
+	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Appear");
 }
 
@@ -331,6 +338,7 @@ void CyberPeacockBoss::AppearEnd()
 void CyberPeacockBoss::Attack3AppearStart()
 {
 	SetBossPosInAttack3();
+	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Appear");
 }
 
@@ -386,6 +394,7 @@ void CyberPeacockBoss::Attack1End()
 void CyberPeacockBoss::Attack2Start()
 {
 	DirCheck("Attack2");
+	PlaySoundOnce("BossAttack2Sound.mp3");
 }
 
 void CyberPeacockBoss::Attack2Update(float _DeltaTime)
@@ -432,6 +441,7 @@ void CyberPeacockBoss::Attack3End()
 
 void CyberPeacockBoss::Attack3TargetMissileStart()
 {
+	PlaySoundOnce("TargetSound.mp3");
 	CheckTime = 0.0f;
 	MissileCount = 0;
 	MissileCalTime = 0.0f;
@@ -441,7 +451,7 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 	CheckTime += _DeltaTime;
 	MissileCalTime += _DeltaTime;
 
-	if (CheckTime > 12.5f)
+	if (CheckTime > 16.5f)
 	{
 		DoNextPattern = true;
 	}
@@ -536,7 +546,7 @@ void CyberPeacockBoss::Attack3TargetMissileUpdate(float _DeltaTime)
 				break;
 			}
 		}
-
+		PlaySoundOnce("BossAttack3Sound.mp3");
 		++MissileCount;
 		MissileCalTime -= MissileRateTime;
 	}
@@ -549,11 +559,25 @@ void CyberPeacockBoss::Attack3TargetMissileEnd()
 
 void CyberPeacockBoss::DeadStart()
 {
-	AnimationRender->ChangeAnimation("Dead");
+	DirCheck("BossDead");
 }
 
 void CyberPeacockBoss::DeadUpdate(float _DeltaTime)
 {
+	ExplosionCalTime += _DeltaTime;
+
+	if (ExplosionCalTime >= 0.3f)
+	{
+		ExplosionEffect* Explosion = GetLevel()->CreateActor<ExplosionEffect>();
+		
+		float4 ExplosionCenter = { (GetPos().x), GetPos().y - 137.5f };
+		float ExplosionRandomX = GameEngineRandom::MainRandom.RandomFloat(-150.0f, 150.0f);
+		float ExplosionRandomY = GameEngineRandom::MainRandom.RandomFloat(-150.0f, 150.0f);
+
+		Explosion->ExplosionEffectOn({(ExplosionCenter.x + ExplosionRandomX), (ExplosionCenter.y + ExplosionRandomY)});
+
+		ExplosionCalTime = 0.0f;
+	}
 
 }
 
