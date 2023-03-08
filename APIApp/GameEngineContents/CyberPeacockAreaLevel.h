@@ -27,8 +27,6 @@ protected:
 
 private:
 	Player* CyberPeacockAreaLevelPlayer = nullptr;
-	GameEngineSoundPlayer CyberPeacockAreaBGMPlayer;
-	GameEngineSoundPlayer BossBGMPlayer;
 
 	BossRoomDoor* Door1;
 	BossRoomDoor* Door2;

@@ -29,7 +29,8 @@ enum class PlayerState
 	WALLKICKDASHJUMP,
 
 	OPENDOOR1,
-	OPENDOOR2
+	OPENDOOR2,
+	IDLEINANIMATION,
 };
 
 enum class PlayerCameraLock
@@ -74,6 +75,15 @@ public:
 		Door2 = _Door2;
 	}
 
+	void SetCyberPeacockAreaBGM();
+	void CyberPeacockAreaBGMStop();
+	void SetBossBGM();
+	void BossBGMStop();
+	void SetInAnimationState(bool _Value)
+	{
+		InAnimationState = _Value;
+	}
+
 protected: 
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -102,6 +112,8 @@ private:
 
 	bool IsGround = false;
 	char FirstMoveFrame = 0;
+
+	bool InAnimationState = false;
 
 	float4 MoveDir = float4::Zero;
 	std::string DirString = "Right_";
@@ -138,6 +150,9 @@ private:
 
 	BossRoomDoor* Door1;
 	BossRoomDoor* Door2;
+
+	GameEngineSoundPlayer CyberPeacockAreaBGMPlayer;
+	GameEngineSoundPlayer BossBGMPlayer;
 
 	PlayerState StateValue = PlayerState::IDLE;
 
@@ -251,6 +266,10 @@ private:
 	void OpenDoor2Start();
 	void OpenDoor2Update(float _DeltaTime);
 	void OpenDoor2End();
+
+	void IdleInAnimationStart();
+	void IdleInAnimationUpdate(float _DeltaTime);
+	void IdleInAnimationEnd();
 
 	GameEngineImage* ColImage = nullptr;
 

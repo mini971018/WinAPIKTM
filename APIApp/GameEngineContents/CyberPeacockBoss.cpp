@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "BossMissile.h"
 #include "BossTargetEffect.h"
+#include "CyberPeacockAreaMap.h"
 
 CyberPeacockBoss::CyberPeacockBoss() 
 {
@@ -37,8 +38,10 @@ void CyberPeacockBoss::Start()
 	SetPos({ 8545, 5120 });
 
 	//시작 및 종료 애니메이션
-	AnimationRender->CreateAnimation({ .AnimationName = "NoAnim", .ImageName = "LeftBossDisappear1.bmp", .Start = 13, .End = 13, .InterTime = 0.055f, .Loop = false });
-	AnimationRender->CreateAnimation({ .AnimationName = "StartAnim", .ImageName = "StartAnim.bmp", .Start = 0, .End = 41, .InterTime = 0.055f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "NoAnim", .ImageName = "LeftBossDisappear1.bmp", .Start = 13, .End = 13, .InterTime = 0.065f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "StartAnim1", .ImageName = "StartAnim.bmp", .Start = 0, .End = 17, .InterTime = 0.065f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "StartAnim2", .ImageName = "StartAnim.bmp", .Start = 18, .End = 31, .InterTime = 0.065f, .Loop = false });
+	AnimationRender->CreateAnimation({ .AnimationName = "StartAnim3", .ImageName = "StartAnim.bmp", .Start = 35, .End = 41, .InterTime = 0.065f, .Loop = false });
 
 	//우측 애니메이션
 	AnimationRender->CreateAnimation({ .AnimationName = "Right_Appear", .ImageName = "RightBossAppear.bmp", .Start = 0, .End = 12, .InterTime = 0.03f, .Loop = false});
@@ -66,14 +69,19 @@ void CyberPeacockBoss::Start()
 	
 	ChangeState(CyberPeacockState::IDLE);
 	AnimationRender->ChangeAnimation("NoAnim");
-
-	PatternList.push_back(CyberPeacockState::STARTANIMATION);
+	PatternList.push_back(CyberPeacockState::WARNING);
+	PatternList.push_back(CyberPeacockState::STARTANIMATION1);
+	PatternList.push_back(CyberPeacockState::STARTANIMATION2);
+	PatternList.push_back(CyberPeacockState::WAITASECONDINATTACK);
+	PatternList.push_back(CyberPeacockState::STARTANIMATION3);
+	PatternList.push_back(CyberPeacockState::STARTFIGHT);
 	PatternList.push_back(CyberPeacockState::DISAPPEAR1);
 	PatternList.push_back(CyberPeacockState::WAITASECOND);
 	BasicPatternCount = static_cast<int>(PatternList.size());
 
 	SetRandomPattern();
 	SetBossAttack3();
+
 }
 
 void CyberPeacockBoss::SetRandomPattern()

@@ -172,8 +172,7 @@ void CyberPeacockAreaLevel::Update(float _DeltaTime)
 void CyberPeacockAreaLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	Player::SetMainPlayer(*CyberPeacockAreaLevelPlayer);
-	CyberPeacockAreaBGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("CyberPeacockStageBGM.mp3");
-	CyberPeacockAreaBGMPlayer.LoopCount(100);
+	Player::MainPlayer->SetCyberPeacockAreaBGM();
 
 	GameEngineSoundPlayer ReadySound = GameEngineResources::GetInst().SoundPlayToControl("ReadySound.mp3");
 	ReadySound.LoopCount(1);

@@ -6,6 +6,7 @@
 #include "BossTargetEffect.h"
 #include "BossMissile.h"
 #include "ExplosionEffect.h"
+#include "Player.h"
 
 void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 {
@@ -17,9 +18,29 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 	//상태가 변했을 때, 끝날 때 필요한 코드, 시작할 때 필요한 코드를 출력하기 위함
 	switch (NextState)
 	{
-	case CyberPeacockState::STARTANIMATION:
+	case CyberPeacockState::WARNING:
 	{
-		StartAnimationStart();
+		WarningStart();
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION1:
+	{
+		StartAnimation1Start();
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION2:
+	{
+		StartAnimation2Start();
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION3:
+	{
+		StartAnimation3Start();
+		break;
+	}
+	case CyberPeacockState::STARTFIGHT:
+	{
+		StartFightStart();
 		break;
 	}
 	case CyberPeacockState::DISAPPEAR1:
@@ -91,9 +112,28 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 
 	switch (PrevState)
 	{
-	case CyberPeacockState::STARTANIMATION:
+	case CyberPeacockState::WARNING:
 	{
-		StartAnimationEnd();
+		WarningEnd();
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION1:
+	{
+		StartAnimation1End();
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION2:
+	{
+		StartAnimation2End();
+		break;
+	case CyberPeacockState::STARTANIMATION3:
+	{
+		StartAnimation3End();
+		break;
+	}
+	case CyberPeacockState::STARTFIGHT:
+	{
+		StartFightEnd();
 		break;
 	}
 	case CyberPeacockState::DISAPPEAR1:
@@ -160,15 +200,36 @@ void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 	default:
 		break;
 	}
+	}
 }
 
 void CyberPeacockBoss::UpdateState(float _DeltaTime)
 {
 	switch (StateValue)
 	{
-	case CyberPeacockState::STARTANIMATION:
+	case CyberPeacockState::WARNING:
 	{
-		StartAnimationUpdate(_DeltaTime);
+		WarningUpdate(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION1:
+	{
+		StartAnimation1Update(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION2:
+	{
+		StartAnimation2Update(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::STARTANIMATION3:
+	{
+		StartAnimation3Update(_DeltaTime);
+		break;
+	}
+	case CyberPeacockState::STARTFIGHT:
+	{
+		StartFightUpdate(_DeltaTime);
 		break;
 	}
 	case CyberPeacockState::DISAPPEAR1:
@@ -236,12 +297,34 @@ void CyberPeacockBoss::UpdateState(float _DeltaTime)
 	}
 }
 
-void CyberPeacockBoss::StartAnimationStart()
+void CyberPeacockBoss::WarningStart()
 {
-	AnimationRender->ChangeAnimation("StartAnim");
+	GameEngineSoundPlayer Sound = GameEngineResources::GetInst().SoundPlayToControl("WarningSound.mp3");
+	Sound.LoopCount(3);
+	CheckTime = 0.0f;
 }
 
-void CyberPeacockBoss::StartAnimationUpdate(float _DeltaTime)
+void CyberPeacockBoss::WarningUpdate(float _DeltaTime)
+{
+	CheckTime += _DeltaTime;
+
+	if (CheckTime >= 3.0f)
+	{
+		DoNextPattern = true;
+	}
+}
+
+void CyberPeacockBoss::WarningEnd()
+{
+
+}
+
+void CyberPeacockBoss::StartAnimation1Start()
+{
+	AnimationRender->ChangeAnimation("StartAnim1");
+}
+
+void CyberPeacockBoss::StartAnimation1Update(float _DeltaTime)
 {
 	if (AnimationRender->IsAnimationEnd())
 	{
@@ -249,9 +332,66 @@ void CyberPeacockBoss::StartAnimationUpdate(float _DeltaTime)
 	}
 }
 
-void CyberPeacockBoss::StartAnimationEnd()
+void CyberPeacockBoss::StartAnimation1End()
 {
 
+}
+
+void CyberPeacockBoss::StartAnimation2Start()
+{
+	AnimationRender->ChangeAnimation("StartAnim2");
+	PlaySoundOnce("BossAnimSound.mp3");
+}
+
+void CyberPeacockBoss::StartAnimation2Update(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DoNextPattern = true;
+	}
+}
+
+void CyberPeacockBoss::StartAnimation2End()
+{
+
+}
+
+void CyberPeacockBoss::StartAnimation3Start()
+{
+	AnimationRender->ChangeAnimation("StartAnim3");
+	PlaySoundOnce("BossAttack2Sound.mp3");
+}
+
+void CyberPeacockBoss::StartAnimation3Update(float _DeltaTime)
+{
+	if (AnimationRender->IsAnimationEnd())
+	{
+		DoNextPattern = true;
+	}
+}
+
+void CyberPeacockBoss::StartAnimation3End()
+{
+}
+
+void CyberPeacockBoss::StartFightStart()
+{
+	CheckTime = 0.0f;
+}
+void CyberPeacockBoss::StartFightUpdate(float _DeltaTime)
+{
+	CheckTime += _DeltaTime;
+
+	if (CheckTime >= 1.0f)
+	{
+		DoNextPattern = true;
+
+	}
+}
+void CyberPeacockBoss::StartFightEnd()
+{
+	Player::MainPlayer->SetBossBGM();
+	Player::MainPlayer->SetInAnimationState(false);
 }
 
 
@@ -260,6 +400,8 @@ void CyberPeacockBoss::DisAppear1Start()
 	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Disappear");
 }
+
+
 
 void CyberPeacockBoss::DisAppear1Update(float _DeltaTime)
 {
@@ -560,6 +702,7 @@ void CyberPeacockBoss::Attack3TargetMissileEnd()
 void CyberPeacockBoss::DeadStart()
 {
 	DirCheck("BossDead");
+	Player::MainPlayer->BossBGMStop();
 }
 
 void CyberPeacockBoss::DeadUpdate(float _DeltaTime)

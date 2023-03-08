@@ -4,7 +4,12 @@
 enum class CyberPeacockState
 {
 	IDLE,
-	STARTANIMATION,
+	WARNING,
+	STARTANIMATION1,
+	STARTANIMATION2,
+	STARTANIMATION3,
+	STARTANIMATION4,
+	STARTFIGHT,
 	DISAPPEAR1, // 서서 사라짐
 	DISAPPEAR2, // 앉아서 사라짐
 	DISAPPEAR3, // 위로 올라가며 공격후 사라짐
@@ -87,9 +92,25 @@ private:
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전
 
-	void StartAnimationStart();
-	void StartAnimationEnd();
-	void StartAnimationUpdate(float _DeltaTime);
+	void WarningStart();
+	void WarningEnd();
+	void WarningUpdate(float _DeltaTime);
+
+	void StartAnimation1Start();
+	void StartAnimation1End();
+	void StartAnimation1Update(float _DeltaTime);
+
+	void StartAnimation2Start();
+	void StartAnimation2End();
+	void StartAnimation2Update(float _DeltaTime);
+	
+	void StartAnimation3Start();
+	void StartAnimation3End();
+	void StartAnimation3Update(float _DeltaTime);
+
+	void StartFightStart();
+	void StartFightUpdate(float _DeltaTime);
+	void StartFightEnd();
 
 	void DisAppear1Start();
 	void DisAppear1End();

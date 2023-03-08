@@ -168,6 +168,11 @@ void Player::MoveCalculation(float _DeltaTime)
 		return;
 	}
 
+	if (InAnimationState == true)
+	{
+		return;
+	}
+
 	if (ColImage == nullptr)
 	{
 		MsgAssert("현재 스테이지의 플레이어 충돌용 맵 이미지가 없습니다.");
@@ -508,3 +513,27 @@ void Player::Render(float _DeltaTime)
 	GameEngineLevel::DebugTextPush(CameraMouseText);
 }
 
+
+
+
+void Player::SetCyberPeacockAreaBGM()
+{
+	CyberPeacockAreaBGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("CyberPeacockStageBGM.mp3");
+	CyberPeacockAreaBGMPlayer.LoopCount(100);
+}
+
+void Player::CyberPeacockAreaBGMStop()
+{
+	CyberPeacockAreaBGMPlayer.Stop();
+}
+
+void Player::SetBossBGM()
+{
+	BossBGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("InBossBGM.mp3");
+	BossBGMPlayer.LoopCount(100);
+}
+
+void Player::BossBGMStop()
+{
+	BossBGMPlayer.Stop();
+}

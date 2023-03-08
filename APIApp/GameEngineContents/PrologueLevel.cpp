@@ -122,4 +122,5 @@ void PrologueLevel::Update(float _DeltaTime)
 void PrologueLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	Player::SetMainPlayer(*PrologueLevelPlayer);
+
 }

@@ -10,6 +10,8 @@
 #include "WallKickJumpEffect.h"
 #include "DashEffect.h"
 #include "BossRoomDoor.h"
+#include "CyberPeacockBoss.h"
+#include <vector>
 
 void Player::ChangeState(PlayerState _State)
 {
@@ -143,6 +145,7 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	}
 
+
 	default:
 		break;
 
@@ -270,6 +273,7 @@ void Player::ChangeState(PlayerState _State)
 		OpenDoor2End();
 		break;
 	}
+
 
 	default:
 		break;
@@ -400,6 +404,8 @@ void Player::UpdateState(float _DeltaTime)
 		OpenDoor2Update(_DeltaTime);
 		break;
 	}
+
+
 	default:
 		break;
 	}
@@ -432,6 +438,12 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
+	//컷씬 진행중이면 움직이지 않음
+	if (InAnimationState == true)
+	{
+		return;
+	}
+
 	//동시에 누르면 진행하지 않음
 	if (GameEngineInput::IsPress("MoveLeft") && GameEngineInput::IsPress("MoveRight"))
 	{
@@ -1610,7 +1622,7 @@ void Player::OpenDoor2Update(float _DeltaTime)
 		GetLevel()->SetCameraPos(CameraPos);
 	}
 
-	if (OpenDoorCalTime >= 4.0f)
+	if (OpenDoorCalTime >= 3.5f)
 	{
 		ChangeState(PlayerState::IDLE);
 	}
@@ -1619,4 +1631,7 @@ void Player::OpenDoor2End()
 {
 	OpenDoorState = false;
 	CameraLockState = PlayerCameraLock::CyberPeacockInBoss;
+	CyberPeacockAreaBGMStop();
+	InAnimationState = true;
+
 }
