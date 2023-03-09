@@ -213,6 +213,7 @@ void CyberPeacockBoss::DamagedCheck()
 		return;
 	}
 
+	PlaySoundOnce("BossDamagedSound.mp3");
 	BossHP -= 10.0f;
 	BossHPBarUI->GetDamaged();
 	DamagedCheckTime = 0.0f;
