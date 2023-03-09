@@ -109,11 +109,15 @@ void CyberPeacockAreaLevel::Loading()
 			MissileRollImage->Cut(2, 1);
 			GameEngineImage* TargetImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossTarget.bmp"));
 		}
+		//UI
+		{
+			GameEngineImage* BossHPBarImage = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("BossHPBar.bmp"));
+		}
 	}
 	//액터 생성
 	{
 		//보스
-		CyberPeacockBoss* Actor = CreateActor<CyberPeacockBoss>();
+		CyberPeacockAreaLevelBoss = CreateActor<CyberPeacockBoss>();
 	}
 	{
 		//맵
@@ -141,6 +145,7 @@ void CyberPeacockAreaLevel::Loading()
 		SetCameraPos({ 5763, 4659 });
 		CyberPeacockAreaLevelPlayer->SetColImage("CyberPeacockAreaColmap.bmp");
 		CyberPeacockAreaLevelPlayer->SetDoor(Door1, Door2);
+		CyberPeacockAreaLevelPlayer->SetBoss(CyberPeacockAreaLevelBoss);
 	}
 
 	SoundLoad();

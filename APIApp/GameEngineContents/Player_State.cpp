@@ -5,12 +5,14 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "WallClimbDustEffect.h"
 #include "WallKickJumpEffect.h"
 #include "DashEffect.h"
 #include "BossRoomDoor.h"
 #include "CyberPeacockBoss.h"
+#include "PlayerHpBar.h"
 #include <vector>
 
 void Player::ChangeState(PlayerState _State)
@@ -144,7 +146,11 @@ void Player::ChangeState(PlayerState _State)
 		OpenDoor2Start();
 		break;
 	}
-
+	case PlayerState::DAMAGED:
+	{
+		DamagedStart();
+		break;
+	}
 
 	default:
 		break;
@@ -271,6 +277,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::OPENDOOR2:
 	{
 		OpenDoor2End();
+		break;
+	}
+	case PlayerState::DAMAGED:
+	{
+		DamagedEnd();
 		break;
 	}
 
@@ -404,7 +415,11 @@ void Player::UpdateState(float _DeltaTime)
 		OpenDoor2Update(_DeltaTime);
 		break;
 	}
-
+	case PlayerState::DAMAGED:
+	{
+		DamagedUpdate(_DeltaTime);
+		break;
+	}
 
 	default:
 		break;
@@ -690,11 +705,11 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	//Debug용 (점프시간 확인)
 	{
-		std::string PlayerJumpTime = "PlayerJumpTime : ";
+		//std::string PlayerJumpTime = "PlayerJumpTime : ";
 
-		PlayerJumpTime += std::to_string(JumpCalTime);
+		//PlayerJumpTime += std::to_string(JumpCalTime);
 
-		GameEngineLevel::DebugTextPush(PlayerJumpTime);
+		//GameEngineLevel::DebugTextPush(PlayerJumpTime);
 	}
 }
 
@@ -807,9 +822,22 @@ void Player::Attack1Start()
 	AttackSound.LoopCount(1);
 	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
 	BladeSound.LoopCount(1);
+
+
 }
 void Player::Attack1Update(float _DeltaTime)
 {
+	if (DirString == "Left_")
+	{
+		PlayerLeftAttackCollision->On();
+		PlayerRightAttackCollision->Off();
+	}
+	else
+	{
+		PlayerLeftAttackCollision->Off();
+		PlayerRightAttackCollision->On();
+	}
+
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK2);
@@ -824,7 +852,8 @@ void Player::Attack1Update(float _DeltaTime)
 }
 void Player::Attack1End()
 {
-
+	PlayerLeftAttackCollision->Off();
+	PlayerRightAttackCollision->Off();
 }
 
 void Player::Attack2Start()
@@ -834,9 +863,22 @@ void Player::Attack2Start()
 	AttackSound.LoopCount(1);
 	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
 	BladeSound.LoopCount(1);
+
+
 }
 void Player::Attack2Update(float _DeltaTime)
 {
+	if (DirString == "Left_")
+	{
+		PlayerLeftAttackCollision->On();
+		PlayerRightAttackCollision->Off();
+	}
+	else
+	{
+		PlayerLeftAttackCollision->Off();
+		PlayerRightAttackCollision->On();
+	}
+
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK3);
@@ -853,7 +895,8 @@ void Player::Attack2Update(float _DeltaTime)
 }
 void Player::Attack2End()
 {
-
+	PlayerLeftAttackCollision->Off();
+	PlayerRightAttackCollision->Off();
 }
 
 void Player::Attack3Start()
@@ -863,9 +906,22 @@ void Player::Attack3Start()
 	AttackSound.LoopCount(1);
 	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
 	BladeSound.LoopCount(1);
+
+
 }
 void Player::Attack3Update(float _DeltaTime)
 {
+	if (DirString == "Left_")
+	{
+		PlayerLeftAttackCollision->On();
+		PlayerRightAttackCollision->Off();
+	}
+	else
+	{
+		PlayerLeftAttackCollision->Off();
+		PlayerRightAttackCollision->On();
+	}
+
 	if (AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::ATTACKEND);
@@ -874,7 +930,8 @@ void Player::Attack3Update(float _DeltaTime)
 }
 void Player::Attack3End()
 {
-
+	PlayerLeftAttackCollision->Off();
+	PlayerRightAttackCollision->Off();
 }
 
 void Player::AttackEndStart()
@@ -983,6 +1040,17 @@ void Player::JumpAttackStart()
 	DirCheck("JumpAttack");
 	GameEngineSoundPlayer BladeSound = GameEngineResources::GetInst().SoundPlayToControl("BladeSound.mp3");
 	BladeSound.LoopCount(1);
+
+	if (DirString == "Left_")
+	{
+		PlayerLeftAttackCollision->On();
+		PlayerRightAttackCollision->Off();
+	}
+	else
+	{
+		PlayerLeftAttackCollision->Off();
+		PlayerRightAttackCollision->On();
+	}
 }
 
 void Player::JumpAttackUpdate(float _DeltaTime)
@@ -1005,7 +1073,8 @@ void Player::JumpAttackUpdate(float _DeltaTime)
 
 void Player::JumpAttackEnd()
 {
-
+	PlayerLeftAttackCollision->Off();
+	PlayerRightAttackCollision->Off();
 }
 
 void Player::DashStart()
@@ -1328,8 +1397,6 @@ void Player::DashFallEnd()
 
 void Player::WallClimbStart()
 {
-	
-
 	GameEngineSoundPlayer StickSound = GameEngineResources::GetInst().SoundPlayToControl("StickWall.mp3");
 	StickSound.LoopCount(1);
 
@@ -1518,6 +1585,8 @@ float4 PlayerStart;
 float4 CameraStart;
 float4 PlayerEnd;
 float4 CameraEnd;
+float4 PlayerHPBarStart;
+float4 PlayerHPBarEnd;
 
 void Player::OpenDoor1Start()
 {
@@ -1525,13 +1594,16 @@ void Player::OpenDoor1Start()
 	CameraStart = GetLevel()->GetCameraPos();
 	PlayerEnd = { 7074.0f, PlayerStart.y };
 	CameraEnd = { 6950.0f , CameraStart.y };
+	
+	PlayerHPBarStart = PlayerHPBarUI->GetPos();
+	PlayerHPBarEnd = { 1186.0f, 0.0f };
+
 	Time = 0.0f;
 	OpenDoorState = true;
 	OpenDoorCalTime = 0.0f;
 	OpenDoorCalTime2 = 0.0f;
 	OpenDoorMoveState = false;
 	Door1->Open();
-	
 }
 void Player::OpenDoor1Update(float _DeltaTime)
 {
@@ -1552,6 +1624,7 @@ void Player::OpenDoor1Update(float _DeltaTime)
 		Time += _DeltaTime * 0.5f;
 		float4 PlayerPos = float4::LerpClamp(PlayerStart, PlayerEnd, Time);
 		float4 CameraPos = float4::LerpClamp(CameraStart, CameraEnd, Time);
+		float4 HpBarPos = float4::LerpClamp(PlayerHPBarStart, PlayerHPBarEnd, Time);
 
 		if (Time >= 2.0f)
 		{
@@ -1562,6 +1635,7 @@ void Player::OpenDoor1Update(float _DeltaTime)
 
 		SetPos(PlayerPos);
 		GetLevel()->SetCameraPos(CameraPos);
+		PlayerHPBarUI->SetPos(HpBarPos);
 	}
 
 	if (OpenDoorCalTime >= 4.0f)
@@ -1575,7 +1649,6 @@ void Player::OpenDoor1End()
 {
 	OpenDoorState = false;
 	CameraLockState = PlayerCameraLock::CyberPeacockBossRoom2;
-
 }
 
 void Player::OpenDoor2Start()
@@ -1584,6 +1657,9 @@ void Player::OpenDoor2Start()
 	CameraStart = GetLevel()->GetCameraPos();
 	PlayerEnd = { 7905.0f, PlayerStart.y };
 	CameraEnd = { 7789.0f , CameraStart.y };
+	PlayerHPBarStart = PlayerHPBarUI->GetPos();
+	PlayerHPBarEnd = { 2025.0f, 0.0f };
+
 	Time = 0.0f;
 	OpenDoorState = true;
 	OpenDoorCalTime = 0.0f;
@@ -1610,6 +1686,7 @@ void Player::OpenDoor2Update(float _DeltaTime)
 		Time += _DeltaTime * 0.5f;
 		float4 PlayerPos = float4::LerpClamp(PlayerStart, PlayerEnd, Time);
 		float4 CameraPos = float4::LerpClamp(CameraStart, CameraEnd, Time);
+		float4 HpBarPos = float4::LerpClamp(PlayerHPBarStart, PlayerHPBarEnd, Time);
 
 		if (Time >= 2.0f)
 		{
@@ -1617,9 +1694,9 @@ void Player::OpenDoor2Update(float _DeltaTime)
 			Time = 0.0f;
 
 		}
-
 		SetPos(PlayerPos);
 		GetLevel()->SetCameraPos(CameraPos);
+		PlayerHPBarUI->SetPos(HpBarPos);
 	}
 
 	if (OpenDoorCalTime >= 3.5f)
@@ -1633,5 +1710,76 @@ void Player::OpenDoor2End()
 	CameraLockState = PlayerCameraLock::CyberPeacockInBoss;
 	CyberPeacockAreaBGMStop();
 	InAnimationState = true;
+	SetCameraLockState(PlayerCameraLock::CyberPeacockInBoss);
+	//GetLevel()->SetCameraPos({ 7789, 4659 });
+	CyberPeacockBossPointer->ArrivedPlayer();
+
+}
+void Player::DamagedStart()
+{
+	std::string AnimaitonName = "Damaged";
+	AnimationRender->ChangeAnimation(DamagedDirection.data() + AnimaitonName);
+	DamagedCalTime = 0.0f;
+
+	int RandomVoice = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (RandomVoice == 0)
+	{
+		GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("PlayerDamaged1.mp3");
+		VoiceSound.LoopCount(1);
+	}
+	else
+	{
+		GameEngineSoundPlayer VoiceSound = GameEngineResources::GetInst().SoundPlayToControl("PlayerDamaged2.mp3");
+		VoiceSound.LoopCount(1);
+	}
+
+}
+void Player::DamagedUpdate(float _DeltaTime)
+{
+	DamagedTime = 0.0f;
+
+	DamagedCalTime += _DeltaTime;
+	if (DamagedCalTime >= 0.6f)
+	{
+
+		if (IsGround == false)
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+	}
+
+	if (DamagedDirection == "Left_")
+	{
+		if (IsGround == false)
+		{
+			MoveDir += (float4::Down * Gravity * 0.4f);
+		}
+		if (RightWallCheck == false)
+		{
+			MoveDir += float4::Right * 25.0f;
+		}
+	}
+	else
+	{
+		if (IsGround == false)
+		{
+			MoveDir += (float4::Down * Gravity * 0.4f);
+		}			
+		if (LeftWallCheck == false)
+		{
+			MoveDir += float4::Left * 25.0f;
+		}
+	}
+
+}
+void Player::DamagedEnd()
+{
 
 }

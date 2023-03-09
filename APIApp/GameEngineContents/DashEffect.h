@@ -20,8 +20,8 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-private:
 
+private:
 	void DirCheck(const std::string_view& _AnimationName);
 	std::string DirString = "";
 	GameEngineRender* AnimationRender = nullptr;

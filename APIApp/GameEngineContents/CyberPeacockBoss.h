@@ -26,6 +26,7 @@ enum class CyberPeacockState
 
 class BossMissile;
 class BossTargetEffect;
+class BossHPBar;
 class CyberPeacockBoss : public GameEngineActor
 {
 public:
@@ -38,6 +39,16 @@ public:
 	CyberPeacockBoss(CyberPeacockBoss&& _Other) noexcept = delete;
 	CyberPeacockBoss& operator=(const CyberPeacockBoss& _Other) = delete;
 	CyberPeacockBoss& operator=(CyberPeacockBoss&& _Other) noexcept = delete;
+
+	void ArrivedPlayer()
+	{
+		DoNextPattern = true;
+	}
+
+	BossHPBar* ReturnBossHPBarUI()
+	{
+		return BossHPBarUI;
+	}
 
 protected:
 	void Start() override;
@@ -70,6 +81,8 @@ private:
 	float Attack1Speed = 1000.0f; //Attack1 속도
 	float ExplosionCalTime = 0.0f;
 
+	BossHPBar* BossHPBarUI = nullptr;
+
 	bool CheckBool = false; //애니메이션 내에서 애니메이션이 끝난 이후에 움직이는 등의 행동을 하는 bool값
 	float AttackXClamp(float _PosX);
 	float CheckTime = 0.0f;
@@ -88,6 +101,15 @@ private:
 	float MissileCalTime = 0.0f;
 	float MissileRateTime = 2.0f;
 	size_t MissileCount = 0;
+	float BossHP = 150.0f;
+	float CalTime = 0.0f;
+	GameEngineCollision* BossBodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
+	GameEngineCollision* BossAttack1Collision = nullptr; //공격 1 콜리전
+	GameEngineCollision* BossAttack2_1Collision = nullptr; //공격 2-1 콜리전
+	GameEngineCollision* BossAttack2_2Collision = nullptr; //공격 2-2 콜리전
+	GameEngineCollision* BossAttack2_3Collision = nullptr; //공격 2-3 콜리전
+	GameEngineCollision* BossAttack2_4Collision = nullptr; //공격 2-4 콜리전
+	void CheckCollision();
 
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전

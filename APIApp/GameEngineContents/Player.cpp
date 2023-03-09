@@ -12,6 +12,9 @@
 #include "WallClimbDustEffect.h"
 #include "WallKickJumpEffect.h"
 #include "DashEffect.h"
+#include "PlayerHPBar.h"
+#include "CyberPeacockBoss.h"
+#include "BossHPBar.h"
 
 Player* Player::MainPlayer;
 
@@ -79,6 +82,7 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashStart", .ImageName = "RightPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.07f , .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashLoop", .ImageName = "RightPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_DashEnd", .ImageName = "RightPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_Damaged", .ImageName = "RightPlayerDamaged.bmp", .Start = 0, .End = 7, .InterTime = 0.045f});
 		//좌측 애니메이션
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_Idle",      .ImageName = "LeftPlayerIdle.bmp", .Start = 0, .End = 5, .InterTime = 0.25f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_EnterMove", .ImageName = "LeftPlayerMove.bmp", .Start = 0, .End = 2, .InterTime = 0.05f });
@@ -99,6 +103,7 @@ void Player::Start()
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashStart", .ImageName = "LeftPlayerDash.bmp", .Start = 0, .End = 1, .InterTime = 0.07f , .Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashLoop", .ImageName = "LeftPlayerDash.bmp", .Start = 2, .End = 4, .InterTime = 0.03f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_DashEnd", .ImageName = "LeftPlayerDash.bmp", .Start = 5, .End = 8, .InterTime = 0.045f });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_Damaged", .ImageName = "LeftPlayerDamaged.bmp", .Start = 0, .End = 7, .InterTime = 0.045f});
 
 		//스테이지 시작시
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
@@ -143,6 +148,25 @@ void Player::Start()
 		UpperWallCheckCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERCHECKWALL);
 		UpperWallCheckCollision->SetMove({ 0, -130 });
 		UpperWallCheckCollision->SetScale({ 60, 10 });
+	}
+
+	{
+		PlayerLeftAttackCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERATTACK);
+		PlayerLeftAttackCollision->SetMove({ -110, -82.5 });
+		PlayerLeftAttackCollision->SetScale({ 123.75, 173.25 });
+		PlayerLeftAttackCollision->Off();
+	}
+
+	{
+		PlayerRightAttackCollision = CreateCollision(MegamanX4CollisionOrder::PLAYERATTACK);
+		PlayerRightAttackCollision->SetMove({ 110, -82.5 });
+		PlayerRightAttackCollision->SetScale({ 123.75, 173.25 });
+		PlayerRightAttackCollision->Off();
+	}
+
+	{
+		PlayerHPBarUI = GetLevel()->CreateActor<PlayerHPBar>();
+		
 	}
 
 	{
@@ -205,7 +229,6 @@ void Player::MoveCalculation(float _DeltaTime)
 
 	SetMove(MoveDir * _DeltaTime);
 	CameraLock(MoveDir, _DeltaTime);
-
 }
 
 void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
@@ -234,7 +257,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 			{
 				CameraDir.x = 0.0f;
 			}
-
+			PlayerHPBarUI->SetMove(CameraDir * _DeltaTime);
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
 		}
 		else
@@ -248,8 +271,9 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 			{
 				CameraDir.x = 0.0f;
 			}
-
+			PlayerHPBarUI->SetMove(CameraDir * _DeltaTime);
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+
 		}
 
 		break;
@@ -258,6 +282,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 	{
 		float4 CameraPos = GetLevel()->GetCameraPos();
 
+		//PlayerHPBarUI->SetPos({ 7049.0f, CameraPos.y + 200.0f });
 		GetLevel()->SetCameraPos({ 6949.0f, CameraPos.y});
 
 		break;
@@ -280,6 +305,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 				CameraDir.x = 0.0f;
 			}
 
+			PlayerHPBarUI->SetMove(CameraDir * _DeltaTime);
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
 		}
 		else
@@ -294,7 +320,9 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 				CameraDir.x = 0.0f;
 			}
 
+			PlayerHPBarUI->SetMove(CameraDir * _DeltaTime);
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
+			CyberPeacockBossPointer->ReturnBossHPBarUI()->SetMove(CameraDir * _DeltaTime);
 		}
 
 		break;
@@ -378,10 +406,13 @@ void Player::Update(float _DeltaTime)
 		return;
 	}
 
+
+	DamagedTime += _DeltaTime;
+
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
 	CheckWall();
-
+	CheckAttackCollision();
 	//if (nullptr != BodyCollision)
 	//{
 	//	std::vector<GameEngineCollision*> Collision;
@@ -391,8 +422,6 @@ void Player::Update(float _DeltaTime)
 	//		for (size_t i = 0; i < Collision.size(); i++)
 	//		{
 	//			GameEngineActor* ColActor = Collision[i]->GetActor();
-
-	//			//ColActor->Death();
 	//		}
 	//	}
 	//}
@@ -462,6 +491,39 @@ void Player::CheckWall()
 	}
 }
 
+void Player::CheckAttackCollision()
+{
+	if (nullptr != PlayerLeftAttackCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == PlayerLeftAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			
+		}
+		else
+		{
+	
+		}
+	}
+
+	if (nullptr != PlayerRightAttackCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == PlayerRightAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+
+
+}
+
 void Player::DirCheck(const std::string_view& _AnimationName)
 {
 	std::string PrevDirString = DirString;
@@ -501,16 +563,16 @@ void Player::Render(float _DeltaTime)
 	float4 ActorPos = NextPos - GetLevel()->GetCameraPos();
 
 	//위치 확인용
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 
-	std::string CameraMouseText = "";
-	CameraMouseText = CameraMouseText + (GetLevel()->GetMousePosToCamera().ToString());
-	GameEngineLevel::DebugTextPush(CameraMouseText);
+	//std::string CameraMouseText = "";
+	//CameraMouseText = CameraMouseText + (GetLevel()->GetMousePosToCamera().ToString());
+	//GameEngineLevel::DebugTextPush(CameraMouseText);
 }
 
 
@@ -536,4 +598,22 @@ void Player::SetBossBGM()
 void Player::BossBGMStop()
 {
 	BossBGMPlayer.Stop();
+}
+
+void Player::DamagedCheck(float _Damage, const std::string_view& _Dir)
+{
+	if (DamagedTime <= 1.0f)
+	{
+		return;
+	}
+
+	PlayerHP -= _Damage;
+	DamagedDirection = _Dir.data();
+	ChangeState(PlayerState::DAMAGED);
+	PlayerHPBarUI->GetDamaged();
+}
+
+void Player::SetBoss(CyberPeacockBoss* _Boss)
+{
+	CyberPeacockBossPointer = _Boss;
 }

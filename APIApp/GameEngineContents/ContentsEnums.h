@@ -11,7 +11,8 @@ enum class MegamanX4PlayRenderOrder
 	BOSS,
 	PLAYER,
 	PLAYERUPPEREFFECT,
-	STRUCTURE
+	STRUCTURE,
+	UI,
 };
 
 enum class MegamanX4RenderOrder

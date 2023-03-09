@@ -4,6 +4,8 @@
 
 class Player;
 class BossRoomDoor;
+class PlayerHPBar;
+class CyberPeacockBoss;
 class CyberPeacockAreaLevel : public GameEngineLevel
 {
 public:
@@ -27,7 +29,7 @@ protected:
 
 private:
 	Player* CyberPeacockAreaLevelPlayer = nullptr;
-
+	CyberPeacockBoss* CyberPeacockAreaLevelBoss = nullptr;
 	BossRoomDoor* Door1;
 	BossRoomDoor* Door2;
 

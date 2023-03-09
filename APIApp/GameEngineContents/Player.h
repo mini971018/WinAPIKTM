@@ -31,6 +31,8 @@ enum class PlayerState
 	OPENDOOR1,
 	OPENDOOR2,
 	IDLEINANIMATION,
+
+	DAMAGED,
 };
 
 enum class PlayerCameraLock
@@ -45,6 +47,8 @@ class GameEngineImage;
 class WallClimbDustEffect;
 class WallKickJumpEffect;
 class DashEffect;
+class PlayerHPBar;
+class CyberPeacockBoss;
 class Player : public GameEngineActor
 {
 public:
@@ -83,6 +87,8 @@ public:
 	{
 		InAnimationState = _Value;
 	}
+	void DamagedCheck(float _Damage, const std::string_view& _Dir);
+	void SetBoss(CyberPeacockBoss* _Boss);
 
 protected: 
 	void Start() override;
@@ -123,18 +129,24 @@ private:
 	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
 
 	GameEngineRender* AnimationRender = nullptr;
-
+	PlayerHPBar* PlayerHPBarUI = nullptr;
 	//캐릭터 이펙트 관련
 	WallClimbDustEffect* WallClimbDust;
 	WallKickJumpEffect* WallKickEffect;
 	DashEffect* PlayerDashEffect;
 
+	CyberPeacockBoss* CyberPeacockBossPointer;
 	GameEngineCollision* BodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
 
 	//각각 좌측 우측 상단에서 벽이 닿았는지 체크하는 콜리전
 	GameEngineCollision* LeftWallCheckCollision = nullptr;
 	GameEngineCollision* RightWallCheckCollision = nullptr;
 	GameEngineCollision* UpperWallCheckCollision = nullptr;
+
+	GameEngineCollision* PlayerLeftAttackCollision = nullptr;
+	GameEngineCollision* PlayerRightAttackCollision = nullptr;
+
+	void CheckAttackCollision();
 
 	bool LeftWallCheck;
 	bool RightWallCheck;
@@ -166,6 +178,12 @@ private:
 	PlayerCameraLock CameraLockState = PlayerCameraLock::CyberPeacockBossRoom;
 
 	GameEngineSoundPlayer PlayerDashSound;
+
+	float PlayerHP = 100.0f;
+	float DamagedTime = 0.0f;
+	std::string_view DamagedDirection;
+	
+	float DamagedCalTime = 0.0f;
 
 	//FSM 유한 상태 머신 : 적용되는 것들은 한가지 일을 할 때, 동시에 다른 일을 할 수 없다.
 	void ChangeState(PlayerState _State);
@@ -270,6 +288,10 @@ private:
 	void IdleInAnimationStart();
 	void IdleInAnimationUpdate(float _DeltaTime);
 	void IdleInAnimationEnd();
+
+	void DamagedStart();
+	void DamagedUpdate(float _DeltaTime);
+	void DamagedEnd();
 
 	GameEngineImage* ColImage = nullptr;
 

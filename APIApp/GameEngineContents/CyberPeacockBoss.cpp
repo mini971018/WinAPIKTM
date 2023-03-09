@@ -14,6 +14,7 @@
 #include "BossMissile.h"
 #include "BossTargetEffect.h"
 #include "CyberPeacockAreaMap.h"
+#include "BossHPBar.h"
 
 CyberPeacockBoss::CyberPeacockBoss() 
 {
@@ -79,6 +80,47 @@ void CyberPeacockBoss::Start()
 	PatternList.push_back(CyberPeacockState::WAITASECOND);
 	BasicPatternCount = static_cast<int>(PatternList.size());
 
+	//콜리전 추가
+	{
+		BossBodyCollision = CreateCollision(MegamanX4CollisionOrder::MONSTER);
+		BossBodyCollision->SetMove({ 0, -137.5 });
+		BossBodyCollision->SetScale({ 123.75 , 220 });
+		BossBodyCollision->Off();
+	}
+	{
+		BossAttack1Collision = CreateCollision(MegamanX4CollisionOrder::MONSTERATTACK);
+		BossAttack1Collision->SetMove({ 0, -157.5 });
+		BossAttack1Collision->SetScale({ 200 , 240 });
+		BossAttack1Collision->Off();
+	}
+	{
+		BossAttack2_1Collision = CreateCollision(MegamanX4CollisionOrder::MONSTERATTACK);
+		BossAttack2_1Collision->SetMove({ 0, -40});
+		BossAttack2_1Collision->SetScale({ 605 , 82.5 });
+		BossAttack2_1Collision->Off();
+	}
+	{
+		BossAttack2_2Collision = CreateCollision(MegamanX4CollisionOrder::MONSTERATTACK);
+		BossAttack2_2Collision->SetMove({ 0, -115 });
+		BossAttack2_2Collision->SetScale({ 495 , 82.5 });
+		BossAttack2_2Collision->Off();
+	}
+	{
+		BossAttack2_3Collision = CreateCollision(MegamanX4CollisionOrder::MONSTERATTACK);
+		BossAttack2_3Collision->SetMove({ 0, -187.5 });
+		BossAttack2_3Collision->SetScale({ 440 , 82.5 });
+		BossAttack2_3Collision->Off();
+	}
+	{
+		BossAttack2_4Collision = CreateCollision(MegamanX4CollisionOrder::MONSTERATTACK);
+		BossAttack2_4Collision->SetMove({ 0, -260 });
+		BossAttack2_4Collision->SetScale({ 275 , 82.5 });
+		BossAttack2_4Collision->Off();
+	}
+
+	{
+		BossHPBarUI = GetLevel()->CreateActor<BossHPBar>();
+	}
 	SetRandomPattern();
 	SetBossAttack3();
 
@@ -89,7 +131,8 @@ void CyberPeacockBoss::SetRandomPattern()
 	for (int i = 0; i < 10; ++i)
 	{
 		int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 6);
-		
+		randomInt = 4;
+
 		switch (randomInt)
 		{
 		case 0:
@@ -145,22 +188,21 @@ void CyberPeacockBoss::SetBossAttack3()
 
 void CyberPeacockBoss::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("TestButton1"))
-	{
-		DoNextPattern = true;
-		Player::MainPlayer->SetCameraLockState(PlayerCameraLock::CyberPeacockInBoss);	
-		GetLevel()->SetCameraPos({ 7789, 4659 });
-	}
-	if (GameEngineInput::IsDown("TestButton2"))
-	{
-		ChangeState(CyberPeacockState::DEAD);
-	}
+	BossHPBarUI->GetPos();
 
 	UpdateState(_DeltaTime);
 	if (DoNextPattern == true)
 	{
 		SetNextPattern();
 	}
+
+	if (BossHP <= 0.0f)
+	{
+		ChangeState(CyberPeacockState::DEAD);
+
+	}
+
+	CheckCollision();
 }
 
 void CyberPeacockBoss::DirCheck(const std::string_view& _AnimationName)
@@ -257,4 +299,166 @@ void CyberPeacockBoss::PlaySoundOnce(const std::string_view& _Text)
 {
 	GameEngineSoundPlayer Sound = GameEngineResources::GetInst().SoundPlayToControl(_Text.data());
 	Sound.LoopCount(1);
+}
+
+void CyberPeacockBoss::CheckCollision()
+{
+	if (nullptr != BossBodyCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossBodyCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}	
+
+	}
+
+	if (nullptr != BossAttack1Collision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossAttack1Collision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
+
+	if (nullptr != BossAttack2_1Collision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossAttack2_1Collision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
+
+	if (nullptr != BossAttack2_2Collision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossAttack2_2Collision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
+
+	if (nullptr != BossAttack2_3Collision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossAttack2_3Collision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
+
+	if (nullptr != BossAttack2_4Collision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+
+		if (true == BossAttack2_4Collision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::PLAYER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 PlayerPos = ColActor->GetPos();
+
+				if (GetPos().x > PlayerPos.x)
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
+				}
+				else
+				{
+					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
 }

@@ -56,6 +56,8 @@ void PrologueLevel::Loading()
 		KickJumpEffectImage->Cut(10, 1);
 		GameEngineImage* WallClimbDust = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerWallClimbDust.bmp"));
 		WallClimbDust->Cut(10, 1);
+		GameEngineImage* GetDamaged = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("LeftPlayerDamaged.bmp"));
+		GetDamaged->Cut(8, 1);
 	}
 	{
 		//플레이어 우측 방향 이미지
@@ -85,6 +87,8 @@ void PrologueLevel::Loading()
 		KickJumpEffectImage->Cut(10, 1);
 		GameEngineImage* WallClimbDust = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerWallClimbDust.bmp"));
 		WallClimbDust->Cut(10, 1);
+		GameEngineImage* GetDamaged = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("RightPlayerDamaged.bmp"));
+		GetDamaged->Cut(8, 1);
 	}
 	{
 		//맵 이미지
@@ -98,8 +102,14 @@ void PrologueLevel::Loading()
 		//화면상 가장 앞에 있는 구조물들의 이미지
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("PrologueStructure.bmp"));
 	}
-
-
+	{
+		//hb bar
+		GameEngineImage* HPBar = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("PlayerHPBar.bmp"));
+	}
+	{
+		//hb bar
+		GameEngineImage* HPUI = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("HPUI.bmp"));
+	}
 	//액터 생성
 	{
 		PrologueLevelPlayer = CreateActor<Player>();

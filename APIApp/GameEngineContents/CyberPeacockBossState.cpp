@@ -3,10 +3,12 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "BossTargetEffect.h"
 #include "BossMissile.h"
 #include "ExplosionEffect.h"
 #include "Player.h"
+#include "BossHPBar.h"
 
 void CyberPeacockBoss::ChangeState(CyberPeacockState _State)
 {
@@ -377,6 +379,7 @@ void CyberPeacockBoss::StartAnimation3End()
 void CyberPeacockBoss::StartFightStart()
 {
 	CheckTime = 0.0f;
+
 }
 void CyberPeacockBoss::StartFightUpdate(float _DeltaTime)
 {
@@ -390,8 +393,12 @@ void CyberPeacockBoss::StartFightUpdate(float _DeltaTime)
 }
 void CyberPeacockBoss::StartFightEnd()
 {
+	BossHPBarUI->SetPos({ 2025.0f, 0.0f });
+	BossHPBarUI->StartFight();
+	
 	Player::MainPlayer->SetBossBGM();
 	Player::MainPlayer->SetInAnimationState(false);
+
 }
 
 
@@ -399,6 +406,7 @@ void CyberPeacockBoss::DisAppear1Start()
 {
 	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Disappear");
+
 }
 
 
@@ -413,7 +421,7 @@ void CyberPeacockBoss::DisAppear1Update(float _DeltaTime)
 
 void CyberPeacockBoss::DisAppear1End()
 {
-
+	BossBodyCollision->Off();
 }
 
 
@@ -433,7 +441,7 @@ void CyberPeacockBoss::DisAppear2Update(float _DeltaTime)
 
 void CyberPeacockBoss::DisAppear2End()
 {
-
+	BossBodyCollision->Off();
 }
 
 
@@ -453,7 +461,7 @@ void CyberPeacockBoss::DisAppear3Update(float _DeltaTime)
 
 void CyberPeacockBoss::DisAppear3End()
 {
-
+	BossBodyCollision->Off();
 }
 
 
@@ -462,6 +470,7 @@ void CyberPeacockBoss::AppearStart()
 	SetBossPos(100.0f);
 	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Appear");
+
 }
 
 void CyberPeacockBoss::AppearUpdate(float _DeltaTime)
@@ -474,7 +483,7 @@ void CyberPeacockBoss::AppearUpdate(float _DeltaTime)
 
 void CyberPeacockBoss::AppearEnd()
 {
-
+	BossBodyCollision->On();
 }
 
 void CyberPeacockBoss::Attack3AppearStart()
@@ -482,6 +491,7 @@ void CyberPeacockBoss::Attack3AppearStart()
 	SetBossPosInAttack3();
 	PlaySoundOnce("BossStealth.mp3");
 	DirCheck("Appear");
+
 }
 
 void CyberPeacockBoss::Attack3AppearUpdate(float _DeltaTime)
@@ -494,7 +504,7 @@ void CyberPeacockBoss::Attack3AppearUpdate(float _DeltaTime)
 
 void CyberPeacockBoss::Attack3AppearEnd()
 {
-
+	BossBodyCollision->On();
 }
 
 
@@ -504,6 +514,7 @@ void CyberPeacockBoss::Attack1Start()
 	CheckTime = 0.0f;
 	CheckBool = false;
 	DirCheck("Attack1");
+	BossAttack1Collision->On();
 }
 
 void CyberPeacockBoss::Attack1Update(float _DeltaTime)
@@ -529,7 +540,7 @@ void CyberPeacockBoss::Attack1Update(float _DeltaTime)
 
 void CyberPeacockBoss::Attack1End()
 {
-
+	BossAttack1Collision->Off();
 }
 
 
@@ -537,19 +548,36 @@ void CyberPeacockBoss::Attack2Start()
 {
 	DirCheck("Attack2");
 	PlaySoundOnce("BossAttack2Sound.mp3");
+
+	CalTime = 0.0f;
 }
 
 void CyberPeacockBoss::Attack2Update(float _DeltaTime)
 {
+	CalTime += _DeltaTime;
+
+	if (CalTime >= 0.4f)
+	{
+		BossAttack2_1Collision->On();
+		BossAttack2_2Collision->On();
+		BossAttack2_3Collision->On();
+		BossAttack2_4Collision->On();
+	}
+
 	if (AnimationRender->IsAnimationEnd())
 	{
 		DoNextPattern = true;
 	}
+
+	
 }
 
 void CyberPeacockBoss::Attack2End()
 {
-
+	BossAttack2_1Collision->Off();
+	BossAttack2_2Collision->Off();
+	BossAttack2_3Collision->Off();
+	BossAttack2_4Collision->Off();
 }
 
 

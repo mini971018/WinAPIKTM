@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossHPBar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BossMissile.h">
       <SubType>
       </SubType>
@@ -116,6 +120,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerHPBar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrologueLevel.h">
       <SubType>
       </SubType>
@@ -166,6 +174,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossHPBar.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BossMissile.cpp">
       <SubType>
       </SubType>
@@ -260,6 +272,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerHPBar.cpp">
       <SubType>
       </SubType>
     </ClCompile>
