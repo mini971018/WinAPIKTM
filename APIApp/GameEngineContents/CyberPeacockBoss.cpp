@@ -29,10 +29,6 @@ void CyberPeacockBoss::Start()
 	SetMove(GameEngineWindow::GetScreenSize().half());
 
 	GameEngineInput::CreateKey("TestButton1", '1');
-	GameEngineInput::CreateKey("TestButton2", '2');
-	GameEngineInput::CreateKey("TestButton3", '3');
-	GameEngineInput::CreateKey("TestButton4", '4');
-	GameEngineInput::CreateKey("TestButton5", '5');
 
 	AnimationRender = CreateRender(MegamanX4PlayRenderOrder::BOSS);
 	AnimationRender->SetScale({ 704, 704 });
@@ -121,6 +117,7 @@ void CyberPeacockBoss::Start()
 	{
 		BossHPBarUI = GetLevel()->CreateActor<BossHPBar>();
 	}
+
 	SetRandomPattern();
 	SetBossAttack3();
 
@@ -131,7 +128,6 @@ void CyberPeacockBoss::SetRandomPattern()
 	for (int i = 0; i < 10; ++i)
 	{
 		int randomInt = GameEngineRandom::MainRandom.RandomInt(0, 6);
-		randomInt = 4;
 
 		switch (randomInt)
 		{
@@ -190,19 +186,36 @@ void CyberPeacockBoss::Update(float _DeltaTime)
 {
 	BossHPBarUI->GetPos();
 
+	DamagedCheckTime += _DeltaTime;
+
+
 	UpdateState(_DeltaTime);
+
 	if (DoNextPattern == true)
 	{
 		SetNextPattern();
 	}
 
-	if (BossHP <= 0.0f)
+	if (BossHP <= 0.0f && BossDead == false)
 	{
 		ChangeState(CyberPeacockState::DEAD);
-
+		BossDead = true;
 	}
 
 	CheckCollision();
+}
+
+
+void CyberPeacockBoss::DamagedCheck()
+{
+	if (DamagedCheckTime <= 1.5f)
+	{
+		return;
+	}
+
+	BossHP -= 10.0f;
+	BossHPBarUI->GetDamaged();
+	DamagedCheckTime = 0.0f;
 }
 
 void CyberPeacockBoss::DirCheck(const std::string_view& _AnimationName)
@@ -281,18 +294,18 @@ void CyberPeacockBoss::SetBossPosInAttack3()
 
 void CyberPeacockBoss::Render(float _DeltaTime)
 {
-	float4 NextPos = GetPos();
+	//float4 NextPos = GetPos();
 
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = NextPos - GetLevel()->GetCameraPos();
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = NextPos - GetLevel()->GetCameraPos();
 
-	//위치 확인용
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	////위치 확인용
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 }
 
 void CyberPeacockBoss::PlaySoundOnce(const std::string_view& _Text)
@@ -300,6 +313,7 @@ void CyberPeacockBoss::PlaySoundOnce(const std::string_view& _Text)
 	GameEngineSoundPlayer Sound = GameEngineResources::GetInst().SoundPlayToControl(_Text.data());
 	Sound.LoopCount(1);
 }
+
 
 void CyberPeacockBoss::CheckCollision()
 {

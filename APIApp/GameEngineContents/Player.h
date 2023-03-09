@@ -21,8 +21,6 @@ enum class PlayerState
 	DASHFALL,
 	STAGESTART, //스테이지 시작 시 플레이어가 바닥에 닿기 전 레이저 상태
 	STAGESTARTPOSE, //스테이지 시작 시 플레이어가 바닥에 닿은 후 애니메이션 상태
-	STAGEEND, //스테이지 종료 후 플레이어가 바닥에 떠서 날아가는 레이저 상태
-	STAGEENDPOSE, //스테이지 종료 후 플레이어가 바닥에서 하는 애니메이션 상태
 
 	WALLCLIMB,
 	WALLKICKJUMP,
@@ -33,6 +31,9 @@ enum class PlayerState
 	IDLEINANIMATION,
 
 	DAMAGED,
+	ENDFIGHT,
+	ENDANIM1,
+	ENDANIM2,
 };
 
 enum class PlayerCameraLock
@@ -71,6 +72,22 @@ public:
 	void SetCameraLockState(PlayerCameraLock _CameraState)
 	{
 		CameraLockState = _CameraState;
+	}
+
+	void SetPowerOverWhelming(bool value)
+	{
+		PowerOverWhelming = value;
+	}
+
+	void SetFightEndState()
+	{
+		PowerOverWhelming = true;
+		ChangeState(PlayerState::ENDFIGHT);
+	}
+
+	void SetEndAnimState()
+	{
+		ChangeState(PlayerState::ENDANIM1);
 	}
 
 	void SetDoor(BossRoomDoor* _Door1, BossRoomDoor* _Door2)
@@ -118,6 +135,7 @@ private:
 
 	bool IsGround = false;
 	char FirstMoveFrame = 0;
+	bool PowerOverWhelming = false;
 
 	bool InAnimationState = false;
 
@@ -127,6 +145,11 @@ private:
 	void DirCheck(const std::string_view& _AnimationName);
 	PlayerState CurrentState;
 	float4 RaiseUpCharacter(float4 _NextPos, float _DeltaTime);
+
+	bool EndAnim1Sound = false;
+	bool EndAnim2Sound = false;
+	bool EndAnim3Sound = false;
+	bool EndAnimBool = false;
 
 	GameEngineRender* AnimationRender = nullptr;
 	PlayerHPBar* PlayerHPBarUI = nullptr;
@@ -257,14 +280,6 @@ private:
 	void StageStartPoseUpdate(float _DeltaTime);
 	void StageStartPoseEnd();
 
-	void StageEndStart();
-	void StageEndUpdate(float _DeltaTime);
-	void StageEndEnd();
-
-	void StageEndPoseStart();
-	void StageEndPoseUpdate(float _DeltaTime);
-	void StageEndPoseEnd();
-
 	void WallClimbStart();
 	void WallClimbUpdate(float _DeltaTime);
 	void WallClimbEnd();
@@ -292,6 +307,18 @@ private:
 	void DamagedStart();
 	void DamagedUpdate(float _DeltaTime);
 	void DamagedEnd();
+
+	void EndFightStart();
+	void EndFightUpdate(float _DeltaTime);
+	void EndFightEnd();
+
+	void EndAnim1Start();
+	void EndAnim1Update(float _DeltaTime);
+	void EndAnim1End();
+
+	void EndAnim2Start();
+	void EndAnim2Update(float _DeltaTime);
+	void EndAnim2End();
 
 	GameEngineImage* ColImage = nullptr;
 

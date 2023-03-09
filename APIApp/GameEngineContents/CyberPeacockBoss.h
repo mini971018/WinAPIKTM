@@ -50,6 +50,10 @@ public:
 		return BossHPBarUI;
 	}
 
+
+
+	void DamagedCheck();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -64,6 +68,7 @@ private:
 	void ChangeState(CyberPeacockState _State);
 	void UpdateState(float _Time);
 	void SetRandomPattern();
+
 
 	int BasicPatternCount = 0;    //처음에 기본적으로 설정되어있는 스테이트 갯수
 	int PatternCountSize = 0;     //들어간 총 패턴 갯수
@@ -80,9 +85,10 @@ private:
 	float4 RightMissilePos = { 8545.0f, 5120.0f };
 	float Attack1Speed = 1000.0f; //Attack1 속도
 	float ExplosionCalTime = 0.0f;
+	float DeadUpdateCalTime = 0.0f;
+	float DamagedCheckTime = 0.0f;
 
 	BossHPBar* BossHPBarUI = nullptr;
-
 	bool CheckBool = false; //애니메이션 내에서 애니메이션이 끝난 이후에 움직이는 등의 행동을 하는 bool값
 	float AttackXClamp(float _PosX);
 	float CheckTime = 0.0f;
@@ -101,7 +107,7 @@ private:
 	float MissileCalTime = 0.0f;
 	float MissileRateTime = 2.0f;
 	size_t MissileCount = 0;
-	float BossHP = 150.0f;
+	float BossHP = 100.0f;
 	float CalTime = 0.0f;
 	GameEngineCollision* BossBodyCollision = nullptr; //공격 받았는지 여부를 확인하기 위한 콜리전
 	GameEngineCollision* BossAttack1Collision = nullptr; //공격 1 콜리전
@@ -113,6 +119,9 @@ private:
 
 	//FSM 유한 상태 머신
 	CyberPeacockState StateValue = CyberPeacockState::IDLE; //시작 전
+	CyberPeacockState CurrentState;
+
+	bool BossDead = false;
 
 	void WarningStart();
 	void WarningEnd();

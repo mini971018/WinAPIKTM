@@ -118,6 +118,12 @@
     <ClInclude Include="BossHPBar.h">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="EndLevel.h">
+      <Filter>3.Play\EndLevel\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="EndLevelBackground.h">
+      <Filter>3.Play\EndLevel\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -240,6 +246,12 @@
     <ClCompile Include="BossHPBar.cpp">
       <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="EndLevel.cpp">
+      <Filter>3.Play\EndLevel\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="EndLevelBackground.cpp">
+      <Filter>3.Play\EndLevel\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3.Play">
@@ -337,6 +349,15 @@
     </Filter>
     <Filter Include="3.Play\CyberPeacockAreaLevel\Actor\Boss">
       <UniqueIdentifier>{4dc88e7d-650b-4df2-9a4e-a7d35c05306a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\EndLevel">
+      <UniqueIdentifier>{146f3e3e-3414-4af9-8ac4-28f457cc29ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\EndLevel\Level">
+      <UniqueIdentifier>{d5cba755-08f1-4210-981a-731fc01c0255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Play\EndLevel\Actor">
+      <UniqueIdentifier>{761577be-abeb-49de-bf93-37e19ddd00eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

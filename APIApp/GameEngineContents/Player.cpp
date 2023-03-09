@@ -54,7 +54,6 @@ void Player::Start()
 		GameEngineInput::CreateKey("FreeMoveSwitch", '9');
 		GameEngineInput::CreateKey("ColMapMode", '0');
 		GameEngineInput::CreateKey("DebugRenderSwitch", 'I');
-		GameEngineInput::CreateKey("TestLevel", 'T');
 
 	}
 
@@ -108,17 +107,19 @@ void Player::Start()
 		//스테이지 시작시
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageStartAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 2, .End = 15, .InterTime = 0.05f });
-		//스테이지 종료시
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
 
-		//스테이지 시작시
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageStartLoopAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 0, .End = 1, .InterTime = 0.01f });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageStartAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 2, .End = 15, .InterTime = 0.05f });
 		
+		
 		//스테이지 종료시
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndAnim1", .ImageName = "RightPlayerStageChange.bmp", .Start = 15, .End = 21, .InterTime = 0.05f,.Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndAnim2", .ImageName = "RightPlayerStageChange.bmp", .Start = 22, .End = 27, .InterTime = 0.05f,.Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Right_StageEndLoopAnim", .ImageName = "RightPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
+
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim1", .ImageName = "LeftPlayerStageChange.bmp", .Start = 15, .End = 21, .InterTime = 0.05f,.Loop = false });
+		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim2", .ImageName = "LeftPlayerStageChange.bmp", .Start = 22, .End = 27, .InterTime = 0.05f,.Loop = false });
 		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndLoopAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 28, .End = 29, .InterTime = 0.01f });
-		AnimationRender->CreateAnimation({ .AnimationName = "Left_StageEndAnim", .ImageName = "LeftPlayerStageChange.bmp", .Start = 16, .End = 27, .InterTime = 0.05f });
 
 		ChangeState(PlayerState::READY);
 		AnimationRender->Off();
@@ -306,6 +307,7 @@ void Player::CameraLock(float4 _MoveDir, float _DeltaTime)
 			}
 
 			PlayerHPBarUI->SetMove(CameraDir * _DeltaTime);
+			CyberPeacockBossPointer->ReturnBossHPBarUI()->SetMove(CameraDir * _DeltaTime);
 			GetLevel()->SetCameraMove(CameraDir * _DeltaTime);
 		}
 		else
@@ -360,10 +362,10 @@ bool FreeMove = false;
 
 bool Player::FreeMoveState(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsPress("FreeMoveSwitch"))
-	{
-		FreeMove = !FreeMove;
-	}
+	//if (true == GameEngineInput::IsPress("FreeMoveSwitch"))
+	//{
+	//	FreeMove = !FreeMove;
+	//}
 
 	if (true == FreeMove)
 	{
@@ -407,24 +409,25 @@ void Player::Update(float _DeltaTime)
 	}
 
 
+	if (GameEngineInput::IsDown("TestButton1"))
+	{
+		SetPowerOverWhelming(!PowerOverWhelming);
+	}
+
 	DamagedTime += _DeltaTime;
 
 	UpdateState(_DeltaTime);
 	MoveCalculation(_DeltaTime);
 	CheckWall();
 	CheckAttackCollision();
-	//if (nullptr != BodyCollision)
-	//{
-	//	std::vector<GameEngineCollision*> Collision;
-	//	
-	//	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTERATTACK), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
-	//	{
-	//		for (size_t i = 0; i < Collision.size(); i++)
-	//		{
-	//			GameEngineActor* ColActor = Collision[i]->GetActor();
-	//		}
-	//	}
-	//}
+
+	if (PowerOverWhelming == true)
+	{
+		std::string PowerOverWhelmingText = "플레이어 무적모드";
+
+		GameEngineLevel::DebugTextPush(PowerOverWhelmingText);
+	}
+
 }
 
 void Player::CheckWall()
@@ -493,17 +496,14 @@ void Player::CheckWall()
 
 void Player::CheckAttackCollision()
 {
+
 	if (nullptr != PlayerLeftAttackCollision)
 	{
 		std::vector<GameEngineCollision*> Collision;
 
 		if (true == PlayerLeftAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
 		{
-			
-		}
-		else
-		{
-	
+			CyberPeacockBossPointer->DamagedCheck();
 		}
 	}
 
@@ -513,11 +513,7 @@ void Player::CheckAttackCollision()
 
 		if (true == PlayerRightAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
 		{
-
-		}
-		else
-		{
-
+			CyberPeacockBossPointer->DamagedCheck();
 		}
 	}
 
@@ -603,6 +599,11 @@ void Player::BossBGMStop()
 void Player::DamagedCheck(float _Damage, const std::string_view& _Dir)
 {
 	if (DamagedTime <= 1.0f)
+	{
+		return;
+	}
+
+	if (PowerOverWhelming == true)
 	{
 		return;
 	}

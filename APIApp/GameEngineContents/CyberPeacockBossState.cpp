@@ -731,16 +731,21 @@ void CyberPeacockBoss::DeadStart()
 {
 	DirCheck("BossDead");
 	Player::MainPlayer->BossBGMStop();
+	Player::MainPlayer->SetFightEndState();
+	DeadUpdateCalTime = 0.0f;
 }
 
 void CyberPeacockBoss::DeadUpdate(float _DeltaTime)
 {
 	ExplosionCalTime += _DeltaTime;
+	DeadUpdateCalTime += _DeltaTime;
 
-	if (ExplosionCalTime >= 0.3f)
+	if (ExplosionCalTime >= 0.2f)
 	{
 		ExplosionEffect* Explosion = GetLevel()->CreateActor<ExplosionEffect>();
 		
+		PlaySoundOnce("BossEndBoomSound.mp3");
+
 		float4 ExplosionCenter = { (GetPos().x), GetPos().y - 137.5f };
 		float ExplosionRandomX = GameEngineRandom::MainRandom.RandomFloat(-150.0f, 150.0f);
 		float ExplosionRandomY = GameEngineRandom::MainRandom.RandomFloat(-150.0f, 150.0f);
@@ -750,6 +755,15 @@ void CyberPeacockBoss::DeadUpdate(float _DeltaTime)
 		ExplosionCalTime = 0.0f;
 	}
 
+	if (DeadUpdateCalTime >= 5.0f)
+	{
+		AnimationRender->ChangeAnimation("NoAnim");
+		PlaySoundOnce("BossEndBoomSound2.mp3");
+		ChangeState(CyberPeacockState::IDLE);
+		BossHPBarUI->Off();
+		Player::MainPlayer->SetEndAnimState();
+		return;
+	}
 }
 
 void CyberPeacockBoss::DeadEnd()

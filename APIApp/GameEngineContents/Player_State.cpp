@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #include "WallClimbDustEffect.h"
 #include "WallKickJumpEffect.h"
@@ -111,16 +112,6 @@ void Player::ChangeState(PlayerState _State)
 		StageStartPoseStart();
 		break;
 	}
-	case PlayerState::STAGEEND:
-	{
-		StageEndStart();
-		break;
-	}
-	case PlayerState::STAGEENDPOSE:
-	{
-		StageEndPoseStart();
-		break;
-	}
 	case PlayerState::WALLCLIMB:
 	{
 		WallClimbStart();
@@ -151,7 +142,21 @@ void Player::ChangeState(PlayerState _State)
 		DamagedStart();
 		break;
 	}
-
+	case PlayerState::ENDFIGHT:
+	{
+		EndFightStart();
+		break;
+	}
+	case PlayerState::ENDANIM1:
+	{
+		EndAnim1Start();
+		break;
+	}
+	case PlayerState::ENDANIM2:
+	{
+		EndAnim2Start();
+		break;
+	}
 	default:
 		break;
 
@@ -244,16 +249,7 @@ void Player::ChangeState(PlayerState _State)
 		StageStartPoseEnd();
 		break;
 	}
-	case PlayerState::STAGEEND:
-	{
-		StageEndEnd();
-		break;
-	}
-	case PlayerState::STAGEENDPOSE:
-	{
-		StageEndPoseEnd();
-		break;
-	}
+
 	case PlayerState::WALLCLIMB:
 	{
 		WallClimbEnd();
@@ -284,7 +280,21 @@ void Player::ChangeState(PlayerState _State)
 		DamagedEnd();
 		break;
 	}
-
+	case PlayerState::ENDFIGHT:
+	{
+		EndFightEnd();
+		break;
+	}
+	case PlayerState::ENDANIM1:
+	{
+		EndAnim1End();
+		break;
+	}
+	case PlayerState::ENDANIM2:
+	{
+		EndAnim2End();
+		break;
+	}
 
 	default:
 		break;
@@ -380,16 +390,7 @@ void Player::UpdateState(float _DeltaTime)
 		StageStartPoseUpdate(_DeltaTime);
 		break;
 	}
-	case PlayerState::STAGEEND:
-	{
-		StageEndUpdate(_DeltaTime);
-		break;
-	}
-	case PlayerState::STAGEENDPOSE:
-	{
-		StageEndPoseUpdate(_DeltaTime);
-		break;
-	}
+
 	case PlayerState::WALLCLIMB:
 	{
 		WallClimbUpdate(_DeltaTime);
@@ -418,6 +419,21 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::DAMAGED:
 	{
 		DamagedUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::ENDFIGHT:
+	{
+		EndFightUpdate(_DeltaTime);
+		break;
+	}
+	case PlayerState::ENDANIM1:
+	{
+		EndAnim1Update(_DeltaTime);
+		break;
+	}
+	case PlayerState::ENDANIM2:
+	{
+		EndAnim2Update(_DeltaTime);
 		break;
 	}
 
@@ -1005,36 +1021,6 @@ void Player::StageStartPoseEnd()
 
 }
 
-
-
-void Player::StageEndStart()
-{
-
-}
-void Player::StageEndUpdate(float _DeltaTime)
-{
-
-}
-void Player::StageEndEnd()
-{
-
-}
-
-
-
-void Player::StageEndPoseStart()
-{
-
-}
-void Player::StageEndPoseUpdate(float _DeltaTime)
-{
-
-}
-void Player::StageEndPoseEnd()
-{
-
-}
-
 void Player::JumpAttackStart()
 {
 	DirCheck("JumpAttack");
@@ -1301,14 +1287,7 @@ void Player::DashJumpUpdate(float _DeltaTime)
 		return;
 	}
 
-	//Debug용 (점프시간 확인)
-	{
-		std::string PlayerJumpTime = "PlayerJumpTime : ";
 
-		PlayerJumpTime += std::to_string(JumpCalTime);
-
-		GameEngineLevel::DebugTextPush(PlayerJumpTime);
-	}
 }
 void Player::DashJumpEnd()
 {
@@ -1780,6 +1759,115 @@ void Player::DamagedUpdate(float _DeltaTime)
 
 }
 void Player::DamagedEnd()
+{
+
+}
+
+void Player::EndFightStart()
+{
+	CurrentDir = DirString;
+}
+void Player::EndFightUpdate(float _DeltaTime)
+{
+	if (IsGround == false)
+	{
+		MoveDir += (float4::Down * Gravity * 1.0f);
+		
+		std::string_view string = "Fall";
+
+		AnimationRender->ChangeAnimation(CurrentDir + string.data());
+	}
+
+	if (IsGround == true)
+	{
+		std::string_view string = "Idle";
+
+		AnimationRender->ChangeAnimation(CurrentDir + string.data());
+	}
+}
+void Player::EndFightEnd()
+{
+
+}
+
+void Player::EndAnim1Start()
+{
+	Time = 0.0f;
+	
+	EndAnim1Sound = false;
+	EndAnim2Sound = false;
+	EndAnim3Sound = false;
+	
+}
+void Player::EndAnim1Update(float _DeltaTime)
+{
+	Time += _DeltaTime;
+
+	if (Time >= 2.0f && EndAnim2Sound == false)
+	{
+		GameEngineSoundPlayer EndSound = GameEngineResources::GetInst().SoundPlayToControl("PlayerStageClearBGM.mp3");
+		EndSound.LoopCount(1);
+		EndAnim2Sound = true;
+	}
+
+	if (Time >= 8.0f && EndAnim1Sound == false)
+	{
+		std::string_view string = "StageEndAnim1";
+		AnimationRender->ChangeAnimation(CurrentDir + string.data());
+
+		EndAnim1Sound = true;
+	}
+
+	if (Time >= 8.3f && EndAnim3Sound == false)
+	{
+		GameEngineSoundPlayer EndSound = GameEngineResources::GetInst().SoundPlayToControl("PlayerEndAnim1Sound.mp3");
+		EndSound.LoopCount(1);
+
+		EndAnim3Sound = true;
+	}
+
+	if (Time >= 9.3f && AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::ENDANIM2);
+		return;
+	}
+}
+void Player::EndAnim1End()
+{
+
+}
+
+void Player::EndAnim2Start()
+{
+	std::string_view string = "StageEndAnim2";
+	AnimationRender->ChangeAnimation(CurrentDir + string.data());
+	GameEngineSoundPlayer EndSound = GameEngineResources::GetInst().SoundPlayToControl("PlayerEndSound.mp3");
+	EndSound.LoopCount(1);
+	EndAnimBool = false;
+	Time = 0.0f;
+}
+void Player::EndAnim2Update(float _DeltaTime)
+{
+	Time += _DeltaTime;
+
+	if (AnimationRender->IsAnimationEnd())
+	{
+		std::string_view string = "StageEndLoopAnim";
+		AnimationRender->ChangeAnimation(CurrentDir + string.data());
+		EndAnimBool = true;
+	}
+
+	if (EndAnimBool == true)
+	{
+		MoveDir += (float4::Up * MoveSpeedInStageChange);
+	}
+
+	if (Time >= 3.0f)
+	{
+		GameEngineCore::GetInst()->ChangeLevel("End");
+	}
+}
+void Player::EndAnim2End()
 {
 
 }

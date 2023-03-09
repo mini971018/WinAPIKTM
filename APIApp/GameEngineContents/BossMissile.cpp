@@ -42,7 +42,7 @@ void BossMissile::Update(float _DeltaTime)
 		MissileCollision->Off();
 		BoomCollision->Off();
 	}
-	else if (GetLiveTime() >= MissileMaxTime)
+	else if (GetLiveTime() >= MissileMaxTime || MissileIsBoom == true)
 	{
 		AnimationRender->SetAngle(0); //폭발 애니메이션에 회전을 넣지 않음
 		BoomCollision->On();
@@ -119,7 +119,6 @@ void BossMissile::CheckCollision()
 			{
 				GameEngineActor* ColActor = Collision[i]->GetActor();
 				float4 PlayerPos = ColActor->GetPos();
-
 				if (GetPos().x > PlayerPos.x)
 				{
 					Player::MainPlayer->DamagedCheck(5.0f, "Right_");
@@ -128,6 +127,7 @@ void BossMissile::CheckCollision()
 				{
 					Player::MainPlayer->DamagedCheck(5.0f, "Left_");
 				}
+				MissileIsBoom = true;
 			}
 		}
 
@@ -141,6 +141,7 @@ void BossMissile::CheckCollision()
 		{
 			for (size_t i = 0; i < Collision.size(); i++)
 			{
+
 				GameEngineActor* ColActor = Collision[i]->GetActor();
 				float4 PlayerPos = ColActor->GetPos();
 

@@ -53,6 +53,7 @@ void CyberPeacockAreaLevel::Loading()
 		//폭발 이미지
 		GameEngineImage* Explosion = GameEngineResources::GetInst().ImageLoad(Dir.GetPlusFileName("Explosion.bmp"));
 		Explosion->Cut(5, 7);
+
 	}
 	{
 		//보스 이미지

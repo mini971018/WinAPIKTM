@@ -13,6 +13,7 @@ enum class MegamanX4PlayRenderOrder
 	PLAYERUPPEREFFECT,
 	STRUCTURE,
 	UI,
+	UpperImage,
 };
 
 enum class MegamanX4RenderOrder

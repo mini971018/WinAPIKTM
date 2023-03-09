@@ -31,7 +31,7 @@ void BossHPBar::Start()
 void BossHPBar::GetDamaged()
 {
 	float4 Scale = HPBar->GetScale();
-	HPBar->SetScale({ Scale.x, Scale.y - 35.2f });
+	HPBar->SetScale({ Scale.x, Scale.y - 70.4f });
 }
 
 void BossHPBar::StartFight()

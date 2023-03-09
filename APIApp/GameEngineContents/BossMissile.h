@@ -27,7 +27,7 @@ private:
 	GameEngineCollision* MissileCollision = nullptr;
 	GameEngineCollision* BoomCollision = nullptr;
 
-
+	bool MissileIsBoom = false;
 	float MissileMaxTime = 2.0f; //미사일이 살아있는 시간
 	float BoomEffectRemainTime = 1.0f; //미사일 붐 이펙트가 남아있는 시간
 	float CurrentAngle = 0.0f;

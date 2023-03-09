@@ -100,6 +100,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EndLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="EndLevelBackground.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ExplosionEffect.h">
       <SubType>
       </SubType>
@@ -252,6 +260,14 @@
     </ClCompile>
     <ClCompile Include="CyberPeacockBossState.cpp" />
     <ClCompile Include="DashEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EndLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EndLevelBackground.cpp">
       <SubType>
       </SubType>
     </ClCompile>
