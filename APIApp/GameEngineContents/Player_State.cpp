@@ -14,6 +14,7 @@
 #include "BossRoomDoor.h"
 #include "CyberPeacockBoss.h"
 #include "PlayerHpBar.h"
+#include "DashDustEffect.h"
 #include <vector>
 
 void Player::ChangeState(PlayerState _State)
@@ -854,6 +855,12 @@ void Player::Attack1Update(float _DeltaTime)
 		PlayerRightAttackCollision->On();
 	}
 
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
+	}
+
 	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::ATTACK2);
@@ -893,6 +900,12 @@ void Player::Attack2Update(float _DeltaTime)
 	{
 		PlayerLeftAttackCollision->Off();
 		PlayerRightAttackCollision->On();
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
 	}
 
 	if (GameEngineInput::IsDown("Attack"))
@@ -936,6 +949,12 @@ void Player::Attack3Update(float _DeltaTime)
 	{
 		PlayerLeftAttackCollision->Off();
 		PlayerRightAttackCollision->On();
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
 	}
 
 	if (AnimationRender->IsAnimationEnd())
@@ -1074,19 +1093,30 @@ void Player::DashStart()
 
 	float4 MyPos = GetPos();
 	float4 EffectPos = { 70.0f, 30.0f };
+	DashDustEffect* DashDust = GetLevel()->CreateActor<DashDustEffect>();
 	if (DirString == "Left_")
 	{
 		PlayerDashEffect->SetPos({ MyPos.x + EffectPos.x, MyPos.y - EffectPos.y });
+		DashDust->SetDashDust(CurrentDir, { GetPos().x + 10.0f, GetPos().y });
+
 	}
 	else
 	{
 		PlayerDashEffect->SetPos({ MyPos.x - EffectPos.x, MyPos.y - EffectPos.y });
+		DashDust->SetDashDust(CurrentDir, { GetPos().x - 10.0f, GetPos().y });
 	}
+
 }
 
 void Player::DashUpdate(float _DeltaTime)
 {
 	DashCalTime += _DeltaTime;
+
+	if (GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK1);
+		return;
+	}
 
 	if (DashCalTime >= MaxDashTime || GameEngineInput::IsUp("Dash") || CurrentDir != DirString)
 	{

@@ -124,6 +124,9 @@
     <ClInclude Include="EndLevelBackground.h">
       <Filter>3.Play\EndLevel\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="DashDustEffect.h">
+      <Filter>3.Play\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -251,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="EndLevelBackground.cpp">
       <Filter>3.Play\EndLevel\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="DashDustEffect.cpp">
+      <Filter>3.Play\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

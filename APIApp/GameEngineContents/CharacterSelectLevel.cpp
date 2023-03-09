@@ -106,6 +106,11 @@ void CharacterSelectLevel::Update(float _DeltaTime)
 
 void CharacterSelectLevel::SwitchIcon(const std::string_view& _Name)
 {
+	if (LevelChangeState == true)
+	{
+		return;
+	}
+
 	if (SelectZeroIcon->IsUpdate() && _Name == "MoveLeft")
 	{
 		SelectMegamanIcon->On();
