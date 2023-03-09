@@ -15,6 +15,7 @@
 #include "BossTargetEffect.h"
 #include "CyberPeacockAreaMap.h"
 #include "BossHPBar.h"
+#include "BossHitEffect.h"
 
 CyberPeacockBoss::CyberPeacockBoss() 
 {
@@ -206,7 +207,7 @@ void CyberPeacockBoss::Update(float _DeltaTime)
 }
 
 
-void CyberPeacockBoss::DamagedCheck()
+void CyberPeacockBoss::DamagedCheck(const std::string_view& _Dir)
 {
 	if (DamagedCheckTime <= 1.5f)
 	{
@@ -216,6 +217,8 @@ void CyberPeacockBoss::DamagedCheck()
 	PlaySoundOnce("BossDamagedSound.mp3");
 	BossHP -= 10.0f;
 	BossHPBarUI->GetDamaged();
+	BossHitEffect* HitEffect = GetLevel()->CreateActor<BossHitEffect>();
+	HitEffect->SetHitEffect(_Dir.data(), GetPos());
 	DamagedCheckTime = 0.0f;
 }
 

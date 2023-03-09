@@ -503,7 +503,20 @@ void Player::CheckAttackCollision()
 
 		if (true == PlayerLeftAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
 		{
-			CyberPeacockBossPointer->DamagedCheck();
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 BossPos = ColActor->GetPos();
+
+				if (GetPos().x > BossPos.x)
+				{
+					Player::CyberPeacockBossPointer->DamagedCheck("Right_");
+				}
+				else
+				{
+					Player::CyberPeacockBossPointer->DamagedCheck("Left_");
+				}
+			}
 		}
 	}
 
@@ -513,7 +526,20 @@ void Player::CheckAttackCollision()
 
 		if (true == PlayerRightAttackCollision->Collision({ .TargetGroup = static_cast<int>(MegamanX4CollisionOrder::MONSTER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
 		{
-			CyberPeacockBossPointer->DamagedCheck();
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				float4 BossPos = ColActor->GetPos();
+
+				if (GetPos().x > BossPos.x)
+				{
+					Player::CyberPeacockBossPointer->DamagedCheck("Right_");
+				}
+				else
+				{
+					Player::CyberPeacockBossPointer->DamagedCheck("Left_");
+				}
+			}
 		}
 	}
 

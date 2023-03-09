@@ -52,7 +52,7 @@ public:
 
 
 
-	void DamagedCheck();
+	void DamagedCheck(const std::string_view& _Dir);
 
 protected:
 	void Start() override;

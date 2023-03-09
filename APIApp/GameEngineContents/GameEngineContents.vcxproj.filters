@@ -127,6 +127,9 @@
     <ClInclude Include="DashDustEffect.h">
       <Filter>3.Play\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="BossHitEffect.h">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -257,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="DashDustEffect.cpp">
       <Filter>3.Play\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHitEffect.cpp">
+      <Filter>3.Play\CyberPeacockAreaLevel\Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
